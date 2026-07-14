@@ -120,7 +120,7 @@ export default function RootLayout({
         <Providers>
           <div className="flex flex-col min-h-screen overflow-x-clip">
             <Header />
-            <main className="flex-grow pt-[72px] md:pt-[88px]">
+            <main className="flex-grow pt-[136px] md:pt-[152px]">
               {children}
             </main>
             <Footer />

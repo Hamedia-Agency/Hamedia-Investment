@@ -16,12 +16,19 @@ import {
   Mail,
   Phone,
   HelpCircle,
-  ArrowUpRight
+  ArrowUpRight,
+  BookOpen,
+  Send,
+  Layers,
+  MapPin,
+  ClipboardList,
+  Flame,
+  Award
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useDesign, DesignVariant, StructureVariant } from "@/components/providers/DesignContext";
 import { cn } from "@/lib/utils";
-
 
 // FAQ type definition
 interface FAQItem {
@@ -30,32 +37,27 @@ interface FAQItem {
 }
 
 export default function Home() {
-  // Calculator States
+  const { theme, structure } = useDesign();
+
+  // --- SHARED STATE ---
   const [investmentAmount, setInvestmentAmount] = useState<number>(50000);
   const exchangeRate = 65; // AFN per USD
 
-  // Calculated values based on prospectus:
-  // $100k buys 18 productive cows and 11 young females.
-  // Milk yield: 30L/day, 10 months (300 days) a year. Price: 28 AFN/liter.
+  // Calculations based on prospectus
   const scale = investmentAmount / 100000;
   const productiveCows = Math.max(1, Math.round(18 * scale));
   const youngerHeifers = Math.max(0, Math.round(11 * scale));
   const totalCattle = productiveCows + youngerHeifers;
 
-  // Annual milk yield (Liters)
   const annualMilkLiters = productiveCows * 30 * 300;
-  // Investor 33% revenue share
   const totalMilkRevenueAfn = annualMilkLiters * 28;
   const investorMilkRevenueAfn = Math.round(totalMilkRevenueAfn * 0.33);
   const investorMilkRevenueUsd = Math.round(investorMilkRevenueAfn / exchangeRate);
 
-  // Male calves generated annually (approx 50% birth rate, 1 calf per cow per year)
-  // 18 cows = 9 male calves, sold at 110,000 AFN each. Investor gets 33%.
   const annualMaleCalves = Math.round((productiveCows * 0.5) * 10) / 10;
   const investorMaleCalfRevenueAfn = Math.round((annualMaleCalves * 110000) * 0.33);
   const investorMaleCalfRevenueUsd = Math.round(investorMaleCalfRevenueAfn / exchangeRate);
 
-  // Total Projected Annual Cash-flow
   const totalAnnualCashFlowUsd = investorMilkRevenueUsd + investorMaleCalfRevenueUsd;
 
   // Contact Form States
@@ -81,7 +83,7 @@ export default function Home() {
     toast.success("Thank you for your inquiry! Our investor relations representative will contact you shortly.");
   };
 
-  // FAQ Accordion State
+  // FAQ State
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const faqs: FAQItem[] = [
@@ -107,663 +109,976 @@ export default function Home() {
     }
   ];
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* 1. HERO SECTION (Diagonal Banner Structure) */}
-      <section className="relative overflow-hidden min-h-[85vh] flex items-center bg-brand-cream-light border-b border-brand-charcoal/5">
-        {/* Background Decorative Dots */}
-        <div className="absolute inset-0 bg-dots-charcoal-10 pointer-events-none opacity-50" />
+  // --- THEME-SPECIFIC DESIGN TOKENS ---
+  const getThemeStyles = () => {
+    switch (theme) {
+      case "royal":
+        return {
+          bodyBg: "bg-slate-50",
+          textCharcoal: "text-slate-900",
+          textGray: "text-slate-600",
+          headingFont: "font-sans font-black tracking-tight",
+          sectionHeadingClass: "font-sans font-black tracking-tight text-brand-navy uppercase",
+          subTitleClass: "text-brand-blue",
+          dividerClass: "bg-brand-navy",
+          // Hero specific
+          heroLeftBg: "bg-white",
+          heroRightBg: "bg-gradient-to-br from-brand-blue-dark via-brand-navy to-brand-navy-dark",
+          heroTextClass: "font-sans font-black tracking-tight text-white uppercase",
+          heroGridClass: "",
+          accentText: "text-brand-gold",
+          primaryBtn: "bg-brand-blue hover:bg-brand-blue-dark text-white rounded-lg",
+          secondaryBtn: "border border-white/30 hover:border-white bg-white/5 hover:bg-white/10 text-white rounded-lg",
+          badgeClass: "bg-brand-blue/10 text-brand-blue border border-brand-blue/20 rounded-md",
+          cardClass: "bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md",
+          iconContainer: "bg-brand-blue/15 text-brand-blue rounded-lg",
+          checkIcon: "text-brand-blue",
+          // Calculator specific
+          calcCardBg: "bg-brand-navy text-white rounded-lg shadow-lg border border-brand-navy-dark",
+          sliderAccent: "accent-brand-blue",
+          calcStatBg: "bg-white/5 border border-white/10 rounded-md",
+          // Form specific
+          formBg: "bg-white border border-slate-200 rounded-xl p-8 shadow-sm",
+          inputClass: "bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:ring-brand-blue",
+          formBtn: "bg-brand-navy hover:bg-brand-navy-dark text-white rounded-lg",
+          faqClass: "bg-white border border-slate-200 rounded-lg",
+          // Slide deck left panel specific
+          slideLeftPanelBg: "bg-white border border-slate-200 rounded-lg shadow-sm",
+        };
+      case "oasis":
+        return {
+          bodyBg: "bg-brand-oasis-bg",
+          textCharcoal: "text-brand-charcoal",
+          textGray: "text-brand-charcoal/80",
+          headingFont: "font-serif font-bold tracking-widest",
+          sectionHeadingClass: "font-serif text-brand-oasis-gold uppercase tracking-widest",
+          subTitleClass: "text-brand-oasis-gold",
+          dividerClass: "bg-brand-oasis-gold",
+          // Hero specific
+          heroLeftBg: "bg-brand-oasis-bg border-r border-brand-oasis-gold/15",
+          heroRightBg: "bg-brand-oasis-charcoal text-white",
+          heroTextClass: "font-serif font-bold tracking-widest text-brand-cream-light",
+          heroGridClass: "border border-brand-oasis-gold/15",
+          accentText: "text-brand-oasis-gold",
+          primaryBtn: "bg-brand-oasis-gold hover:bg-brand-oasis-gold-dark text-brand-charcoal font-black rounded-none",
+          secondaryBtn: "border border-brand-oasis-gold/30 hover:border-brand-oasis-gold text-brand-oasis-gold bg-transparent rounded-none",
+          badgeClass: "bg-brand-oasis-gold/10 text-brand-oasis-gold border border-brand-oasis-gold/20 rounded-none",
+          cardClass: "bg-brand-oasis-bg border border-brand-oasis-gold/20 rounded-none shadow-none hover:bg-white/30",
+          iconContainer: "bg-brand-oasis-charcoal text-brand-oasis-gold rounded-none border border-brand-oasis-gold/20",
+          checkIcon: "text-brand-oasis-gold",
+          // Calculator specific
+          calcCardBg: "bg-brand-oasis-charcoal text-white rounded-none border border-brand-oasis-gold/20 shadow-none",
+          sliderAccent: "accent-brand-oasis-gold",
+          calcStatBg: "bg-transparent border border-brand-oasis-gold/20 rounded-none",
+          // Form specific
+          formBg: "bg-brand-oasis-charcoal text-white rounded-none border border-brand-oasis-gold/20 p-8",
+          inputClass: "bg-white/5 border border-brand-oasis-gold/20 rounded-none text-brand-cream-light focus:ring-brand-oasis-gold",
+          formBtn: "bg-brand-oasis-gold hover:bg-brand-oasis-gold-dark text-brand-charcoal font-black rounded-none",
+          faqClass: "bg-brand-oasis-charcoal border border-brand-oasis-gold/20 rounded-none text-white",
+          slideLeftPanelBg: "bg-brand-oasis-charcoal border border-brand-oasis-gold/20 text-white rounded-none",
+        };
+      case "heritage":
+      default:
+        return {
+          bodyBg: "bg-brand-cream",
+          textCharcoal: "text-brand-charcoal",
+          textGray: "text-brand-gray",
+          headingFont: "font-serif font-black",
+          sectionHeadingClass: "font-sans font-bold tracking-widest text-brand-red uppercase",
+          subTitleClass: "text-brand-red",
+          dividerClass: "bg-brand-blue",
+          // Hero specific
+          heroLeftBg: "bg-brand-cream-light lg:diagonal-cut-banner-left lg:pr-24",
+          heroRightBg: "bg-brand-red text-white lg:diagonal-cut-banner-right lg:pl-32",
+          heroTextClass: "font-serif font-black text-white",
+          heroGridClass: "",
+          accentText: "text-brand-gold",
+          primaryBtn: "bg-brand-gold hover:bg-brand-gold-dark text-brand-charcoal font-bold rounded-lg shadow-md hover:shadow-lg transition-transform",
+          secondaryBtn: "border border-white/30 hover:border-white bg-white/5 hover:bg-white/10 text-white rounded-lg",
+          badgeClass: "bg-white/15 text-brand-gold border border-white/10 rounded-full",
+          cardClass: "bg-white border border-brand-charcoal/5 rounded-xl shadow-sm hover:shadow-md",
+          iconContainer: "bg-brand-red/10 text-brand-red rounded-lg",
+          checkIcon: "text-brand-red",
+          // Calculator specific
+          calcCardBg: "bg-brand-charcoal text-white rounded-2xl shadow-xl",
+          sliderAccent: "accent-brand-gold",
+          calcStatBg: "bg-white/5 border border-white/5 rounded-lg",
+          // Form specific
+          formBg: "bg-brand-cream border border-brand-charcoal/5 rounded-2xl p-8 shadow-md",
+          inputClass: "bg-white border border-brand-light-gray rounded-lg text-brand-charcoal focus:ring-brand-blue",
+          formBtn: "bg-brand-red hover:bg-brand-red-dark text-white rounded-lg shadow-md",
+          faqClass: "bg-white border border-brand-charcoal/5 rounded-xl",
+          slideLeftPanelBg: "bg-brand-cream-light border border-brand-charcoal/5 rounded-2xl shadow-sm",
+        };
+    }
+  };
 
-        <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 relative min-h-[85vh] lg:min-h-0">
-          
-          {/* Left Block (Cream Backdrop with Logo & Branding) */}
-          <div className="col-span-1 lg:col-span-5 flex flex-col justify-center items-center p-8 sm:p-12 lg:p-16 z-20 bg-brand-cream-light lg:diagonal-cut-banner-left lg:pr-24">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-center flex flex-col items-center"
-            >
-              <HamediaLogo variant="full" iconClassName="w-32 h-32 md:w-36 md:h-36" className="mb-4" />
-              <div className="h-0.5 w-16 bg-brand-red my-4 hidden lg:block" />
-              <p className="font-sans text-xs sm:text-sm font-bold tracking-[0.2em] text-brand-blue uppercase max-w-sm">
-                Afghanistan Investment Arm
-              </p>
-            </motion.div>
-          </div>
+  const t = getThemeStyles();
 
-          {/* Right Block (Diagonal Cut Red Field with Text & CTAs) */}
-          <div className="col-span-1 lg:col-span-7 bg-brand-red text-white flex flex-col justify-center p-8 sm:p-12 lg:p-16 z-10 relative lg:diagonal-cut-banner-right lg:pl-32">
-            {/* Background pattern */}
-            <div className="absolute inset-0 bg-dots-white-10 opacity-15 pointer-events-none" />
-            
-            {/* Custom stylized ribbon on the far right edge (recreating the cover banner ribbon look) */}
-            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-brand-cream-dark/20 flex flex-col gap-6 items-center justify-center opacity-40 pointer-events-none">
-              <div className="w-2 md:w-4 h-32 bg-brand-cream-light transform rotate-12 shadow-lg" />
-              <div className="w-2 md:w-4 h-32 bg-brand-cream-light transform rotate-12 shadow-lg" />
-            </div>
+  // --- RENDER SECTIONS HELPER (For reusable components in deck & bento) ---
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="max-w-2xl relative z-10"
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-white/15 text-brand-gold mb-6 border border-white/10">
-                <Activity className="w-3.5 h-3.5 animate-pulse" /> Launching Projects
-              </span>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.1] mb-6">
-                Investing in the Future of <br className="hidden sm:inline" />
-                <span className="text-brand-gold">Afghanistan's</span> Real Assets
-              </h1>
-              <p className="font-sans text-sm sm:text-base text-brand-cream-light/90 leading-relaxed mb-8 max-w-xl">
-                Hamedia Investments structures high-impact, asset-backed opportunities. We empower local agricultural, livestock, and energy projects—starting with Kandahar's flagship Arghandab Dairy Farm—to deliver sustainable passive economic yields.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="#flagship"
-                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg font-sans text-xs font-bold tracking-wider uppercase bg-brand-gold hover:bg-brand-gold-dark text-brand-charcoal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 group"
-                >
-                  View Flagship Project
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg font-sans text-xs font-bold tracking-wider uppercase border border-white/30 hover:border-white bg-white/5 hover:bg-white/10 text-white transition-all duration-300"
-                >
-                  Inquire Now
-                </a>
-              </div>
-            </motion.div>
-          </div>
+  const renderCalculator = () => (
+    <div className={cn("p-6 sm:p-8 transition-all duration-500", t.calcCardBg)}>
+      <div className="flex items-center gap-2.5 mb-6">
+        <Calculator className={cn("w-6 h-6", theme === "royal" ? "text-brand-blue" : "text-brand-gold")} />
+        <h3 className={cn("font-serif text-lg sm:text-xl font-bold", theme === "oasis" && "tracking-widest")}>
+          Herd Investment Simulator
+        </h3>
+      </div>
+      <p className="font-sans text-xs text-brand-light-gray/80 mb-6 leading-relaxed">
+        Simulate the economic scale of your cow-line based on the $100k illustrative prospectus:
+      </p>
+
+      {/* Slider */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-2">
+          <label className={cn("font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", 
+            theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold"
+          )}>
+            Capital (USD)
+          </label>
+          <span className="font-sans text-base font-black text-white">
+            ${investmentAmount.toLocaleString()}
+          </span>
         </div>
-      </section>
-
-      {/* 2. EXECUTIVE VISION SECTION */}
-      <section id="about" className="py-20 bg-brand-cream border-b border-brand-charcoal/5 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column - Large Typography */}
-            <div className="lg:col-span-5">
-              <span className="font-sans text-xs font-bold tracking-widest text-brand-red uppercase block mb-3">
-                Executive Vision
-              </span>
-              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-black text-brand-charcoal leading-tight">
-                A Platform for Economic Self-Sufficiency. Built on Real Assets.
-              </h2>
-              <div className="w-16 h-1 bg-brand-blue mt-6" />
-            </div>
-
-            {/* Right Column - Narrative */}
-            <div className="lg:col-span-7">
-              <p className="font-sans text-sm sm:text-base text-brand-gray leading-relaxed mb-6">
-                Hamedia Investments is our primary investment vehicle in Afghanistan, committed to deploying capital directly into productive sectors. We design economic structures that bypass the volatility of corporate equities and traditional land deeds.
-              </p>
-              <p className="font-sans text-sm sm:text-base text-brand-gray leading-relaxed mb-8">
-                Instead, our unique model links investor capital to physical, revenue-generating inventory (such as dairy cows and solar arrays). This approach minimizes infrastructural overhead for our investors, while supplying Afghanistan with critical, sustainable food systems and green utility.
-              </p>
-
-              {/* Core Pillars Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-brand-red/10 flex items-center justify-center text-brand-red">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-brand-charcoal mb-1">Asset-Backed Safety</h4>
-                    <p className="font-sans text-xs text-brand-gray leading-relaxed">Capital purchases physical livestock, not abstract stock.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-brand-blue/10 flex items-center justify-center text-brand-blue">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-brand-charcoal mb-1">Economic Participation</h4>
-                    <p className="font-sans text-xs text-brand-gray leading-relaxed">Direct 33% contract participation in operational output.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-brand-gold/20 flex items-center justify-center text-brand-gold-dark">
-                    <Sprout className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-brand-charcoal mb-1">Empowering Local Fodder</h4>
-                    <p className="font-sans text-xs text-brand-gray leading-relaxed">Sustainable fodder farming secures lower production costs.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-brand-charcoal/10 flex items-center justify-center text-brand-charcoal">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-brand-charcoal mb-1">Passive Structuring</h4>
-                    <p className="font-sans text-xs text-brand-gray leading-relaxed">Full operations managed by our experienced team.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+        <input
+          type="range"
+          min="10000"
+          max="500000"
+          step="10000"
+          value={investmentAmount}
+          onChange={(e) => setInvestmentAmount(Number(e.target.value))}
+          className={cn("w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer", t.sliderAccent)}
+        />
+        <div className="flex justify-between text-[9px] font-sans text-brand-light-gray/40 mt-1">
+          <span>Min: $10k</span>
+          <span>Max: $500k</span>
         </div>
-      </section>
+      </div>
 
-      {/* 3. FLAGSHIP PROJECT SECTION (Arghandab Dairy Farm) */}
-      <section id="flagship" className="py-20 bg-white relative overflow-hidden">
-        {/* Subtle grid pattern overlay */}
-        <div className="absolute inset-0 bg-grid-charcoal-40 pointer-events-none opacity-70" />
-        <div className="absolute inset-0 bg-dots-gold-20 pointer-events-none opacity-10" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="font-sans text-xs font-bold tracking-widest text-brand-blue uppercase block mb-3">
-              First Flagship Venture
+      {/* Outputs */}
+      <div className="space-y-4 mb-6">
+        <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pb-1", 
+          theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
+        )}>
+          Herd Scale
+        </h4>
+        <div className="grid grid-cols-3 gap-3 text-center">
+          <div className={t.calcStatBg}>
+            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+              {productiveCows}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-black text-brand-charcoal leading-tight">
-              Arghandab Dairy Farm
-            </h2>
-            <p className="mt-4 font-sans text-sm sm:text-base text-brand-gray leading-relaxed">
-              Based in Kandahar, Arghandab Dairy Farm is a modern, closed-loop livestock expansion opportunity. Investors bypass infrastructure and buy directly into the dairy herd.
-            </p>
+            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Cows</span>
+          </div>
+          <div className={t.calcStatBg}>
+            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+              {youngerHeifers}
+            </span>
+            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Heifers</span>
+          </div>
+          <div className={t.calcStatBg}>
+            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+              {totalCattle}
+            </span>
+            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Total</span>
+          </div>
+        </div>
+
+        <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pt-2 pb-1", 
+          theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
+        )}>
+          Projected Annual Cash-Flow (33% Share)
+        </h4>
+        <div className="space-y-2 font-sans text-[11px] leading-relaxed">
+          <div className="flex justify-between">
+            <span className="text-brand-light-gray/70">Milk operational yield:</span>
+            <span className="font-bold text-white">${investorMilkRevenueUsd.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-brand-light-gray/70">Male calves sold:</span>
+            <span className="font-bold text-white">${investorMaleCalfRevenueUsd.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between border-t border-white/10 pt-2 text-xs font-serif">
+            <span className={cn("font-bold", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+              Total Projected Cash-Flow:
+            </span>
+            <span className={cn("font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+              ${totalAnnualCashFlowUsd.toLocaleString()} / Yr
+            </span>
+          </div>
+        </div>
+      </div>
+      <p className="font-sans text-[8px] text-brand-light-gray/40 leading-tight">
+        * Projections are illustrative based on 30L/day milk at 28 AFN/L, operating costs at 66,857 AFN/head, and exchange rate of 65 AFN/USD.
+      </p>
+    </div>
+  );
+
+  const renderContactForm = () => (
+    <div className={cn("transition-all duration-500", t.formBg)}>
+      {!formSubmitted ? (
+        <form onSubmit={handleFormSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className={cn("block font-sans text-[9px] font-bold uppercase tracking-wider mb-1.5", 
+                theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal"
+              )}>
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleFormChange}
+                required
+                className={cn("w-full px-3 py-2.5 text-xs focus:outline-none focus:ring-1 transition-all duration-500", t.inputClass)}
+                placeholder="John Doe"
+              />
+            </div>
+            <div>
+              <label className={cn("block font-sans text-[9px] font-bold uppercase tracking-wider mb-1.5", 
+                theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal"
+              )}>
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleFormChange}
+                required
+                className={cn("w-full px-3 py-2.5 text-xs focus:outline-none focus:ring-1 transition-all duration-500", t.inputClass)}
+                placeholder="john@example.com"
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            
-            {/* Left: The Model Details & Metrics */}
-            <div className="lg:col-span-6 flex flex-col justify-center">
-              <div className="p-6 sm:p-8 bg-brand-cream/80 border border-brand-charcoal/5 rounded-2xl glass-card">
-                <span className="inline-flex px-3 py-1 rounded bg-brand-red/10 text-brand-red font-sans text-[10px] font-bold tracking-widest uppercase mb-4">
-                  Economic Participation Model
-                </span>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-brand-charcoal mb-4">
-                  The Cow-Line 33% Structure
-                </h3>
-                <p className="font-sans text-xs sm:text-sm text-brand-gray leading-relaxed mb-6">
-                  Outside investors finance herd growth via the purchase of additional dairy cows. In exchange, the investor receives an <strong>Economic Participation Certificate</strong> granting:
-                </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className={cn("block font-sans text-[9px] font-bold uppercase tracking-wider mb-1.5", 
+                theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal"
+              )}>
+                Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleFormChange}
+                required
+                className={cn("w-full px-3 py-2.5 text-xs focus:outline-none focus:ring-1 transition-all duration-500", t.inputClass)}
+                placeholder="+1-555-555-5555"
+              />
+            </div>
+            <div>
+              <label className={cn("block font-sans text-[9px] font-bold uppercase tracking-wider mb-1.5", 
+                theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal"
+              )}>
+                Investment Tier (USD)
+              </label>
+              <select
+                name="interest"
+                value={formData.interest}
+                onChange={handleFormChange}
+                className={cn("w-full px-3 py-2.5 text-xs focus:outline-none focus:ring-1 transition-all duration-500", t.inputClass)}
+              >
+                <option value="10k-50k">$10k – $50k</option>
+                <option value="50k-100k">$50k – $100k</option>
+                <option value="100k-250k">$100k – $250k</option>
+                <option value="250k+">$250k +</option>
+              </select>
+            </div>
+          </div>
 
-                <ul className="space-y-4">
-                  <li className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-serif text-xs sm:text-sm font-bold text-brand-charcoal">33% Milk Operational distributions</h4>
-                      <p className="font-sans text-[11px] sm:text-xs text-brand-gray">Net cash yield attributable to investor-funded cows after direct cost accounting.</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-serif text-xs sm:text-sm font-bold text-brand-charcoal">33% Male Offspring value</h4>
-                      <p className="font-sans text-[11px] sm:text-xs text-brand-gray">Direct payment of 33% of realized sale values from male calves raised and sold.</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-serif text-xs sm:text-sm font-bold text-brand-charcoal">33% Female Offspring retained value</h4>
-                      <p className="font-sans text-[11px] sm:text-xs text-brand-gray">Retained females grow the livestock base, increasing the valuation at exit.</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-brand-red flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-serif text-xs sm:text-sm font-bold text-brand-charcoal">33% Herd Exit Value</h4>
-                      <p className="font-sans text-[11px] sm:text-xs text-brand-gray">Upon divestment request, buyout is priced against the market value of your herd line.</p>
-                    </div>
-                  </li>
-                </ul>
+          <div>
+            <label className={cn("block font-sans text-[9px] font-bold uppercase tracking-wider mb-1.5", 
+              theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal"
+            )}>
+              Inquiry Message
+            </label>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleFormChange}
+              required
+              rows={3}
+              className={cn("w-full px-3 py-2.5 text-xs focus:outline-none focus:ring-1 resize-none transition-all duration-500", t.inputClass)}
+              placeholder="Tell us about your interest in agricultural investments..."
+            />
+          </div>
 
-                <div className="mt-8 flex gap-4 border-t border-brand-charcoal/5 pt-6">
-                  <div>
-                    <span className="block font-serif text-xl sm:text-2xl font-black text-brand-blue">33%</span>
-                    <span className="font-sans text-[10px] text-brand-gray uppercase tracking-wider">Investor Yield Share</span>
+          <div className="flex justify-end pt-2">
+            <button
+              type="submit"
+              className={cn("inline-flex items-center justify-center px-5 py-2.5 font-sans text-xs font-bold tracking-wider uppercase transition-all duration-300", t.formBtn)}
+            >
+              Submit Inquiry
+              <ArrowUpRight className="ml-1.5 w-4 h-4" />
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="text-center py-6 flex flex-col items-center justify-center">
+          <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-brand-blue/10 text-brand-blue">
+            <CheckCircle className="w-6 h-6" />
+          </div>
+          <h3 className={cn("font-serif text-base font-bold mb-1", t.textCharcoal)}>
+            Inquiry Submitted
+          </h3>
+          <p className={cn("font-sans text-[11px] max-w-sm mb-4 leading-relaxed", t.textGray)}>
+            We have received your request. Our Investor Relations team will follow up via email at <strong>{formData.email}</strong>.
+          </p>
+          <button
+            onClick={() => setFormSubmitted(false)}
+            className="font-sans text-[10px] font-bold tracking-wider uppercase text-brand-blue hover:text-brand-blue-dark"
+          >
+            Submit Another Inquiry
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="w-full">
+      <AnimatePresence mode="wait">
+        
+        {/* ============================================================
+            STRUCTURE 1: EDITORIAL LANDING PAGE (DEFAULT)
+            ============================================================ */}
+        {structure === "structure1" && (
+          <motion.div
+            key="structure1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full"
+          >
+            {/* 1. Hero Section */}
+            <section className={cn(
+              "relative overflow-hidden min-h-[85vh] flex items-center border-b border-brand-charcoal/5 transition-colors duration-500",
+              theme === "royal" ? "bg-slate-50" : theme === "oasis" ? "bg-brand-oasis-bg" : "bg-brand-cream-light"
+            )}>
+              <div className="absolute inset-0 pointer-events-none">
+                {theme === "royal" ? (
+                  <div className="absolute inset-0 bg-grid-charcoal-40 opacity-20" />
+                ) : theme === "oasis" ? (
+                  <div className="absolute inset-0 bg-dots-gold-20 opacity-5" />
+                ) : (
+                  <div className="absolute inset-0 bg-dots-charcoal-10 opacity-50" />
+                )}
+              </div>
+
+              <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 relative min-h-[85vh] lg:min-h-0">
+                <div className={cn("col-span-1 lg:col-span-5 flex flex-col justify-center items-center p-8 sm:p-12 lg:p-16 z-25 transition-all duration-500", t.heroLeftBg)}>
+                  <div className="text-center flex flex-col items-center">
+                    <HamediaLogo variant="full" iconClassName="w-32 h-32 md:w-36 md:h-36" className="mb-4" />
+                    <div className={cn("h-0.5 w-16 my-4 hidden lg:block transition-all duration-500", t.dividerClass)} />
+                    <p className={cn("font-sans text-xs sm:text-sm font-bold tracking-[0.2em] uppercase max-w-sm transition-colors duration-500", 
+                      theme === "royal" ? "text-brand-navy" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-blue"
+                    )}>
+                      Afghanistan Investment Arm
+                    </p>
                   </div>
-                  <div className="border-l border-brand-charcoal/10 pl-6">
-                    <span className="block font-serif text-xl sm:text-2xl font-black text-brand-blue">2.5 Years</span>
-                    <span className="font-sans text-[10px] text-brand-gray uppercase tracking-wider">Min. Intended Horizon</span>
-                  </div>
-                  <div className="border-l border-brand-charcoal/10 pl-6">
-                    <span className="block font-serif text-xl sm:text-2xl font-black text-brand-blue">30 L/Day</span>
-                    <span className="font-sans text-[10px] text-brand-gray uppercase tracking-wider">Avg. Milk Yield</span>
+                </div>
+
+                <div className={cn("col-span-1 lg:col-span-7 flex flex-col justify-center p-8 sm:p-12 lg:p-16 z-10 relative transition-all duration-500", t.heroRightBg)}>
+                  {theme === "royal" ? (
+                    <div className="absolute inset-0 bg-dots-white-10 opacity-5 pointer-events-none" />
+                  ) : theme === "oasis" ? (
+                    <div className="absolute inset-0 border-8 border-brand-oasis-gold/10 m-4 pointer-events-none" />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-dots-white-10 opacity-15 pointer-events-none" />
+                      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-brand-cream-dark/20 flex flex-col gap-6 items-center justify-center opacity-40 pointer-events-none">
+                        <div className="w-2 md:w-4 h-32 bg-brand-cream-light transform rotate-12 shadow-lg" />
+                        <div className="w-2 md:w-4 h-32 bg-brand-cream-light transform rotate-12 shadow-lg" />
+                      </div>
+                    </>
+                  )}
+
+                  <div className={cn("max-w-2xl relative z-10", theme === "oasis" && "p-6 border border-brand-oasis-gold/20 bg-brand-oasis-charcoal")}>
+                    <span className={cn("inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-6", t.badgeClass)}>
+                      <Activity className="w-3.5 h-3.5 animate-pulse" /> Launching Projects
+                    </span>
+                    <h1 className={cn("text-3xl sm:text-4xl lg:text-5xl leading-[1.1] mb-6 transition-all duration-500", t.heroTextClass)}>
+                      Investing in the Future of <br className="hidden sm:inline" />
+                      <span className={t.accentText}>Afghanistan's</span> Real Assets
+                    </h1>
+                    <p className={cn("font-sans text-sm sm:text-base leading-relaxed mb-8 max-w-xl transition-all duration-500", 
+                      theme === "royal" ? "text-slate-300" : "text-brand-cream-light/90"
+                    )}>
+                      Hamedia Investments structures high-impact, asset-backed opportunities. We empower agricultural, livestock, and energy projects—starting with Kandahar's flagship Arghandab Dairy Farm—to deliver sustainable passive economic yields.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <a href="#flagship" className={cn("inline-flex items-center justify-center px-6 py-3.5 font-sans text-xs font-bold tracking-wider uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 group", t.primaryBtn)}>
+                        View Flagship Project
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                      <a href="#contact" className={cn("inline-flex items-center justify-center px-6 py-3.5 font-sans text-xs font-bold tracking-wider uppercase transition-all duration-300", t.secondaryBtn)}>
+                        Inquire Now
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            {/* Right: The Interactive Investment Calculator */}
-            <div className="lg:col-span-6">
-              <div className="p-6 sm:p-8 bg-brand-charcoal text-white rounded-2xl shadow-xl relative overflow-hidden">
-                {/* Background dots */}
-                <div className="absolute inset-0 bg-dots-white-10 opacity-10 pointer-events-none" />
-
-                <div className="flex items-center gap-2.5 mb-6 relative z-10">
-                  <Calculator className="w-6 h-6 text-brand-gold" />
-                  <h3 className="font-serif text-lg sm:text-xl font-bold">
-                    Herd Investment Simulator
-                  </h3>
-                </div>
-
-                <p className="font-sans text-xs text-brand-light-gray/80 mb-6 leading-relaxed relative z-10">
-                  Simulate the economic scale of your cow-line based on the $100,000 illustrative prospectus benchmarks:
-                </p>
-
-                {/* Range Slider */}
-                <div className="mb-8 relative z-10">
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="font-serif text-xs font-bold text-brand-gold uppercase tracking-wider">
-                      Investment Capital (USD)
-                    </label>
-                    <span className="font-sans text-lg font-black text-white">
-                      ${investmentAmount.toLocaleString()}
-                    </span>
+            {/* 2. Executive Vision Section */}
+            <section id="about" className="py-20 border-b border-brand-charcoal/5">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                  <div className="lg:col-span-5">
+                    <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Executive Vision</span>
+                    <h2 className={cn("text-2xl sm:text-3xl lg:text-4xl leading-tight transition-all duration-500", t.headingFont, t.textCharcoal)}>
+                      A Platform for Economic Self-Sufficiency. Built on Real Assets.
+                    </h2>
+                    <div className={cn("w-16 h-1 mt-6 transition-all duration-500", t.dividerClass)} />
                   </div>
-                  <input
-                    type="range"
-                    min="10000"
-                    max="500000"
-                    step="10000"
-                    value={investmentAmount}
-                    onChange={(e) => setInvestmentAmount(Number(e.target.value))}
-                    className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-gold"
-                  />
-                  <div className="flex justify-between text-[10px] font-sans text-brand-light-gray/40 mt-1.5">
-                    <span>Min: $10,000</span>
-                    <span>Max: $500,000</span>
-                  </div>
-                </div>
+                  <div className="lg:col-span-7">
+                    <p className={cn("font-sans text-sm sm:text-base leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
+                      Hamedia Investments is our primary investment vehicle in Afghanistan, committed to deploying capital directly into productive sectors. We design economic structures that bypass the volatility of corporate equities and traditional land deeds.
+                    </p>
+                    <p className={cn("font-sans text-sm sm:text-base leading-relaxed mb-8 transition-all duration-500", t.textGray)}>
+                      Instead, our unique model links investor capital to physical, revenue-generating inventory. This approach minimizes infrastructural overhead for our investors, while supplying Afghanistan with critical, sustainable food systems and green utility.
+                    </p>
 
-                {/* Outputs */}
-                <div className="space-y-4 mb-6 relative z-10">
-                  <h4 className="font-serif text-xs font-bold text-brand-gold uppercase tracking-wider border-b border-white/10 pb-1">
-                    1. Projected Herd Scale
-                  </h4>
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="bg-white/5 p-3 rounded-lg border border-white/5">
-                      <span className="block font-sans text-lg font-black text-brand-gold">{productiveCows}</span>
-                      <span className="font-sans text-[9px] text-brand-light-gray/60 uppercase">Pregnant Cows</span>
-                    </div>
-                    <div className="bg-white/5 p-3 rounded-lg border border-white/5">
-                      <span className="block font-sans text-lg font-black text-brand-gold">{youngerHeifers}</span>
-                      <span className="font-sans text-[9px] text-brand-light-gray/60 uppercase">Young Heifers</span>
-                    </div>
-                    <div className="bg-white/5 p-3 rounded-lg border border-white/5">
-                      <span className="block font-sans text-lg font-black text-brand-gold">{totalCattle}</span>
-                      <span className="font-sans text-[9px] text-brand-light-gray/60 uppercase">Total Head</span>
-                    </div>
-                  </div>
-
-                  <h4 className="font-serif text-xs font-bold text-brand-gold uppercase tracking-wider border-b border-white/10 pt-4 pb-1">
-                    2. Projected Annual Investor Cash-Flow (33% Share)
-                  </h4>
-                  <div className="space-y-2 font-sans text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-brand-light-gray/70">Milk operational yield:</span>
-                      <span className="font-bold text-white">
-                        {investorMilkRevenueUsd.toLocaleString()} USD ({investorMilkRevenueAfn.toLocaleString()} AFN)
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-brand-light-gray/70">Male calves sold:</span>
-                      <span className="font-bold text-white">
-                        {investorMaleCalfRevenueUsd.toLocaleString()} USD ({investorMaleCalfRevenueAfn.toLocaleString()} AFN)
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-t border-white/10 pt-2 text-sm font-serif">
-                      <span className="text-brand-gold font-bold">Total annual distribution projection:</span>
-                      <span className="font-black text-brand-gold">
-                        ${totalAnnualCashFlowUsd.toLocaleString()} USD / Year
-                      </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="flex gap-4">
+                        <div className={cn("flex-shrink-0 w-10 h-10 flex items-center justify-center transition-all duration-500", t.iconContainer)}>
+                          <ShieldCheck className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Asset-Backed Safety</h4>
+                          <p className={cn("font-sans text-xs leading-relaxed transition-colors duration-500", t.textGray)}>Capital purchases physical livestock, not abstract stock.</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className={cn("flex-shrink-0 w-10 h-10 flex items-center justify-center transition-all duration-500", t.iconContainer)}>
+                          <TrendingUp className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Economic Participation</h4>
+                          <p className={cn("font-sans text-xs leading-relaxed transition-colors duration-500", t.textGray)}>Direct 33% contract participation in operational output.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </section>
 
-                <div className="bg-white/5 p-3 rounded-lg border border-white/5 relative z-10">
-                  <p className="font-sans text-[10px] text-brand-light-gray/50 leading-relaxed">
-                    * Projections assume 30L/day avg milk production at 28 AFN/L, operating costs at 66,857 AFN per head/year, exchange rate of 65 AFN/USD, and 1 calf birth per productive cow annually. Values are illustrative calculations.
+            {/* 3. Flagship Project Section */}
+            <section id="flagship" className={cn("py-20 relative overflow-hidden transition-colors duration-500", 
+              theme === "oasis" ? "bg-brand-oasis-charcoal text-white" : "bg-white"
+            )}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>First Flagship Venture</span>
+                  <h2 className={cn("text-3xl sm:text-4xl font-black leading-tight transition-colors duration-500", 
+                    theme === "oasis" ? "text-white" : "text-brand-charcoal", t.headingFont
+                  )}>Arghandab Dairy Farm</h2>
+                  <p className={cn("mt-4 font-sans text-sm sm:text-base leading-relaxed transition-colors duration-500",
+                    theme === "oasis" ? "text-brand-cream-light/80" : "text-brand-gray"
+                  )}>
+                    Based in Kandahar, Arghandab Dairy Farm is a modern, closed-loop livestock expansion opportunity. Investors bypass infrastructure and buy directly into the dairy herd.
                   </p>
                 </div>
-              </div>
-            </div>
 
-          </div>
-        </div>
-      </section>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                  <div className="lg:col-span-6 flex flex-col justify-center">
+                    <div className={cn("p-6 sm:p-8 border transition-all duration-500", 
+                      theme === "royal" ? "bg-white border-slate-200 rounded-lg shadow-sm" : 
+                      theme === "oasis" ? "bg-[#1E1E22] border-brand-oasis-gold/15 rounded-none" : 
+                      "bg-brand-cream/80 border-brand-charcoal/5 rounded-2xl glass-card"
+                    )}>
+                      <span className={cn("inline-flex px-3 py-1 rounded font-sans text-[10px] font-bold tracking-widest uppercase mb-4",
+                        theme === "royal" ? "bg-brand-blue/10 text-brand-blue" : 
+                        theme === "oasis" ? "bg-brand-oasis-gold/10 text-brand-oasis-gold" : 
+                        "bg-brand-red/10 text-brand-red"
+                      )}>Economic Participation Model</span>
+                      <h3 className={cn("text-xl sm:text-2xl font-bold mb-4 font-serif transition-colors duration-500", 
+                        theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal"
+                      )}>The Cow-Line 33% Structure</h3>
+                      
+                      <ul className="space-y-4">
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Milk Operational distributions</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Net cash yield attributable to investor-funded cows after direct cost accounting.</p>
+                          </div>
+                        </li>
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Male Offspring value</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Realized sale values from male calves raised and sold at ~2 years old.</p>
+                          </div>
+                        </li>
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Herd Exit Value</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Divestment calculated based on current market valuation of livestock in your herd line.</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
 
-      {/* 4. FUTURE VENTURES SECTION */}
-      <section id="ventures" className="py-20 bg-brand-cream border-t border-b border-brand-charcoal/5 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Header */}
-          <div className="max-w-3xl mb-16">
-            <span className="font-sans text-xs font-bold tracking-widest text-brand-red uppercase block mb-3">
-              Ventures Pipeline
-            </span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-black text-brand-charcoal leading-tight">
-              Future Investment Sectors
-            </h2>
-            <p className="mt-4 font-sans text-sm text-brand-gray leading-relaxed">
-              Beyond the dairy farm, Hamedia Investments is structuring development templates across other key infrastructural sectors in Afghanistan.
-            </p>
-          </div>
-
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1 */}
-            <div className="p-6 bg-white border border-brand-charcoal/5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center mb-5">
-                  <Sprout className="w-6 h-6" />
+                  {/* Calculator Widget */}
+                  <div className="lg:col-span-6">
+                    {renderCalculator()}
+                  </div>
                 </div>
-                <h3 className="font-serif text-lg font-bold text-brand-charcoal mb-3">
-                  Solar Irrigation & Crops
-                </h3>
-                <p className="font-sans text-xs text-brand-gray leading-relaxed mb-6">
-                  Replacing diesel generator pumps with solar energy arrays. This eliminates ongoing fuel costs for farmers and secures long-term local fodder loops.
-                </p>
               </div>
-              <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/10 px-2.5 py-1 rounded self-start">
-                In Development
-              </span>
-            </div>
+            </section>
 
-            {/* Card 2 */}
-            <div className="p-6 bg-white border border-brand-charcoal/5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-lg bg-brand-red/10 text-brand-red flex items-center justify-center mb-5">
-                  <Building className="w-6 h-6" />
+            {/* 4. Future Ventures Section */}
+            <section id="ventures" className="py-20 bg-brand-cream border-t border-b border-brand-charcoal/5">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl mb-16">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Ventures Pipeline</span>
+                  <h2 className={cn("text-2xl sm:text-3xl lg:text-4xl leading-tight transition-all duration-500", t.headingFont, t.textCharcoal)}>
+                    Future Investment Sectors
+                  </h2>
+                  <p className={cn("mt-4 font-sans text-sm leading-relaxed transition-all duration-500", t.textGray)}>
+                    Beyond the dairy farm, Hamedia Investments is structuring development templates across other key infrastructural sectors.
+                  </p>
                 </div>
-                <h3 className="font-serif text-lg font-bold text-brand-charcoal mb-3">
-                  Cold Storage & Logistics
-                </h3>
-                <p className="font-sans text-xs text-brand-gray leading-relaxed mb-6">
-                  Developing local, insulated, solar-powered refrigeration units to reduce seasonal spoilage of fruit crops and secure supply lines to Kabul and export hubs.
-                </p>
-              </div>
-              <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-red bg-brand-red/10 px-2.5 py-1 rounded self-start">
-                Feasibility Phase
-              </span>
-            </div>
 
-            {/* Card 3 */}
-            <div className="p-6 bg-white border border-brand-charcoal/5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-lg bg-brand-gold/20 text-brand-gold-dark flex items-center justify-center mb-5">
-                  <TrendingUp className="w-6 h-6" />
-                </div>
-                <h3 className="font-serif text-lg font-bold text-brand-charcoal mb-3">
-                  Agricultural Processing
-                </h3>
-                <p className="font-sans text-xs text-brand-gray leading-relaxed mb-6">
-                  Establishing modern sorting, shelling, and packaging plants to process almonds and dried fruit in-country, keeping downstream value chains inside Afghanistan.
-                </p>
-              </div>
-              <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-gold-dark bg-brand-gold/10 px-2.5 py-1 rounded self-start">
-                Planning Phase
-              </span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 5. THE MODEL SECTION */}
-      <section id="model" className="py-20 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="font-sans text-xs font-bold tracking-widest text-brand-red uppercase block mb-3">
-              Operational Roadmap
-            </span>
-            <h2 className="font-serif text-3xl font-black text-brand-charcoal leading-tight">
-              The Hamedia Allocation Model
-            </h2>
-            <p className="mt-4 font-sans text-sm text-brand-gray leading-relaxed">
-              We separate infrastructure setup from asset expansion to ensure investor capital is instantly productive.
-            </p>
-          </div>
-
-          {/* Process Timeline */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-0.5 bg-brand-light-gray" />
-
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-16 h-16 rounded-full bg-brand-cream border-2 border-brand-light-gray flex items-center justify-center font-serif text-lg font-black text-brand-charcoal mb-4 shadow-sm">
-                1
-              </div>
-              <h3 className="font-serif text-sm font-bold text-brand-charcoal mb-2">Platform Setup</h3>
-              <p className="font-sans text-xs text-brand-gray leading-relaxed px-4">
-                Founders buy the land, clear permits, and construct agricultural facilities out of pocket.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-16 h-16 rounded-full bg-brand-cream border-2 border-brand-light-gray flex items-center justify-center font-serif text-lg font-black text-brand-charcoal mb-4 shadow-sm">
-                2
-              </div>
-              <h3 className="font-serif text-sm font-bold text-brand-charcoal mb-2">Asset Capitalization</h3>
-              <p className="font-sans text-xs text-brand-gray leading-relaxed px-4">
-                Outside investors fund specific asset expansions (cows). 100% of proceeds buy productive inventory.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-16 h-16 rounded-full bg-brand-cream border-2 border-brand-light-gray flex items-center justify-center font-serif text-lg font-black text-brand-charcoal mb-4 shadow-sm">
-                3
-              </div>
-              <h3 className="font-serif text-sm font-bold text-brand-charcoal mb-2">Active Management</h3>
-              <p className="font-sans text-xs text-brand-gray leading-relaxed px-4">
-                Our farm personnel handle daily feeding, health, milk sales, and breeding programs.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-16 h-16 rounded-full bg-brand-cream border-2 border-brand-light-gray flex items-center justify-center font-serif text-lg font-black text-brand-charcoal mb-4 shadow-sm">
-                4
-              </div>
-              <h3 className="font-serif text-sm font-bold text-brand-charcoal mb-2">Distribution Yield</h3>
-              <p className="font-sans text-xs text-brand-gray leading-relaxed px-4">
-                Operating revenues are compiled quarterly. Investors receive 33% distributions of their line.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 6. FAQ SECTION */}
-      <section className="py-20 bg-brand-cream border-t border-b border-brand-charcoal/5 relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-12">
-            <HelpCircle className="w-8 h-8 text-brand-blue mx-auto mb-3" />
-            <h2 className="font-serif text-2xl sm:text-3xl font-black text-brand-charcoal">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-brand-charcoal/5 rounded-xl overflow-hidden shadow-sm"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 text-left font-serif text-sm font-bold text-brand-charcoal hover:text-brand-red transition-colors duration-200"
-                >
-                  <span>{faq.question}</span>
-                  <ChevronDown
-                    className={cn(
-                      "w-4 h-4 text-brand-gray transition-transform duration-300",
-                      openFaq === idx && "transform rotate-180 text-brand-red"
-                    )}
-                  />
-                </button>
-                <AnimatePresence initial={false}>
-                  {openFaq === idx && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="p-5 pt-0 border-t border-brand-charcoal/5 font-sans text-xs text-brand-gray leading-relaxed">
-                        {faq.answer}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
+                        <Sprout className="w-6 h-6" />
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Solar Irrigation & Crops</h3>
+                      <p className={cn("font-sans text-xs leading-relaxed mb-6", t.textGray)}>Replacing diesel pumps with solar energy arrays to eliminate fuel costs and secure fodder loops.</p>
+                    </div>
+                    <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/10 px-2.5 py-1 rounded self-start">In Development</span>
+                  </div>
+
+                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
+                        <Building className="w-6 h-6" />
+                      </div>
+                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Cold Storage & Logistics</h3>
+                      <p className={cn("font-sans text-xs leading-relaxed mb-6", t.textGray)}>Solar-powered refrigeration units to combat crop spoilage and secure distribution supply lines.</p>
+                    </div>
+                    <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-red bg-brand-red/10 px-2.5 py-1 rounded self-start">Feasibility</span>
+                  </div>
+
+                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
+                        <TrendingUp className="w-6 h-6" />
+                      </div>
+                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Almond Processing</h3>
+                      <p className={cn("font-sans text-xs leading-relaxed mb-6", t.textGray)}>Modern shelling and sorting facilities to keep the agricultural value chain inside Afghanistan.</p>
+                    </div>
+                    <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-gold-dark bg-brand-gold/10 px-2.5 py-1 rounded self-start">Planning</span>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            </section>
 
-        </div>
-      </section>
+            {/* 5. Roadmap Model Section */}
+            <section id="model" className="py-20 bg-white">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Operational Roadmap</span>
+                  <h2 className={cn("text-3xl font-black leading-tight transition-colors duration-500", t.headingFont, t.textCharcoal)}>
+                    The Hamedia Allocation Model
+                  </h2>
+                </div>
 
-      {/* 7. CONTACT / INQUIRY FORM */}
-      <section id="contact" className="py-20 bg-white relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="font-sans text-xs font-bold tracking-widest text-brand-red uppercase block mb-3">
-              Join Our Network
-            </span>
-            <h2 className="font-serif text-3xl font-black text-brand-charcoal leading-tight">
-              Investor Relations Inquiry
-            </h2>
-            <p className="mt-4 font-sans text-xs sm:text-sm text-brand-gray leading-relaxed">
-              If you are interested in passive, asset-backed economic participation in the Arghandab Dairy Farm or our upcoming pipeline projects, please submit an inquiry form below.
-            </p>
-          </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+                  <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-0.5 bg-brand-light-gray" />
+                  {[
+                    { num: 1, title: "Platform Setup", text: "Founders buy land and construct agricultural assets out of pocket." },
+                    { num: 2, title: "Asset Expansion", text: "Outside investors fund physical inventory expansion (cows)." },
+                    { num: 3, title: "Operations", text: "Managed dairy operations: feeding, veterinary care, milk sales." },
+                    { num: 4, title: "Yield", text: "Net operations quarterly distributions directly to certificate holders." }
+                  ].map((step, sIdx) => (
+                    <div key={sIdx} className="flex flex-col items-center text-center relative z-10">
+                      <div className={cn("w-16 h-16 border-2 flex items-center justify-center font-serif text-lg font-black mb-4 shadow-sm transition-all duration-500",
+                        theme === "royal" ? "bg-white border-slate-300 rounded-md text-brand-navy" : 
+                        theme === "oasis" ? "bg-[#F5EFEB] border-brand-oasis-gold/40 rounded-full text-brand-oasis-gold" : 
+                        "bg-brand-cream border-brand-light-gray rounded-full text-brand-charcoal"
+                      )}>
+                        {step.num}
+                      </div>
+                      <h3 className={cn("font-serif text-sm font-bold mb-2", t.textCharcoal)}>{step.title}</h3>
+                      <p className={cn("font-sans text-xs leading-relaxed px-4", t.textGray)}>{step.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-          {/* Form */}
-          <div className="bg-brand-cream p-8 rounded-2xl border border-brand-charcoal/5 shadow-md">
-            {!formSubmitted ? (
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* 6. FAQ Section */}
+            <section className={cn("py-20 border-t border-b border-brand-charcoal/5 transition-colors duration-500",
+              theme === "royal" ? "bg-slate-100" : theme === "oasis" ? "bg-[#1E1E22] border-brand-oasis-gold/15" : "bg-brand-cream"
+            )}>
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <HelpCircle className="w-8 h-8 text-brand-blue mx-auto mb-3" />
+                  <h2 className={cn("font-serif text-2xl sm:text-3xl font-black transition-colors duration-500",
+                    theme === "oasis" ? "text-white" : "text-brand-charcoal"
+                  )}>Frequently Asked Questions</h2>
+                </div>
+                <div className="space-y-4">
+                  {faqs.map((faq, idx) => (
+                    <div key={idx} className={cn("overflow-hidden transition-all duration-500", t.faqClass)}>
+                      <button
+                        onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                        className={cn("w-full flex items-center justify-between p-5 text-left font-serif text-sm font-bold transition-colors duration-200",
+                          theme === "oasis" ? "text-white hover:text-brand-oasis-gold" : "text-brand-charcoal hover:text-brand-red"
+                        )}
+                      >
+                        <span>{faq.question}</span>
+                        <ChevronDown className={cn("w-4 h-4 text-brand-gray transition-transform", openFaq === idx && "transform rotate-180 text-brand-red")} />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {openFaq === idx && (
+                          <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: "auto" }}
+                            exit={{ height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className={cn("p-5 pt-0 border-t border-brand-charcoal/5 font-sans text-xs leading-relaxed",
+                              theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray"
+                            )}>{faq.answer}</div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* 7. Contact Section */}
+            <section id="contact" className="py-20 bg-white">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center max-w-2xl mx-auto mb-12">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Join Our Network</span>
+                  <h2 className={cn("text-3xl font-black leading-tight transition-all duration-500", t.headingFont, t.textCharcoal)}>
+                    Investor Relations Inquiry
+                  </h2>
+                  <p className={cn("mt-4 font-sans text-xs sm:text-sm leading-relaxed transition-all duration-500", t.textGray)}>
+                    If you are interested in passive, asset-backed economic participation, please submit an inquiry form below.
+                  </p>
+                </div>
+                {renderContactForm()}
+              </div>
+            </section>
+          </motion.div>
+        )}
+
+        {/* ============================================================
+            STRUCTURE 2: INTERACTIVE SPLIT SLIDE DECK
+            ============================================================ */}
+        {structure === "structure2" && (
+          <motion.div
+            key="structure2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Left Column: Static Outline Pitch / Navigation */}
+              <div className={cn("lg:col-span-4 lg:sticky lg:top-[160px] p-6 border transition-all duration-500 z-10", t.slideLeftPanelBg)}>
+                <div className="flex items-center gap-2 mb-4">
+                  <HamediaLogo variant="icon" iconClassName="w-10 h-10" />
                   <div>
-                    <label className="block font-sans text-[10px] font-bold text-brand-charcoal uppercase tracking-wider mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleFormChange}
-                      required
-                      className="w-full bg-white border border-brand-light-gray rounded-lg px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-sans text-[10px] font-bold text-brand-charcoal uppercase tracking-wider mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleFormChange}
-                      required
-                      className="w-full bg-white border border-brand-light-gray rounded-lg px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue"
-                      placeholder="john@example.com"
-                    />
+                    <h3 className={cn("font-serif text-sm font-black uppercase leading-none", theme === "oasis" ? "text-white" : "text-brand-charcoal")}>Hamedia</h3>
+                    <span className={cn("font-sans text-[8px] tracking-[0.1em] font-bold", theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gray")}>PITCH OVERVIEW</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block font-sans text-[10px] font-bold text-brand-charcoal uppercase tracking-wider mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleFormChange}
-                      required
-                      className="w-full bg-white border border-brand-light-gray rounded-lg px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue"
-                      placeholder="+1-555-555-5555"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-sans text-[10px] font-bold text-brand-charcoal uppercase tracking-wider mb-2">
-                      Investment Tier (USD)
-                    </label>
-                    <select
-                      name="interest"
-                      value={formData.interest}
-                      onChange={handleFormChange}
-                      className="w-full bg-white border border-brand-light-gray rounded-lg px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue"
-                    >
-                      <option value="10k-50k">$10,000 – $50,000</option>
-                      <option value="50k-100k">$50,000 – $100,000</option>
-                      <option value="100k-250k">$100,000 – $250,000</option>
-                      <option value="250k+">$250,000 +</option>
-                    </select>
-                  </div>
-                </div>
+                <div className={cn("h-px my-4", theme === "oasis" ? "bg-brand-oasis-gold/20" : "bg-brand-charcoal/10")} />
 
-                <div>
-                  <label className="block font-sans text-[10px] font-bold text-brand-charcoal uppercase tracking-wider mb-2">
-                    Inquiry Message
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleFormChange}
-                    required
-                    rows={4}
-                    className="w-full bg-white border border-brand-light-gray rounded-lg px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue resize-none"
-                    placeholder="Tell us about your background and interest in agricultural investments..."
-                  />
-                </div>
-
-                <div className="flex justify-end pt-2">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-sans text-xs font-bold tracking-wider uppercase bg-brand-red hover:bg-brand-red-dark text-white shadow-md hover:shadow-lg transition-all duration-300"
-                  >
-                    Submit Inquiry
-                    <ArrowUpRight className="ml-1.5 w-4 h-4" />
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12 flex flex-col items-center justify-center"
-              >
-                <div className="w-16 h-16 bg-brand-blue/10 text-brand-blue rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle className="w-8 h-8" />
-                </div>
-                <h3 className="font-serif text-xl font-bold text-brand-charcoal mb-2">
-                  Inquiry Submitted Successfully
-                </h3>
-                <p className="font-sans text-xs text-brand-gray max-w-md mb-6 leading-relaxed">
-                  We have received your request and allocated it to our Investor Relations team. We will review your tier profile and follow up via email at <strong>{formData.email}</strong>.
+                <h2 className={cn("text-base font-bold mb-3 font-serif", theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal")}>
+                  Investment Memorandum
+                </h2>
+                <p className={cn("font-sans text-xs leading-relaxed mb-6", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>
+                  Scroll through our dynamic slides on the right to examine our economic models, asset profiles, and upcoming venture roadmap.
                 </p>
-                <button
-                  onClick={() => setFormSubmitted(false)}
-                  className="font-sans text-xs font-bold tracking-wider uppercase text-brand-blue hover:text-brand-blue-dark transition-colors"
-                >
-                  Submit Another Inquiry
-                </button>
-              </motion.div>
-            )}
-          </div>
 
-        </div>
-      </section>
+                {/* Slides Nav Map */}
+                <div className="space-y-2 font-sans text-xs">
+                  <a href="#slide-thesis" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
+                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                  )}>
+                    <BookOpen className="w-3.5 h-3.5" /> 1. The Executive Thesis
+                  </a>
+                  <a href="#slide-flagship" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
+                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                  )}>
+                    <Award className="w-3.5 h-3.5" /> 2. Arghandab Dairy Farm
+                  </a>
+                  <a href="#slide-calc" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
+                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                  )}>
+                    <Calculator className="w-3.5 h-3.5" /> 3. Herd Simulator Widget
+                  </a>
+                  <a href="#slide-pipeline" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
+                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                  )}>
+                    <Layers className="w-3.5 h-3.5" /> 4. Pipelines & Solar Fodder
+                  </a>
+                  <a href="#slide-inquire" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
+                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                  )}>
+                    <Send className="w-3.5 h-3.5" /> 5. Investor Registration
+                  </a>
+                </div>
+
+                <div className={cn("mt-8 pt-4 border-t font-sans text-[10px] leading-relaxed flex flex-col gap-2",
+                  theme === "oasis" ? "border-brand-oasis-gold/10 text-brand-cream-light/60" : "border-brand-charcoal/5 text-brand-gray/60"
+                )}>
+                  <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" /> +1-949-299-6263</span>
+                  <span className="flex items-center gap-1.5"><Mail className="w-3 h-3" /> info@hamediainvestment.com</span>
+                </div>
+              </div>
+
+              {/* Right Column: Slides Feed */}
+              <div className="lg:col-span-8 space-y-12">
+                
+                {/* Slide 1: Executive Thesis */}
+                <div id="slide-thesis" className={cn("p-8 border transition-all duration-500", t.cardClass)}>
+                  <span className={cn("font-sans text-[9px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>Slide 01 // Overview</span>
+                  <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
+                    Asset-Backed Economic Independence
+                  </h3>
+                  <div className="w-16 h-0.5 bg-brand-blue mb-4" />
+                  <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-4 transition-all duration-500", t.textGray)}>
+                    Hamedia Investments is our flagship vehicle in Afghanistan. We invest directly in productive inventory. By building physical, secure assets (livestock and crops) and farming loops, we provide outside investors with contract-secured yields.
+                  </p>
+                  <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
+                    Our founders carry the core infrastructure risk (purchasing agricultural land, constructing facilities) so that investor proceeds buy only active, income-producing assets (cow herd lines).
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 text-center mt-6">
+                    <div className="bg-brand-charcoal/5 p-4 rounded">
+                      <span className="block font-serif text-lg font-black text-brand-blue">100%</span>
+                      <span className="font-sans text-[9px] text-brand-gray uppercase">Founder Land Equity</span>
+                    </div>
+                    <div className="bg-brand-charcoal/5 p-4 rounded">
+                      <span className="block font-serif text-lg font-black text-brand-red">Zero</span>
+                      <span className="font-sans text-[9px] text-brand-gray uppercase">Investor Infrastructure Debt</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 2: Arghandab Dairy Farm */}
+                <div id="slide-flagship" className={cn("p-8 border transition-all duration-500", t.cardClass)}>
+                  <span className={cn("font-sans text-[9px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>Slide 02 // Flagship</span>
+                  <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
+                    Arghandab Dairy Farm: Kandahar
+                  </h3>
+                  <div className="w-16 h-0.5 bg-brand-blue mb-4" />
+                  <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-4 transition-all duration-500", t.textGray)}>
+                    Our first project is an operating dairy farm in Kandahar, utilizing a closed-loop fodder system to secure feed supply at fixed internal pricing.
+                  </p>
+                  <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
+                    Under the <strong>Economic Participation Certificate</strong>, investors fund herd inventory expansion and acquire a 33% interest in the milk production cash yield, offspring valuations, and livestock exit valuations.
+                  </p>
+                  <div className="space-y-2.5 font-sans text-xs text-brand-gray bg-brand-charcoal/5 p-4 rounded">
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% Net Milk Yield Distributions</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% realized payout from male calves</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% livestock market value exit buyout</div>
+                  </div>
+                </div>
+
+                {/* Slide 3: Calculator Widget */}
+                <div id="slide-calc" className="w-full">
+                  {renderCalculator()}
+                </div>
+
+                {/* Slide 4: Pipeline Pipelines */}
+                <div id="slide-pipeline" className={cn("p-8 border transition-all duration-500", t.cardClass)}>
+                  <span className={cn("font-sans text-[9px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>Slide 04 // Ventures</span>
+                  <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
+                    Future Ventures Pipeline
+                  </h3>
+                  <div className="w-16 h-0.5 bg-brand-blue mb-4" />
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0", t.iconContainer)}>
+                        <Sprout className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Solar Pump Irrigation</h4>
+                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>Building solar-powered pumps to reduce crop fuel overhead by 100%.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0", t.iconContainer)}>
+                        <Building className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Cold Logistics Hubs</h4>
+                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>Developing localized cold chain storage to reduce fruit crop spoiling in Kandahar.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 5: Inquiry form */}
+                <div id="slide-inquire" className="w-full">
+                  {renderContactForm()}
+                </div>
+
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ============================================================
+            STRUCTURE 3: BENTO GRID DASHBOARD
+            ============================================================ */}
+        {structure === "structure3" && (
+          <motion.div
+            key="structure3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+          >
+            {/* Bento Grid layout */}
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-6 auto-rows-auto">
+              
+              {/* Block A: Brand Thesis (Large - spans 4 cols md) */}
+              <div className={cn("md:col-span-4 p-8 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                <div>
+                  <div className="flex items-center gap-3 mb-6">
+                    <HamediaLogo variant="icon" iconClassName="w-12 h-12" />
+                    <div>
+                      <h2 className={cn("text-lg font-black tracking-widest uppercase transition-colors duration-500", t.textCharcoal)}>
+                        HAMEDIA INVESTMENTS
+                      </h2>
+                      <span className="font-sans text-[8px] text-brand-red font-bold uppercase tracking-widest block">AFGHANISTAN PORTFOLIO</span>
+                    </div>
+                  </div>
+                  <h3 className={cn("text-xl sm:text-2xl font-black mb-4 leading-tight transition-colors duration-500", t.headingFont, t.textCharcoal)}>
+                    Deploying Capital Directly into Productive Agricultural Assets
+                  </h3>
+                  <p className={cn("font-sans text-xs sm:text-sm leading-relaxed transition-colors duration-500", t.textGray)}>
+                    Hamedia Investments bridges local operational setup with passive economic participation. By building fodder supply loops, solar pump sets, and cold storage chains, we establish sustainable yield lines backed entirely by physical inventory.
+                  </p>
+                </div>
+                <div className="grid grid-cols-3 gap-4 border-t border-brand-charcoal/5 pt-6 mt-8 text-center font-serif text-xs">
+                  <div>
+                    <span className="block font-black text-brand-blue text-sm sm:text-base">01</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Active Farm</span>
+                  </div>
+                  <div>
+                    <span className="block font-black text-brand-red text-sm sm:text-base">33%</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Investor Share</span>
+                  </div>
+                  <div>
+                    <span className="block font-black text-brand-gold-dark text-sm sm:text-base">Solar</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Fodder Loops</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Block B: Flagship Details (Medium - spans 2 cols md) */}
+              <div className={cn("md:col-span-2 p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                <div>
+                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>FLAGSHIP VENTURE</span>
+                  <h3 className={cn("text-lg font-bold mb-3 font-serif transition-colors duration-500", t.textCharcoal)}>
+                    Arghandab Dairy Farm
+                  </h3>
+                  <div className="w-10 h-0.5 bg-brand-blue mb-4" />
+                  <p className={cn("font-sans text-xs leading-relaxed mb-4 transition-colors duration-500", t.textGray)}>
+                    Located in Kandahar. Built with a closed fodder supply cycle to reduce operating costs. Capital buys livestock inventory; investors bypass platform setup risk.
+                  </p>
+                </div>
+                <div className="space-y-2 bg-brand-charcoal/5 p-3.5 rounded text-[10px] font-sans text-brand-gray leading-relaxed">
+                  <span className={cn("block font-bold mb-1 uppercase tracking-wider text-[8px]", t.textCharcoal)}>Economic Certificate:</span>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Milk Operations Yield</div>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Male Offspring Payout</div>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Herd exit value buyout</div>
+                </div>
+              </div>
+
+              {/* Block C: Simulator Widget (Large - spans 4 cols md) */}
+              <div className="md:col-span-4">
+                {renderCalculator()}
+              </div>
+
+              {/* Block D: Future Pipelines (Medium - spans 2 cols md) */}
+              <div className={cn("md:col-span-2 p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                <div>
+                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>DEVELOPMENT PIPELINE</span>
+                  <h3 className={cn("text-lg font-bold mb-4 font-serif transition-colors duration-500", t.textCharcoal)}>
+                    Ventures Pipeline
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <Sprout className="w-5 h-5 text-brand-blue flex-shrink-0" />
+                      <div>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Solar Pump Irrigation</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Zero-emission local fodder watering.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <Building className="w-5 h-5 text-brand-red flex-shrink-0" />
+                      <div>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Cold Storage Logistics</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Combatting fresh crop spoilage in Kandahar.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <TrendingUp className="w-5 h-5 text-brand-gold-dark flex-shrink-0" />
+                      <div>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Almond Processing</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Sorting & packaging facilities in Kandahar.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="h-0.5" />
+              </div>
+
+              {/* Block E: Security & Backing (Small - spans 2 cols md) */}
+              <div className={cn("md:col-span-2 p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                <div>
+                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>BACKING & PROTECTION</span>
+                  <h3 className={cn("text-base font-bold mb-3 font-serif transition-colors duration-500", t.textCharcoal)}>
+                    Security Framework
+                  </h3>
+                  <p className={cn("font-sans text-[11px] leading-relaxed transition-all duration-500", t.textGray)}>
+                    Founder backing eliminates infrastructural risk. Color-coded ear tags secure livestock tracking. Inspection rights are guaranteed inside the Economic Participation Certificate.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-serif font-black text-brand-blue mt-4">
+                  <ShieldCheck className="w-5 h-5 text-brand-red flex-shrink-0" />
+                  <span>100% Contract Backed</span>
+                </div>
+              </div>
+
+              {/* Block F: Form Widget (Large - spans 4 cols md) */}
+              <div className="md:col-span-4">
+                {renderContactForm()}
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+
+      </AnimatePresence>
     </div>
   );
 }

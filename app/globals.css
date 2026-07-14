@@ -11,14 +11,26 @@
   --color-brand-blue: #0062AC;
   --color-brand-blue-dark: #004D89;
   
+  /* Corporate Navy (for Design 2: Royal Silk) */
+  --color-brand-navy: #002C54;
+  --color-brand-navy-dark: #001A33;
+  --color-brand-slate-bg: #F4F6F9;
+  
   /* Accent Gold/Yellow (from the bottom logo stripe) */
   --color-brand-gold: #FFBA00;
   --color-brand-gold-dark: #DB9D00;
+  
+  /* Muted Luxury Gold & Dark Charcoal (for Design 3: Golden Oasis) */
+  --color-brand-oasis-gold: #D4A218;
+  --color-brand-oasis-gold-dark: #B5880F;
+  --color-brand-oasis-charcoal: #121214;
+  --color-brand-oasis-bg: #F5EFEB;
   
   /* Background Warm Cream/Beige (from the banner's logo container) */
   --color-brand-cream: #F8F4EB;
   --color-brand-cream-light: #FAF7F2;
   --color-brand-cream-dark: #ECE4D3;
+
   
   /* Neutral Dark Charcoal for text */
   --color-brand-charcoal: #1C1C1E;
