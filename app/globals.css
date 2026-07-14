@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- HAMEDIA BRAND PALETTE --- */
+  
+  /* Primary Vibrant Red (from the diagonal banner and top logo stripe) */
+  --color-brand-red: #E21A37;
+  --color-brand-red-dark: #B90F26;
+  
+  /* Secondary Royal Blue (from the middle logo stripe and circle) */
+  --color-brand-blue: #0062AC;
+  --color-brand-blue-dark: #004D89;
+  
+  /* Accent Gold/Yellow (from the bottom logo stripe) */
+  --color-brand-gold: #FFBA00;
+  --color-brand-gold-dark: #DB9D00;
+  
+  /* Background Warm Cream/Beige (from the banner's logo container) */
+  --color-brand-cream: #F8F4EB;
+  --color-brand-cream-light: #FAF7F2;
+  --color-brand-cream-dark: #ECE4D3;
+  
+  /* Neutral Dark Charcoal for text */
+  --color-brand-charcoal: #1C1C1E;
+  --color-brand-gray: #48484A;
+  --color-brand-light-gray: #D1D1D6;
+
+  /* Fonts pairing */
+  --font-sans: var(--font-montserrat);
+  --font-serif: var(--font-cooper);
+
+  /* Max widths */
+  --max-width-editorial: 800px;
+}
+
+/* Base Styles */
+:root {
+  --background: var(--color-brand-cream);
+  --foreground: var(--color-brand-charcoal);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Apply serif font to headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .glass-nav {
+    background: rgba(248, 244, 235, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(28, 28, 30, 0.05);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  }
+
+  .glass-card-dark {
+    background: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* Diagonal banner style wrapper */
+  .diagonal-cut {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  
+  @media (min-width: 768px) {
+    .diagonal-cut-banner-left {
+      clip-path: polygon(0 0, 85% 0, 75% 100%, 0 100%);
+    }
+    .diagonal-cut-banner-right {
+      clip-path: polygon(15% 0, 100% 0, 100% 100%, 5% 100%);
+    }
+  }
+
+  /* Patterns */
+  .bg-dots-charcoal-10 {
+    background-image: radial-gradient(rgba(28, 28, 30, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .bg-dots-white-10 {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .bg-dots-gold-20 {
+    background-image: radial-gradient(#FFBA00 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+  }
+
+  /* Grid overlay */
+  .bg-grid-charcoal-40 {
+    background-image: linear-gradient(rgba(28, 28, 30, 0.02) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(28, 28, 30, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Islamic design pattern inspired geometry */
+  .bg-pattern-stars {
+    background-image: 
+      radial-gradient(circle at 50% 50%, transparent 20%, #FFBA00 20%, #FFBA00 22%, transparent 22%, transparent 30%, #FFBA00 30%, #FFBA00 32%, transparent 32%), 
+      radial-gradient(circle at 0% 0%, transparent 40%, #FFBA00 40%, #FFBA00 42%, transparent 42%),
+      radial-gradient(circle at 100% 0%, transparent 40%, #FFBA00 40%, #FFBA00 42%, transparent 42%);
+    background-size: 60px 60px;
+    opacity: 0.05;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
