@@ -148,34 +148,34 @@ export default function Home() {
       case "oasis":
         return {
           bodyBg: "bg-brand-oasis-bg",
-          textCharcoal: "text-brand-charcoal",
-          textGray: "text-brand-charcoal/80",
+          textCharcoal: "text-[#4E3E2F]",
+          textGray: "text-[#4E3E2F]/80",
           headingFont: "font-serif font-bold tracking-widest",
-          sectionHeadingClass: "font-serif text-brand-oasis-gold uppercase tracking-widest",
-          subTitleClass: "text-brand-oasis-gold",
-          dividerClass: "bg-brand-oasis-gold",
+          sectionHeadingClass: "font-serif text-[#D4A218] uppercase tracking-widest",
+          subTitleClass: "text-[#D4A218]",
+          dividerClass: "bg-[#D4A218]",
           // Hero specific
-          heroLeftBg: "bg-brand-oasis-bg border-r border-brand-oasis-gold/15",
-          heroRightBg: "bg-brand-oasis-charcoal text-white",
-          heroTextClass: "font-serif font-bold tracking-widest text-brand-cream-light",
-          heroGridClass: "border border-brand-oasis-gold/15",
-          accentText: "text-brand-oasis-gold",
-          primaryBtn: "bg-brand-oasis-gold hover:bg-brand-oasis-gold-dark text-brand-charcoal font-black rounded-none",
-          secondaryBtn: "border border-brand-oasis-gold/30 hover:border-brand-oasis-gold text-brand-oasis-gold bg-transparent rounded-none",
-          badgeClass: "bg-brand-oasis-gold/10 text-brand-oasis-gold border border-brand-oasis-gold/20 rounded-none",
-          cardClass: "bg-brand-oasis-bg border border-brand-oasis-gold/20 rounded-none shadow-none hover:bg-white/30",
-          iconContainer: "bg-brand-oasis-charcoal text-brand-oasis-gold rounded-none border border-brand-oasis-gold/20",
-          checkIcon: "text-brand-oasis-gold",
+          heroLeftBg: "bg-brand-oasis-bg border-r border-[#D4A218]/15",
+          heroRightBg: "bg-[#FAF6EE]",
+          heroTextClass: "font-serif font-bold tracking-widest text-[#4E3E2F]",
+          heroGridClass: "border border-[#D4A218]/15",
+          accentText: "text-[#D4A218]",
+          primaryBtn: "bg-[#D4A218] hover:bg-[#B5880F] text-white font-black rounded-none border border-[#D4A218]",
+          secondaryBtn: "border border-[#4E3E2F]/30 hover:border-[#4E3E2F] text-[#4E3E2F] bg-transparent rounded-none",
+          badgeClass: "bg-[#D4A218]/10 text-[#D4A218] border border-[#D4A218]/20 rounded-none",
+          cardClass: "bg-[#FAF6EE] border border-[#D4A218]/20 rounded-none shadow-sm hover:shadow-md",
+          iconContainer: "bg-[#FAF6EE] text-[#D4A218] rounded-none border border-[#D4A218]/20",
+          checkIcon: "text-[#D4A218]",
           // Calculator specific
-          calcCardBg: "bg-brand-oasis-charcoal text-white rounded-none border border-brand-oasis-gold/20 shadow-none",
-          sliderAccent: "accent-brand-oasis-gold",
-          calcStatBg: "bg-transparent border border-brand-oasis-gold/20 rounded-none",
+          calcCardBg: "bg-white border border-[#D4A218]/20 text-[#4E3E2F] rounded-none shadow-sm",
+          sliderAccent: "accent-[#D4A218]",
+          calcStatBg: "bg-[#FAF6EE] border border-[#D4A218]/20 rounded-none",
           // Form specific
-          formBg: "bg-brand-oasis-charcoal text-white rounded-none border border-brand-oasis-gold/20 p-8",
-          inputClass: "bg-white/5 border border-brand-oasis-gold/20 rounded-none text-brand-cream-light focus:ring-brand-oasis-gold",
-          formBtn: "bg-brand-oasis-gold hover:bg-brand-oasis-gold-dark text-brand-charcoal font-black rounded-none",
-          faqClass: "bg-brand-oasis-charcoal border border-brand-oasis-gold/20 rounded-none text-white",
-          slideLeftPanelBg: "bg-brand-oasis-charcoal border border-brand-oasis-gold/20 text-white rounded-none",
+          formBg: "bg-white border border-[#D4A218]/20 text-[#4E3E2F] rounded-none shadow-sm p-8",
+          inputClass: "bg-[#FAF6EE] border border-[#D4A218]/20 rounded-none text-[#4E3E2F] focus:ring-[#D4A218]",
+          formBtn: "bg-[#D4A218] hover:bg-[#B5880F] text-white font-black rounded-none border border-[#D4A218]",
+          faqClass: "bg-white border border-[#D4A218]/20 rounded-none text-[#4E3E2F]",
+          slideLeftPanelBg: "bg-white border border-[#D4A218]/20 text-[#4E3E2F] rounded-none shadow-sm",
         };
       case "heritage":
       default:
@@ -473,7 +473,14 @@ export default function Home() {
               <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 relative min-h-[85vh] lg:min-h-0">
                 <div className={cn("col-span-1 lg:col-span-5 flex flex-col justify-center items-center p-8 sm:p-12 lg:p-16 z-25 transition-all duration-500", t.heroLeftBg)}>
                   <div className="text-center flex flex-col items-center">
-                    <HamediaLogo variant="full" iconClassName="w-32 h-32 md:w-36 md:h-36" className="mb-4" />
+                    <HamediaLogo 
+                      variant="full" 
+                      iconClassName="w-32 h-32 md:w-36 md:h-36" 
+                      className="mb-4"
+                      titleClassName="text-2xl md:text-3xl mt-3"
+                      subtitleClassName="text-[10px] md:text-xs mt-1"
+                      stripesClassName="w-20 md:w-24 mt-2"
+                    />
                     <div className={cn("h-0.5 w-16 my-4 hidden lg:block transition-all duration-500", t.dividerClass)} />
                     <p className={cn("font-sans text-xs sm:text-sm font-bold tracking-[0.2em] uppercase max-w-sm transition-colors duration-500", 
                       theme === "royal" ? "text-brand-navy" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-blue"
@@ -498,7 +505,7 @@ export default function Home() {
                     </>
                   )}
 
-                  <div className={cn("max-w-2xl relative z-10", theme === "oasis" && "p-6 border border-brand-oasis-gold/20 bg-brand-oasis-charcoal")}>
+                  <div className={cn("max-w-2xl relative z-10", theme === "oasis" && "p-6 border border-[#D4A218]/20 bg-[#FAF6EE]")}>
                     <span className={cn("inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-6", t.badgeClass)}>
                       <Activity className="w-3.5 h-3.5 animate-pulse" /> Launching Projects
                     </span>
@@ -507,7 +514,7 @@ export default function Home() {
                       <span className={t.accentText}>Afghanistan's</span> Real Assets
                     </h1>
                     <p className={cn("font-sans text-sm sm:text-base leading-relaxed mb-8 max-w-xl transition-all duration-500", 
-                      theme === "royal" ? "text-slate-300" : "text-brand-cream-light/90"
+                      theme === "royal" ? "text-slate-300" : theme === "oasis" ? "text-[#4E3E2F]/90" : "text-brand-cream-light/90"
                     )}>
                       Hamedia Investments structures high-impact, asset-backed opportunities. We empower agricultural, livestock, and energy projects—starting with Kandahar's flagship Arghandab Dairy Farm—to deliver sustainable passive economic yields.
                     </p>
@@ -571,16 +578,16 @@ export default function Home() {
 
             {/* 3. Flagship Project Section */}
             <section id="flagship" className={cn("py-20 relative overflow-hidden transition-colors duration-500", 
-              theme === "oasis" ? "bg-brand-oasis-charcoal text-white" : "bg-white"
+              theme === "oasis" ? "bg-[#FAF6EE] text-[#4E3E2F]" : "bg-white"
             )}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                   <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>First Flagship Venture</span>
                   <h2 className={cn("text-3xl sm:text-4xl font-black leading-tight transition-colors duration-500", 
-                    theme === "oasis" ? "text-white" : "text-brand-charcoal", t.headingFont
+                    theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal", t.headingFont
                   )}>Arghandab Dairy Farm</h2>
                   <p className={cn("mt-4 font-sans text-sm sm:text-base leading-relaxed transition-colors duration-500",
-                    theme === "oasis" ? "text-brand-cream-light/80" : "text-brand-gray"
+                    theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray"
                   )}>
                     Based in Kandahar, Arghandab Dairy Farm is a modern, closed-loop livestock expansion opportunity. Investors bypass infrastructure and buy directly into the dairy herd.
                   </p>
@@ -590,7 +597,7 @@ export default function Home() {
                   <div className="lg:col-span-6 flex flex-col justify-center">
                     <div className={cn("p-6 sm:p-8 border transition-all duration-500", 
                       theme === "royal" ? "bg-white border-slate-200 rounded-lg shadow-sm" : 
-                      theme === "oasis" ? "bg-[#1E1E22] border-brand-oasis-gold/15 rounded-none" : 
+                      theme === "oasis" ? "bg-[#FAF6EE] border-[#D4A218]/20 rounded-none shadow-sm" : 
                       "bg-brand-cream/80 border-brand-charcoal/5 rounded-2xl glass-card"
                     )}>
                       <span className={cn("inline-flex px-3 py-1 rounded font-sans text-[10px] font-bold tracking-widest uppercase mb-4",
@@ -599,29 +606,29 @@ export default function Home() {
                         "bg-brand-red/10 text-brand-red"
                       )}>Economic Participation Model</span>
                       <h3 className={cn("text-xl sm:text-2xl font-bold mb-4 font-serif transition-colors duration-500", 
-                        theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal"
+                        theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal"
                       )}>The Cow-Line 33% Structure</h3>
                       
                       <ul className="space-y-4">
                         <li className="flex gap-3">
                           <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
                           <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Milk Operational distributions</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Net cash yield attributable to investor-funded cows after direct cost accounting.</p>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Milk Operational distributions</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Net cash yield attributable to investor-funded cows after direct cost accounting.</p>
                           </div>
                         </li>
                         <li className="flex gap-3">
                           <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
                           <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Male Offspring value</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Realized sale values from male calves raised and sold at ~2 years old.</p>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Male Offspring value</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Realized sale values from male calves raised and sold at ~2 years old.</p>
                           </div>
                         </li>
                         <li className="flex gap-3">
                           <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
                           <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-brand-cream-light" : "text-brand-charcoal")}>33% Herd Exit Value</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>Divestment calculated based on current market valuation of livestock in your herd line.</p>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Herd Exit Value</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Divestment calculated based on current market valuation of livestock in your herd line.</p>
                           </div>
                         </li>
                       </ul>
@@ -722,13 +729,13 @@ export default function Home() {
 
             {/* 6. FAQ Section */}
             <section className={cn("py-20 border-t border-b border-brand-charcoal/5 transition-colors duration-500",
-              theme === "royal" ? "bg-slate-100" : theme === "oasis" ? "bg-[#1E1E22] border-brand-oasis-gold/15" : "bg-brand-cream"
+              theme === "royal" ? "bg-slate-100" : theme === "oasis" ? "bg-[#FAF6EE] border-[#D4A218]/20" : "bg-brand-cream"
             )}>
               <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                   <HelpCircle className="w-8 h-8 text-brand-blue mx-auto mb-3" />
                   <h2 className={cn("font-serif text-2xl sm:text-3xl font-black transition-colors duration-500",
-                    theme === "oasis" ? "text-white" : "text-brand-charcoal"
+                    theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal"
                   )}>Frequently Asked Questions</h2>
                 </div>
                 <div className="space-y-4">
@@ -737,7 +744,7 @@ export default function Home() {
                       <button
                         onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                         className={cn("w-full flex items-center justify-between p-5 text-left font-serif text-sm font-bold transition-colors duration-200",
-                          theme === "oasis" ? "text-white hover:text-brand-oasis-gold" : "text-brand-charcoal hover:text-brand-red"
+                          theme === "oasis" ? "text-[#4E3E2F] hover:text-[#D4A218]" : "text-brand-charcoal hover:text-brand-red"
                         )}
                       >
                         <span>{faq.question}</span>
@@ -752,7 +759,7 @@ export default function Home() {
                             className="overflow-hidden"
                           >
                             <div className={cn("p-5 pt-0 border-t border-brand-charcoal/5 font-sans text-xs leading-relaxed",
-                              theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray"
+                              theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray"
                             )}>{faq.answer}</div>
                           </motion.div>
                         )}
@@ -800,51 +807,51 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-4">
                   <HamediaLogo variant="icon" iconClassName="w-10 h-10" />
                   <div>
-                    <h3 className={cn("font-serif text-sm font-black uppercase leading-none", theme === "oasis" ? "text-white" : "text-brand-charcoal")}>Hamedia</h3>
-                    <span className={cn("font-sans text-[8px] tracking-[0.1em] font-bold", theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gray")}>PITCH OVERVIEW</span>
+                    <h3 className={cn("font-serif text-sm font-black uppercase leading-none", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>Hamedia</h3>
+                    <span className={cn("font-sans text-[8px] tracking-[0.1em] font-bold", theme === "oasis" ? "text-[#D4A218]" : "text-brand-gray")}>PITCH OVERVIEW</span>
                   </div>
                 </div>
 
-                <div className={cn("h-px my-4", theme === "oasis" ? "bg-brand-oasis-gold/20" : "bg-brand-charcoal/10")} />
+                <div className={cn("h-px my-4", theme === "oasis" ? "bg-[#D4A218]/20" : "bg-brand-charcoal/10")} />
 
-                <h2 className={cn("text-base font-bold mb-3 font-serif", theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-charcoal")}>
+                <h2 className={cn("text-base font-bold mb-3 font-serif", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>
                   Investment Memorandum
                 </h2>
-                <p className={cn("font-sans text-xs leading-relaxed mb-6", theme === "oasis" ? "text-brand-cream-dark" : "text-brand-gray")}>
+                <p className={cn("font-sans text-xs leading-relaxed mb-6", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>
                   Scroll through our dynamic slides on the right to examine our economic models, asset profiles, and upcoming venture roadmap.
                 </p>
 
                 {/* Slides Nav Map */}
                 <div className="space-y-2 font-sans text-xs">
                   <a href="#slide-thesis" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <BookOpen className="w-3.5 h-3.5" /> 1. The Executive Thesis
                   </a>
                   <a href="#slide-flagship" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Award className="w-3.5 h-3.5" /> 2. Arghandab Dairy Farm
                   </a>
                   <a href="#slide-calc" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Calculator className="w-3.5 h-3.5" /> 3. Herd Simulator Widget
                   </a>
                   <a href="#slide-pipeline" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Layers className="w-3.5 h-3.5" /> 4. Pipelines & Solar Fodder
                   </a>
                   <a href="#slide-inquire" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-white/5 hover:bg-white/10 text-white hover:text-brand-oasis-gold" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Send className="w-3.5 h-3.5" /> 5. Investor Registration
                   </a>
                 </div>
 
                 <div className={cn("mt-8 pt-4 border-t font-sans text-[10px] leading-relaxed flex flex-col gap-2",
-                  theme === "oasis" ? "border-brand-oasis-gold/10 text-brand-cream-light/60" : "border-brand-charcoal/5 text-brand-gray/60"
+                  theme === "oasis" ? "border-[#D4A218]/20 text-[#4E3E2F]/60" : "border-brand-charcoal/5 text-brand-gray/60"
                 )}>
                   <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" /> +1-949-299-6263</span>
                   <span className="flex items-center gap-1.5"><Mail className="w-3 h-3" /> info@hamediainvestment.com</span>

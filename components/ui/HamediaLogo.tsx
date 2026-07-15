@@ -6,6 +6,9 @@ interface HamediaLogoProps {
   iconClassName?: string;
   variant?: "full" | "icon";
   light?: boolean; // If true, renders text in white (useful on dark/red backgrounds)
+  titleClassName?: string;
+  subtitleClassName?: string;
+  stripesClassName?: string;
 }
 
 export const HamediaLogo: React.FC<HamediaLogoProps> = ({
@@ -13,6 +16,9 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
   iconClassName,
   variant = "full",
   light = false,
+  titleClassName,
+  subtitleClassName,
+  stripesClassName,
 }) => {
   return (
     <div className={cn("flex flex-col items-center justify-center select-none", className)}>
@@ -75,7 +81,8 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
           <span
             className={cn(
               "font-serif text-lg font-black tracking-widest leading-none",
-              light ? "text-white" : "text-brand-charcoal"
+              light ? "text-white" : "text-brand-charcoal",
+              titleClassName
             )}
           >
             HAMEDIA
@@ -84,14 +91,15 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
           <span
             className={cn(
               "font-sans text-[9px] font-bold tracking-[0.25em] mt-0.5 uppercase leading-none",
-              light ? "text-brand-cream-light opacity-90" : "text-brand-gray"
+              light ? "text-brand-cream-light opacity-90" : "text-brand-gray",
+              subtitleClassName
             )}
           >
             INVESTMENTS
           </span>
 
           {/* Underline stripes */}
-          <div className="flex gap-1 items-center mt-1.5 w-14 h-0.5">
+          <div className={cn("flex gap-1 items-center mt-1.5 w-14 h-0.5", stripesClassName)}>
             <div className="flex-1 h-full bg-[#E21A37]" />
             <div className="flex-1 h-full bg-[#0062AC]" />
             <div className="flex-1 h-full bg-[#FFBA00]" />

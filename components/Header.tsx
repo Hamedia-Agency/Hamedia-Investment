@@ -57,10 +57,10 @@ export default function Header() {
       case "oasis":
         return {
           fontClass: "font-sans",
-          headerBg: isScrolled ? "bg-[#F5EFEB]/90 backdrop-blur-md shadow-sm border-b border-brand-oasis-gold/10" : "bg-transparent",
-          linkHover: "hover:text-brand-oasis-gold after:bg-brand-oasis-gold",
-          textClass: "text-brand-charcoal",
-          btnClass: "bg-brand-oasis-charcoal hover:bg-brand-oasis-charcoal/90 text-brand-gold border border-brand-oasis-gold/30 rounded-none",
+          headerBg: isScrolled ? "bg-[#FAF6EE]/95 backdrop-blur-md shadow-sm border-b border-[#D4A218]/15" : "bg-transparent",
+          linkHover: "hover:text-[#D4A218] after:bg-[#D4A218]",
+          textClass: "text-[#4E3E2F]",
+          btnClass: "bg-[#D4A218] hover:bg-[#B5880F] text-white font-bold border border-[#D4A218] rounded-none",
         };
       case "heritage":
       default:
