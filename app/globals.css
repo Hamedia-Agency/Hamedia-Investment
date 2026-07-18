@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
 @theme {
+  /* --- REVAMP PALETTE --- */
+  --color-brand-coral: #e9595e;
+  --color-brand-teal: #10a5b2;
+  --color-brand-yellow: #f2b03d;
+  --color-brand-cream-revamp: #f5e0b9;
+  --color-brand-dark-revamp: #1e1e1e;
+
   /* --- HAMEDIA BRAND PALETTE --- */
   
   /* Primary Vibrant Red (from the diagonal banner and top logo stripe) */
@@ -69,6 +76,28 @@ html {
 }
 
 @layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .glass-dark {
+    background: rgba(30, 30, 30, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .gradient-hamedia {
+    background: linear-gradient(135deg, #10a5b2, #f2b03d, #e9595e);
+  }
+
+  .gradient-hamedia-soft {
+    background: linear-gradient(135deg, rgba(16, 165, 178, 0.1), rgba(243, 182, 63, 0.1), rgba(233, 89, 94, 0.1));
+  }
+
   .glass-nav {
     background: rgba(248, 244, 235, 0.85);
     backdrop-filter: blur(12px);

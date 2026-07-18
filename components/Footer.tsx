@@ -1,177 +1,228 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { HamediaLogo } from "./ui/HamediaLogo";
-import { Mail, Phone, MapPin, ArrowUp, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Bot,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  ArrowRight,
+  Send,
+  Music2 as Tiktok
+} from "lucide-react";
 import { useDesign } from "@/components/providers/DesignContext";
 
 export default function Footer() {
-  const { design } = useDesign();
-  
-  const scrollToTop = (e: React.MouseEvent) => {
+  const { theme } = useDesign();
+
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
-  // Theme-specific styles for Footer
   const getFooterStyles = () => {
-    switch (design) {
+    switch (theme) {
       case "royal":
         return {
-          footerBg: "bg-brand-navy-dark border-t border-brand-navy/30",
-          headingClass: "font-sans text-sm font-black tracking-wider text-brand-gold uppercase mb-5",
-          linkHover: "hover:text-brand-gold",
+          footerBg: "bg-[#0c1626] border-t border-slate-800",
+          headingClass: "font-sans text-xs font-black tracking-wider text-[#10a5b2] uppercase mb-5",
+          linkHover: "hover:text-[#10a5b2]",
           textClass: "text-slate-300",
-          iconColor: "text-brand-blue",
-          disclaimerClass: "bg-white/5 border border-white/5",
-          disclaimerTitleColor: "text-brand-gold",
-          inputClass: "w-full bg-white/10 text-white placeholder-slate-400 px-4 py-2.5 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-brand-gold text-xs border border-white/10",
-          buttonClass: "px-4 py-2.5 rounded-r-lg border border-brand-blue bg-brand-blue hover:bg-brand-blue-dark text-white transition-colors duration-200",
+          iconColor: "text-[#10a5b2]",
+          disclaimerClass: "bg-white/5 border border-white/5 p-4 rounded-lg text-slate-300/80",
+          disclaimerTitleColor: "text-[#10a5b2]",
+          inputClass: "w-full bg-white/10 text-white placeholder-slate-400 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#10a5b2] text-xs border border-white/10 rounded-lg",
+          buttonClass: "px-4 py-2 rounded-lg border border-[#10a5b2] bg-[#10a5b2] hover:bg-[#0d8a94] text-white transition-colors duration-200",
           dividerColor: "border-white/10",
-          dotGridClass: "bg-dots-white-10 opacity-30",
+          dotGridClass: "bg-dots-white-10 opacity-10",
           lightLogo: true,
-          backToTopClass: "bg-white/10 hover:bg-white/15 text-white rounded",
+          backToTopClass: "bg-white/10 hover:bg-white/15 text-white rounded-lg px-3 py-1.5",
         };
       case "oasis":
         return {
-          footerBg: "bg-[#FAF6EE] border-t border-[#D4A218]/20",
-          headingClass: "font-serif text-sm font-bold tracking-widest text-[#D4A218] uppercase mb-5",
-          linkHover: "hover:text-[#D4A218]",
-          textClass: "text-[#4E3E2F]/80",
-          iconColor: "text-[#D4A218]",
-          disclaimerClass: "bg-white border border-[#D4A218]/15 p-4 rounded-none text-[#4E3E2F]/70",
-          disclaimerTitleColor: "text-[#D4A218]",
-          inputClass: "w-full bg-white text-[#4E3E2F] placeholder-[#4E3E2F]/40 px-4 py-2.5 rounded-none focus:outline-none focus:ring-1 focus:ring-[#D4A218] text-xs border border-[#D4A218]/20",
-          buttonClass: "px-4 py-2.5 rounded-none border border-[#D4A218] bg-[#D4A218] hover:bg-[#B5880F] text-white font-bold transition-colors duration-200",
-          dividerColor: "border-[#D4A218]/20",
-          dotGridClass: "bg-dots-charcoal-10 opacity-5",
-          lightLogo: false,
-          backToTopClass: "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] rounded-none border border-[#D4A218]/20",
+          footerBg: "bg-[#1e1e1e] border-t border-white/5",
+          headingClass: "font-serif text-xs font-bold tracking-widest text-[#f2b03d] uppercase mb-5",
+          linkHover: "hover:text-[#f2b03d]",
+          textClass: "text-gray-300",
+          iconColor: "text-[#f2b03d]",
+          disclaimerClass: "glass-dark p-4 rounded-lg text-gray-300/80 border-white/5",
+          disclaimerTitleColor: "text-[#f2b03d]",
+          inputClass: "w-full glass text-white placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#f2b03d] text-xs border border-white/10 rounded-lg",
+          buttonClass: "px-4 py-2 rounded-lg bg-[#f2b03d] hover:bg-[#d69624] text-black font-black transition-colors duration-200 border-0 ml-1",
+          dividerColor: "border-white/5",
+          dotGridClass: "bg-dots-white-10 opacity-10",
+          lightLogo: true,
+          backToTopClass: "glass hover:bg-white/10 text-white rounded-lg border-white/10 px-3 py-1.5",
         };
       case "heritage":
       default:
         return {
-          footerBg: "bg-brand-charcoal border-t border-brand-charcoal/10",
-          headingClass: "font-serif text-sm font-bold tracking-wider text-brand-gold uppercase mb-5",
-          linkHover: "hover:text-brand-gold",
-          textClass: "text-brand-light-gray/70",
-          iconColor: "text-brand-red",
-          disclaimerClass: "bg-white/5 border border-white/5",
-          disclaimerTitleColor: "text-brand-gold",
-          inputClass: "w-full bg-white/10 text-white placeholder-brand-light-gray/50 px-4 py-2.5 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-brand-gold text-xs border border-white/10",
-          buttonClass: "px-4 py-2.5 rounded-r-lg border border-brand-red bg-brand-red hover:bg-brand-red-dark text-white transition-colors duration-200",
+          footerBg: "bg-[#1e1e1e] border-t border-white/5",
+          headingClass: "font-serif text-xs font-bold tracking-wider text-[#e9595e] uppercase mb-5",
+          linkHover: "hover:text-[#e9595e]",
+          textClass: "text-gray-300",
+          iconColor: "text-[#e9595e]",
+          disclaimerClass: "bg-white/5 border border-white/5 p-4 rounded-lg text-gray-300/80",
+          disclaimerTitleColor: "text-[#e9595e]",
+          inputClass: "w-full bg-white/10 text-white placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#e9595e] text-xs border border-white/10 rounded-lg",
+          buttonClass: "px-4 py-2 rounded-lg border border-[#e9595e] bg-[#e9595e] hover:bg-[#d64c51] text-white transition-colors duration-200",
           dividerColor: "border-white/10",
-          dotGridClass: "bg-dots-white-10 opacity-30",
+          dotGridClass: "bg-dots-white-10 opacity-15",
           lightLogo: true,
-          backToTopClass: "bg-white/10 hover:bg-white/15 text-white rounded",
+          backToTopClass: "bg-white/10 hover:bg-white/15 text-white rounded-lg px-3 py-1.5",
         };
     }
   };
 
   const styles = getFooterStyles();
 
+  const services = [
+    { name: "Remote Staffing", href: "#about" },
+    { name: "Operational Support", href: "#about" },
+    { name: "Technical Support", href: "#about" },
+    { name: "Bookkeeping & Finance", href: "#about" },
+    { name: "Video Monitoring", icon: Bot, href: "#about" },
+    { name: "Omnichannel Support", href: "#about" },
+  ];
+
+  const company = [
+    { name: "Home", href: "#" },
+    { name: "About Us", href: "#about" },
+    { name: "Flagship Farm", href: "#flagship" },
+    { name: "Calculator", href: "#calculator" },
+    { name: "Future Ventures", href: "#ventures" },
+    { name: "Roadmap", href: "#roadmap" },
+    { name: "FAQ", href: "#faq" },
+  ];
+
+  const resources = [
+    { name: "AI operations integration", href: "#about" },
+    { name: "Economic certificates", href: "#flagship" },
+    { name: "Cattle tags tracking", href: "#flagship" },
+    { name: "Investor support desk", href: "#contact" },
+    { name: "Regulatory compliance", href: "#contact" },
+  ];
+
+  const legal = [
+    { name: "Privacy Policy", href: "#" },
+    { name: "Terms of Service", href: "#" },
+    { name: "Cookie Policy", href: "#" },
+  ];
+
+  const socialLinks = [
+    { icon: Facebook, href: "https://www.facebook.com/HamediaAgency", name: "Facebook" },
+    { icon: Twitter, href: "https://twitter.com/hamediaagency", name: "Twitter" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/hamedia-agency/", name: "LinkedIn" },
+    { icon: Instagram, href: "https://www.instagram.com/hamedia_outsourcing/", name: "Instagram" },
+    { icon: Tiktok, href: "https://www.tiktok.com/@hamediaagency", name: "TikTok" },
+  ];
+
   return (
     <footer className={cn("pt-16 pb-8 relative overflow-hidden transition-colors duration-500", styles.footerBg)}>
       {/* Background Dot Grid */}
       <div className={cn("absolute inset-0 pointer-events-none", styles.dotGridClass)} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          
-          {/* Logo & Pitch */}
-          <div className="md:col-span-1 flex flex-col items-start">
-            <HamediaLogo 
-              variant="full" 
-              light={styles.lightLogo} 
-              className="items-start" 
-              iconClassName="w-18 h-18 md:w-20 md:h-20"
-              titleClassName="text-xl md:text-2xl mt-3"
-              subtitleClassName="text-[10px] md:text-[11px] mt-1"
-              stripesClassName="w-20 md:w-24 mt-2.5"
-            />
-            <p className={cn("mt-4 font-sans text-xs leading-relaxed max-w-xs", styles.textClass)}>
-              Pioneering asset-backed, sustainable development and livestock investments in Afghanistan. Connecting growth with passive economic participation.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 font-sans">
+        {/* 5-Column Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+          {/* Column 1: Company Info / Logo Pitch */}
+          <div className="lg:col-span-2 flex flex-col items-start text-left">
+            <Link href="#" className="inline-flex items-center space-x-3 mb-6">
+              <HamediaLogo 
+                variant="full" 
+                light={styles.lightLogo} 
+                iconClassName="h-16 w-auto" 
+              />
+            </Link>
+            <p className={cn("text-xs mb-6 leading-relaxed max-w-sm", styles.textClass)}>
+              Leading provider of AI-enhanced agricultural and livestock investments. We combine human management with cutting-edge remote tracking technology to secure passive return pipelines.
             </p>
-          </div>
 
-          {/* Quick Links */}
-          <div className="flex flex-col">
-            <h4 className={styles.headingClass}>
-              Quick Links
-            </h4>
-            <ul className={cn("flex flex-col gap-3 font-sans text-xs", styles.textClass)}>
-              <li>
-                <a href="#about" className={cn("transition-colors duration-200", styles.linkHover)}>
-                  About Hamedia
-                </a>
-              </li>
-              <li>
-                <a href="#flagship" className={cn("transition-colors duration-200", styles.linkHover)}>
-                  Arghandab Dairy Farm
-                </a>
-              </li>
-              <li>
-                <a href="#ventures" className={cn("transition-colors duration-200", styles.linkHover)}>
-                  Future Ventures
-                </a>
-              </li>
-              <li>
-                <a href="#model" className={cn("transition-colors duration-200", styles.linkHover)}>
-                  Investment Model
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Details */}
-          <div className="flex flex-col">
-            <h4 className={styles.headingClass}>
-              Contact Details
-            </h4>
-            <ul className={cn("flex flex-col gap-4 font-sans text-xs", styles.textClass)}>
-              <li className="flex items-start gap-3">
-                <MapPin className={cn("w-4 h-4 flex-shrink-0 mt-0.5", styles.iconColor)} />
-                <span>Kandahar & Kabul, Afghanistan</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className={cn("w-4 h-4 flex-shrink-0", styles.iconColor)} />
-                <a href="tel:+19492996263" className={cn("transition-colors", styles.linkHover)}>
-                  +1-949-299-6263
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
+            {/* Contact Details */}
+            <div className="space-y-3 text-xs">
+              <div className="flex items-center space-x-3">
                 <Mail className={cn("w-4 h-4 flex-shrink-0", styles.iconColor)} />
-                <a href="mailto:info@hamediainvestment.com" className={cn("transition-colors", styles.linkHover)}>
+                <a href="mailto:info@hamediainvestment.com" className={cn("hover:underline transition-colors break-all", styles.textClass)}>
                   info@hamediainvestment.com
                 </a>
-              </li>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className={cn("w-4 h-4 flex-shrink-0", styles.iconColor)} />
+                <a href="tel:+19492996263" className={cn("hover:underline transition-colors", styles.textClass)}>
+                  +1 949-299-6263
+                </a>
+              </div>
+              <div className="flex items-start space-x-3">
+                <MapPin className={cn("w-4 h-4 flex-shrink-0 mt-0.5", styles.iconColor)} />
+                <span className={cn("leading-tight", styles.textClass)}>
+                  18001 Sky Park Circle #J, Irvine, CA 92614
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: Services (Ops) */}
+          <div className="text-left">
+            <h4 className={styles.headingClass}>Services (Ops)</h4>
+            <ul className="space-y-2">
+              {services.map((ser, index) => (
+                <li key={index}>
+                  <a href={ser.href} className={cn("hover:underline transition-colors text-xs opacity-75", styles.textClass)}>
+                    {ser.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Newsletter Signup */}
-          <div className="flex flex-col">
-            <h4 className={styles.headingClass}>
-              Investor Relations
-            </h4>
-            <p className={cn("font-sans text-xs mb-4 leading-relaxed", styles.textClass)}>
-              Subscribe to receive updates on Arghandab Dairy Farm operations and upcoming projects.
-            </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex items-center">
+          {/* Column 3: Company */}
+          <div className="text-left">
+            <h4 className={styles.headingClass}>Company</h4>
+            <ul className="space-y-2">
+              {company.map((item, index) => (
+                <li key={index}>
+                  <a href={item.href} className={cn("hover:underline transition-colors text-xs opacity-75", styles.textClass)}>
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Resources & Newsletter */}
+          <div className="text-left">
+            <h4 className={styles.headingClass}>Resources</h4>
+            <ul className="space-y-2 mb-6">
+              {resources.map((item, index) => (
+                <li key={index}>
+                  <a href={item.href} className={cn("hover:underline transition-colors text-xs opacity-75", styles.textClass)}>
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <h4 className={styles.headingClass}>AI Updates Newsletter</h4>
+            <div className="flex space-x-1.5 mt-2">
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder="Enter email"
                 className={styles.inputClass}
-                required
               />
-              <button
-                type="submit"
-                className={styles.buttonClass}
-                aria-label="Subscribe"
-              >
+              <button className={styles.buttonClass} aria-label="Subscribe">
                 <Send className="w-3.5 h-3.5" />
               </button>
-            </form>
+            </div>
           </div>
         </div>
 
@@ -182,28 +233,64 @@ export default function Footer() {
           <h5 className={cn("font-serif text-xs font-bold uppercase mb-2", styles.disclaimerTitleColor)}>
             Investment Disclaimer
           </h5>
-          <p className="font-sans text-[10px] leading-relaxed opacity-85">
+          <p className="font-sans text-[10px] leading-relaxed opacity-85 text-left">
             All investment operations structured by Hamedia Investments (including the Cow-Line Economic Participation Model for Arghandab Dairy Farm) carry inherent operational, biological, and market risks. Historical performance, initial herd sizes, and milk output calculations are illustrative and do not guarantee future returns. Economic Participation Certificates do not grant company equity, voting rights, or land deeds, but rather represent a direct contractual right to operational outcomes as specified in the Economic Participation Agreement.
           </p>
         </div>
 
-        {/* Bottom bar */}
-        <div className={cn("flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-[10px] opacity-60", styles.textClass)}>
-          <span>
-            &copy; {new Date().getFullYear()} Hamedia Investments. All Rights Reserved.
-          </span>
-          <div className="flex gap-4">
-            <a href="#" className={styles.linkHover}>Privacy Policy</a>
-            <a href="#" className={styles.linkHover}>Terms of Service</a>
+        <hr className={cn("my-8", styles.dividerColor)} />
+
+        {/* Bottom Footer bar */}
+        <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 text-xs opacity-75">
+          {/* Copyright & Legal links */}
+          <div className={cn("flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4", styles.textClass)}>
+            <span>© {new Date().getFullYear()} Hamedia Investments. All rights reserved.</span>
+            <div className="hidden sm:block">•</div>
+            <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1">
+              {legal.map((item, index) => (
+                <a key={index} href={item.href} className={cn("hover:underline transition-colors", styles.linkHover)}>
+                  {item.name}
+                </a>
+              ))}
+            </div>
           </div>
-          <a
-            href="#"
-            onClick={scrollToTop}
-            className={cn("flex items-center gap-1.5 px-3 py-1.5 transition-colors duration-200", styles.backToTopClass)}
-          >
-            Back to Top
-            <ArrowUp className="w-3 h-3" />
-          </a>
+
+          {/* Social Links & Back to Top */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3">
+              {socialLinks.map((social, index) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.href}
+                    aria-label={social.name}
+                    className={cn(
+                      "w-7 h-7 bg-white/5 rounded-lg flex items-center justify-center transition-colors border border-white/5",
+                      theme === "royal" ? "hover:bg-[#10a5b2] hover:text-white" : theme === "oasis" ? "hover:bg-[#f2b03d] hover:text-black border-white/10" : "hover:bg-[#e9595e] hover:text-white"
+                    )}
+                  >
+                    <IconComponent className="w-3.5 h-3.5" />
+                  </a>
+                );
+              })}
+            </div>
+            <a
+              href="#"
+              onClick={scrollToTop}
+              className={cn("flex items-center gap-1 text-[10px] uppercase font-bold transition-all duration-200", styles.backToTopClass)}
+            >
+              Back to Top
+            </a>
+          </div>
+        </div>
+
+        {/* AI Badge */}
+        <div className="text-center mt-8 pt-6 border-t border-white/5 px-4">
+          <div className="inline-flex items-center justify-center space-x-2 px-6 py-2 bg-gradient-to-r from-[#10a5b2]/10 via-[#f2b03d]/10 to-[#e9595e]/10 rounded-full border border-white/5 w-auto">
+            <Bot className="w-4 h-4 text-[#f2b03d] animate-pulse" />
+            <span className="text-xs text-gray-300">Powered by AI Technology</span>
+          </div>
         </div>
       </div>
     </footer>
