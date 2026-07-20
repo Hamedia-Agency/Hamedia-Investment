@@ -20,19 +20,13 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
   subtitleClassName,
   stripesClassName,
 }) => {
-  // Icon-only variant crops the top portion of the PNG to isolate the logo mark
+  // Icon-only variant renders the textless icon mark directly
   if (variant === "icon") {
     return (
-      <div 
-        className={cn(
-          "overflow-hidden relative flex items-center justify-center rounded-lg bg-black/5 border border-black/5", 
-          iconClassName
-        )}
-        style={{ aspectRatio: "1/1" }}
-      >
+      <div className={cn("select-none flex items-center justify-center", className)}>
         <img 
-          src="/logo.png" 
-          className="absolute top-0 left-0 w-full h-full scale-[1.45] origin-top translate-y-[2%]" 
+          src="/icon.png" 
+          className={cn("w-auto object-contain", iconClassName || "h-16")} 
           alt="Hamedia Investments Icon" 
         />
       </div>
@@ -44,12 +38,12 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
     <div className={cn(
       "select-none flex items-center justify-center transition-all duration-300", 
       // Wrap in a dark glassy badge on light containers so the cream text is perfectly visible
-      !light && "glass-dark bg-black/40 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10 shadow-md",
+      !light && "glass-dark bg-black/40 backdrop-blur-md pt-[22px] pb-[10px] px-[14px] rounded-2xl border border-white/10 shadow-md",
       className
     )}>
       <img 
         src="/logo.png" 
-        className={cn("h-16 w-auto object-contain", iconClassName)} 
+        className={cn("w-auto object-contain scale-[1.3] translate-y-1 origin-center", iconClassName || "h-16")} 
         alt="Hamedia Investments" 
       />
     </div>

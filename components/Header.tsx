@@ -280,25 +280,23 @@ export default function Header() {
             <a
               href="#"
               onClick={(e) => handleLinkClick(e, "#")}
-              className="flex items-center gap-2 focus:outline-none"
+              className="flex items-center focus:outline-none"
             >
               <HamediaLogo 
-                variant="full" 
-                light={styles.lightLogo} 
-                iconClassName="h-12 w-auto" 
+                variant="icon" 
+                iconClassName="h-14 w-auto" 
               />
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-10 lg:gap-12">
               <a
                 href="#"
                 onClick={(e) => handleLinkClick(e, "#")}
                 className={cn(
-                  "text-xs font-bold tracking-wider uppercase transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+                  "text-[13px] font-medium transition-colors duration-200 hover:text-[#10a5b2]",
                   styles.fontClass,
-                  styles.textClass,
-                  styles.linkHover
+                  styles.textClass
                 )}
               >
                 Home
@@ -307,10 +305,9 @@ export default function Header() {
                 href="#about"
                 onClick={(e) => handleLinkClick(e, "#about")}
                 className={cn(
-                  "text-xs font-bold tracking-wider uppercase transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+                  "text-[13px] font-medium transition-colors duration-200 hover:text-[#10a5b2]",
                   styles.fontClass,
-                  styles.textClass,
-                  styles.linkHover
+                  styles.textClass
                 )}
               >
                 About Us
@@ -319,10 +316,9 @@ export default function Header() {
                 href="#flagship"
                 onClick={(e) => handleLinkClick(e, "#flagship")}
                 className={cn(
-                  "text-xs font-bold tracking-wider uppercase transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+                  "text-[13px] font-medium transition-colors duration-200 hover:text-[#10a5b2]",
                   styles.fontClass,
-                  styles.textClass,
-                  styles.linkHover
+                  styles.textClass
                 )}
               >
                 Flagship Farm
@@ -332,7 +328,7 @@ export default function Header() {
               <div className="relative group py-4">
                 <button
                   className={cn(
-                    "text-xs font-bold tracking-wider uppercase transition-colors duration-200 flex items-center gap-1 focus:outline-none",
+                    "text-[13px] font-medium transition-colors duration-200 flex items-center gap-1 focus:outline-none hover:text-[#10a5b2]",
                     styles.textClass
                   )}
                 >
@@ -342,7 +338,7 @@ export default function Header() {
                 {/* Dropdown Card */}
                 <div
                   className={cn(
-                    "absolute top-full left-1/2 -translate-x-1/2 w-[720px] rounded-xl shadow-2xl p-6 hidden group-hover:block z-50 border transition-all duration-300 text-left font-sans",
+                    "absolute top-full left-1/2 -translate-x-1/2 w-[800px] rounded-xl shadow-2xl p-6 hidden group-hover:block z-50 border transition-all duration-300 text-left font-sans",
                     isDark ? "bg-[#1c1c1e] border-white/10" : "bg-white border-slate-200"
                   )}
                 >
@@ -383,7 +379,7 @@ export default function Header() {
               <div className="relative group py-4">
                 <button
                   className={cn(
-                    "text-xs font-bold tracking-wider uppercase transition-colors duration-200 flex items-center gap-1 focus:outline-none",
+                    "text-[13px] font-medium transition-colors duration-200 flex items-center gap-1 focus:outline-none hover:text-[#10a5b2]",
                     styles.textClass
                   )}
                 >
@@ -393,14 +389,14 @@ export default function Header() {
                 {/* Dropdown Card */}
                 <div
                   className={cn(
-                    "absolute top-full left-1/2 -translate-x-1/2 w-[760px] rounded-xl shadow-2xl p-6 hidden group-hover:block z-50 border transition-all duration-300 text-left font-sans",
+                    "absolute top-full left-1/2 -translate-x-1/2 w-[800px] rounded-xl shadow-2xl p-6 hidden group-hover:block z-50 border transition-all duration-300 text-left font-sans",
                     isDark ? "bg-[#1c1c1e] border-white/10" : "bg-white border-slate-200"
                   )}
                 >
                   <div className="mb-4 pb-3 border-b border-slate-100 dark:border-white/5">
                     <span className="text-[9px] uppercase font-black tracking-widest text-[#f2b03d] block mb-1">Target Sectors & Verticals</span>
                     <p className={cn("text-[11px] leading-relaxed", isDark ? "text-gray-400" : "text-slate-500")}>
-                      We deploy capital and manage physical infrastructure across 16 primary sectors backed entirely by our remote staffing operations.
+                      We deploy capital and manage physical infrastructure across primary sectors backed entirely by our remote staffing operations.
                     </p>
                   </div>
                   <div className="grid grid-cols-4 gap-3">
@@ -435,10 +431,9 @@ export default function Header() {
                 href="#calculator"
                 onClick={(e) => handleLinkClick(e, "#calculator")}
                 className={cn(
-                  "text-xs font-bold tracking-wider uppercase transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+                  "text-[13px] font-medium transition-colors duration-200 hover:text-[#10a5b2]",
                   styles.fontClass,
-                  styles.textClass,
-                  styles.linkHover
+                  styles.textClass
                 )}
               >
                 Calculator
@@ -447,24 +442,24 @@ export default function Header() {
                 href="#faq"
                 onClick={(e) => handleLinkClick(e, "#faq")}
                 className={cn(
-                  "text-xs font-bold tracking-wider uppercase transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+                  "text-[13px] font-medium transition-colors duration-200 hover:text-[#10a5b2]",
                   styles.fontClass,
-                  styles.textClass,
-                  styles.linkHover
+                  styles.textClass
                 )}
               >
                 FAQ
               </a>
             </nav>
 
-            {/* CTAs */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* CTA Actions */}
+            <div className="hidden md:flex items-center gap-6">
               <a
                 href="#calculator"
                 onClick={(e) => handleLinkClick(e, "#calculator")}
                 className={cn(
-                  "inline-flex items-center justify-center px-4 py-2 text-xs font-bold tracking-wider uppercase border border-slate-200 dark:border-white/10 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-all duration-300",
-                  isDark ? "text-white bg-transparent" : "text-slate-800 bg-transparent"
+                  "text-[13px] font-semibold transition-colors duration-200 hover:text-[#10a5b2] focus:outline-none",
+                  styles.fontClass,
+                  styles.textClass
                 )}
               >
                 Calculator
@@ -473,7 +468,7 @@ export default function Header() {
                 href="#contact"
                 onClick={(e) => handleLinkClick(e, "#contact")}
                 className={cn(
-                  "inline-flex items-center justify-center px-5 py-2.5 font-sans text-xs font-bold tracking-wider uppercase hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 group",
+                  "inline-flex items-center justify-center px-4 py-2.5 font-sans text-xs font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 group",
                   styles.btnClass
                 )}
               >

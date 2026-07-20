@@ -16,6 +16,7 @@ import {
   Mail,
   Phone,
   HelpCircle,
+  UtensilsCrossed,
   ArrowUpRight,
   BookOpen,
   Send,
@@ -28,7 +29,9 @@ import {
   Truck,
   Cpu,
   Home as HomeIcon,
-  Wheat
+  Wheat,
+  Zap,
+  Store
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -46,24 +49,51 @@ export default function Home() {
 
   // --- SHARED STATE ---
   const [investmentAmount, setInvestmentAmount] = useState<number>(50000);
+  const [selectedProfile, setSelectedProfile] = useState<"balanced" | "arghandab" | "solar" | "logistics">("balanced");
   const exchangeRate = 65; // AFN per USD
 
-  // Calculations based on prospectus
-  const scale = investmentAmount / 100000;
-  const productiveCows = Math.max(1, Math.round(18 * scale));
-  const youngerHeifers = Math.max(0, Math.round(11 * scale));
-  const totalCattle = productiveCows + youngerHeifers;
+  // Calculations based on portfolio prospectus
+  const getProfileData = () => {
+    switch (selectedProfile) {
+      case "arghandab":
+        return {
+          name: "Arghandab Flagship",
+          yieldRate: 0.148,
+          payback: 6.0,
+          unitName: "Dairy Assets Funded",
+          unitCost: 5500,
+        };
+      case "solar":
+        return {
+          name: "Solar Infrastructure",
+          yieldRate: 0.125,
+          payback: 7.0,
+          unitName: "Solar Capacity Modules",
+          unitCost: 8000,
+        };
+      case "logistics":
+        return {
+          name: "Cold-Chain Logistics",
+          yieldRate: 0.162,
+          payback: 5.0,
+          unitName: "Cold Storage Nodes",
+          unitCost: 6000,
+        };
+      case "balanced":
+      default:
+        return {
+          name: "Balanced Growth",
+          yieldRate: 0.155,
+          payback: 5.5,
+          unitName: "Diversified Venture Assets",
+          unitCost: 5000,
+        };
+    }
+  };
 
-  const annualMilkLiters = productiveCows * 30 * 300;
-  const totalMilkRevenueAfn = annualMilkLiters * 28;
-  const investorMilkRevenueAfn = Math.round(totalMilkRevenueAfn * 0.33);
-  const investorMilkRevenueUsd = Math.round(investorMilkRevenueAfn / exchangeRate);
-
-  const annualMaleCalves = Math.round((productiveCows * 0.5) * 10) / 10;
-  const investorMaleCalfRevenueAfn = Math.round((annualMaleCalves * 110000) * 0.33);
-  const investorMaleCalfRevenueUsd = Math.round(investorMaleCalfRevenueAfn / exchangeRate);
-
-  const totalAnnualCashFlowUsd = investorMilkRevenueUsd + investorMaleCalfRevenueUsd;
+  const profile = getProfileData();
+  const totalAnnualCashFlowUsd = Math.round(investmentAmount * profile.yieldRate);
+  const fundedUnits = Math.round((investmentAmount / profile.unitCost) * 10) / 10;
 
   // Contact Form States
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -226,12 +256,42 @@ export default function Home() {
       <div className="flex items-center gap-2.5 mb-6">
         <Calculator className={cn("w-6 h-6", theme === "royal" ? "text-brand-blue" : "text-brand-gold")} />
         <h3 className={cn("font-serif text-lg sm:text-xl font-bold", theme === "oasis" && "tracking-widest")}>
-          Herd Investment Simulator
+          Venture Portfolio Simulator
         </h3>
       </div>
       <p className="font-sans text-xs text-brand-light-gray/80 mb-6 leading-relaxed">
-        Simulate the economic scale of your cow-line based on the $100k illustrative prospectus:
+        Simulate your economic return profiles across Hamedia's direct real-asset projects:
       </p>
+
+      {/* Profile Selector */}
+      <div className="mb-6 space-y-2">
+        <label className={cn("block font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", 
+          theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold"
+        )}>
+          Select Project Profile
+        </label>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { id: "balanced", label: "Balanced Growth" },
+            { id: "arghandab", label: "Arghandab Flagship" },
+            { id: "solar", label: "Solar Infrastructure" },
+            { id: "logistics", label: "Cold-Chain Logistics" },
+          ].map((prof) => (
+            <button
+              key={prof.id}
+              onClick={() => setSelectedProfile(prof.id as any)}
+              className={cn(
+                "px-3 py-2 text-[10px] sm:text-xs font-semibold rounded-lg border transition-all duration-300",
+                selectedProfile === prof.id
+                  ? "bg-[#10a5b2] text-white border-[#10a5b2] shadow-sm"
+                  : "bg-white/5 border-white/10 text-white hover:bg-white/10"
+              )}
+            >
+              {prof.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Slider */}
       <div className="mb-6">
@@ -239,7 +299,7 @@ export default function Home() {
           <label className={cn("font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", 
             theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold"
           )}>
-            Capital (USD)
+            Investment Amount (USD)
           </label>
           <span className="font-sans text-base font-black text-white">
             ${investmentAmount.toLocaleString()}
@@ -265,42 +325,36 @@ export default function Home() {
         <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pb-1", 
           theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
         )}>
-          Herd Scale
+          Venture Impact Metrics
         </h4>
-        <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="grid grid-cols-2 gap-3 text-center">
           <div className={t.calcStatBg}>
             <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
-              {productiveCows}
+              {fundedUnits}
             </span>
-            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Cows</span>
+            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">{profile.unitName}</span>
           </div>
           <div className={t.calcStatBg}>
             <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
-              {youngerHeifers}
+              {profile.payback} Yrs
             </span>
-            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Heifers</span>
-          </div>
-          <div className={t.calcStatBg}>
-            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
-              {totalCattle}
-            </span>
-            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Total</span>
+            <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Est. Payback</span>
           </div>
         </div>
 
         <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pt-2 pb-1", 
           theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
         )}>
-          Projected Annual Cash-Flow (33% Share)
+          Projected Financial Yield
         </h4>
         <div className="space-y-2 font-sans text-[11px] leading-relaxed">
           <div className="flex justify-between">
-            <span className="text-brand-light-gray/70">Milk operational yield:</span>
-            <span className="font-bold text-white">${investorMilkRevenueUsd.toLocaleString()}</span>
+            <span className="text-brand-light-gray/70">Target Annual Yield:</span>
+            <span className="font-bold text-white">{(profile.yieldRate * 100).toFixed(1)}%</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-brand-light-gray/70">Male calves sold:</span>
-            <span className="font-bold text-white">${investorMaleCalfRevenueUsd.toLocaleString()}</span>
+            <span className="text-brand-light-gray/70">Allocation Profile:</span>
+            <span className="font-bold text-white">{profile.name}</span>
           </div>
           <div className="flex justify-between border-t border-white/10 pt-2 text-xs font-serif">
             <span className={cn("font-bold", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
@@ -313,7 +367,7 @@ export default function Home() {
         </div>
       </div>
       <p className="font-sans text-[8px] text-brand-light-gray/40 leading-tight">
-        * Projections are illustrative based on 30L/day milk at 28 AFN/L, operating costs at 66,857 AFN/head, and exchange rate of 65 AFN/USD.
+        * Projections are illustrative based on current asset prospectus yields, net of direct remote operations bookkeeping and localized security costs.
       </p>
     </div>
   );
@@ -479,18 +533,9 @@ export default function Home() {
                   <div className="text-center flex flex-col items-center">
                     <HamediaLogo 
                       variant="full" 
-                      iconClassName="w-32 h-32 md:w-36 md:h-36" 
+                      iconClassName="h-44 md:h-52 lg:h-60" 
                       className="mb-4"
-                      titleClassName="text-2xl md:text-3xl mt-3"
-                      subtitleClassName="text-[10px] md:text-xs mt-1"
-                      stripesClassName="w-20 md:w-24 mt-2"
                     />
-                    <div className={cn("h-0.5 w-16 my-4 hidden lg:block transition-all duration-500", t.dividerClass)} />
-                    <p className={cn("font-sans text-xs sm:text-sm font-bold tracking-[0.2em] uppercase max-w-sm transition-colors duration-500", 
-                      theme === "royal" ? "text-brand-navy" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-blue"
-                    )}>
-                      Afghanistan Investment Arm
-                    </p>
                   </div>
                 </div>
 
@@ -514,17 +559,17 @@ export default function Home() {
                       <Activity className="w-3.5 h-3.5 animate-pulse" /> Launching Projects
                     </span>
                     <h1 className={cn("text-3xl sm:text-4xl lg:text-5xl leading-[1.1] mb-6 transition-all duration-500", t.heroTextClass)}>
-                      Investing in the Future of <br className="hidden sm:inline" />
-                      <span className={t.accentText}>Afghanistan's</span> Real Assets
+                      Building Real Assets. <br className="hidden sm:inline" />
+                      Powered by <span className={t.accentText}>Remote Operations</span>.
                     </h1>
                     <p className={cn("font-sans text-sm sm:text-base leading-relaxed mb-8 max-w-xl transition-all duration-500", 
                       theme === "royal" ? "text-slate-300" : theme === "oasis" ? "text-[#4E3E2F]/90" : "text-brand-cream-light/90"
                     )}>
-                      Hamedia Investments structures high-impact, asset-backed opportunities. We empower agricultural, livestock, and energy projects—starting with Kandahar's flagship Arghandab Dairy Farm—to deliver sustainable passive economic yields.
+                      Hamedia Investments deploys capital directly into high-yield agricultural, energy, and logistics projects. By integrating Hamedia Agency's AI-enhanced remote management teams, we secure transparent and highly efficient operations from day one.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                       <a href="#flagship" className={cn("inline-flex items-center justify-center px-6 py-3.5 font-sans text-xs font-bold tracking-wider uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 group", t.primaryBtn)}>
-                        View Flagship Project
+                        Explore Our Ventures
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </a>
                       <a href="#contact" className={cn("inline-flex items-center justify-center px-6 py-3.5 font-sans text-xs font-bold tracking-wider uppercase transition-all duration-300", t.secondaryBtn)}>
@@ -580,68 +625,75 @@ export default function Home() {
               </div>
             </section>
 
-            {/* 3. Flagship Project Section */}
-            <section id="flagship" className={cn("py-20 relative overflow-hidden transition-colors duration-500", 
-              theme === "oasis" ? "bg-[#FAF6EE] text-[#4E3E2F]" : "bg-white"
-            )}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>First Flagship Venture</span>
-                  <h2 className={cn("text-3xl sm:text-4xl font-black leading-tight transition-colors duration-500", 
+
+            {/* 3.1 Venture Pipelines Grid */}
+            <section className="py-16 bg-slate-50 dark:bg-[#121214]/30 border-b border-brand-charcoal/5">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center max-w-3xl mx-auto mb-12">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Active & Upcoming Pipeline</span>
+                  <h2 className={cn("text-2xl sm:text-3xl font-black leading-tight transition-colors duration-500", 
                     theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal", t.headingFont
-                  )}>Arghandab Dairy Farm</h2>
-                  <p className={cn("mt-4 font-sans text-sm sm:text-base leading-relaxed transition-colors duration-500",
+                  )}>Venture Project Pipeline</h2>
+                  <p className={cn("mt-3 font-sans text-sm leading-relaxed transition-colors duration-500",
                     theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray"
                   )}>
-                    Based in Kandahar, Arghandab Dairy Farm is a modern, closed-loop livestock expansion opportunity. Investors bypass infrastructure and buy directly into the dairy herd.
+                    We deploy capital into key sectors powered entirely by our operational agency staff. Explore our flagship and upcoming projects below.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                  <div className="lg:col-span-6 flex flex-col justify-center">
-                    <div className={cn("p-6 sm:p-8 border transition-all duration-500", 
-                      theme === "royal" ? "bg-white border-slate-200 rounded-lg shadow-sm" : 
-                      theme === "oasis" ? "bg-[#FAF6EE] border-[#D4A218]/20 rounded-none shadow-sm" : 
-                      "bg-brand-cream/80 border-brand-charcoal/5 rounded-2xl glass-card"
-                    )}>
-                      <span className={cn("inline-flex px-3 py-1 rounded font-sans text-[10px] font-bold tracking-widest uppercase mb-4",
-                        theme === "royal" ? "bg-brand-blue/10 text-brand-blue" : 
-                        theme === "oasis" ? "bg-brand-oasis-gold/10 text-brand-oasis-gold" : 
-                        "bg-brand-red/10 text-brand-red"
-                      )}>Economic Participation Model</span>
-                      <h3 className={cn("text-xl sm:text-2xl font-bold mb-4 font-serif transition-colors duration-500", 
-                        theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal"
-                      )}>The Cow-Line 33% Structure</h3>
-                      
-                      <ul className="space-y-4">
-                        <li className="flex gap-3">
-                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
-                          <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Milk Operational distributions</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Net cash yield attributable to investor-funded cows after direct cost accounting.</p>
-                          </div>
-                        </li>
-                        <li className="flex gap-3">
-                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
-                          <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Male Offspring value</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Realized sale values from male calves raised and sold at ~2 years old.</p>
-                          </div>
-                        </li>
-                        <li className="flex gap-3">
-                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
-                          <div>
-                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Herd Exit Value</h4>
-                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Divestment calculated based on current market valuation of livestock in your herd line.</p>
-                          </div>
-                        </li>
-                      </ul>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {/* Project 1 */}
+                  <div className={cn("p-6 border transition-all duration-500 flex flex-col justify-between", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-10 h-10 flex items-center justify-center rounded-lg mb-4 text-[#10a5b2] bg-[#10a5b2]/10")}>
+                        <Wheat className="w-5 h-5" />
+                      </div>
+                      <span className="text-[10px] font-bold text-[#10a5b2] tracking-wider uppercase block mb-1">AgriTech & Livestock</span>
+                      <h4 className={cn("font-serif text-base font-bold mb-2 transition-colors duration-500", t.textCharcoal)}>Arghandab Dairy Farm</h4>
+                      <p className={cn("font-sans text-xs leading-relaxed transition-colors duration-500 mb-6", t.textGray)}>
+                        Our active flagship project. A modern closed-loop dairy facility in Kandahar, fully operational with automated RFID tracking and smart milk flow meters.
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center border-t border-slate-100 dark:border-white/5 pt-4">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Status: Active</span>
+                      <span className="text-xs font-black text-[#10a5b2]">14.8% Target Yield</span>
                     </div>
                   </div>
 
-                  {/* Calculator Widget */}
-                  <div className="lg:col-span-6">
-                    {renderCalculator()}
+                  {/* Project 2 */}
+                  <div className={cn("p-6 border transition-all duration-500 flex flex-col justify-between", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-10 h-10 flex items-center justify-center rounded-lg mb-4 text-[#f2b03d] bg-[#f2b03d]/10")}>
+                        <Zap className="w-5 h-5" />
+                      </div>
+                      <span className="text-[10px] font-bold text-[#f2b03d] tracking-wider uppercase block mb-1">Renewable Energy</span>
+                      <h4 className={cn("font-serif text-base font-bold mb-2 transition-colors duration-500", t.textCharcoal)}>Kandahar Solar Grid</h4>
+                      <p className={cn("font-sans text-xs leading-relaxed transition-colors duration-500 mb-6", t.textGray)}>
+                        Developing 5MW of clean solar energy generation infrastructure to power regional storage hubs. Fully automated telemetry and remote grid monitoring.
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center border-t border-slate-100 dark:border-white/5 pt-4">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Status: Development</span>
+                      <span className="text-xs font-black text-[#f2b03d]">12.5% Target Yield</span>
+                    </div>
+                  </div>
+
+                  {/* Project 3 */}
+                  <div className={cn("p-6 border transition-all duration-500 flex flex-col justify-between", t.cardClass)}>
+                    <div>
+                      <div className={cn("w-10 h-10 flex items-center justify-center rounded-lg mb-4 text-[#e9595e] bg-[#e9595e]/10")}>
+                        <Store className="w-5 h-5" />
+                      </div>
+                      <span className="text-[10px] font-bold text-[#e9595e] tracking-wider uppercase block mb-1">Cold-Chain Storage</span>
+                      <h4 className={cn("font-serif text-base font-bold mb-2 transition-colors duration-500", t.textCharcoal)}>Regional Storage Nodes</h4>
+                      <p className={cn("font-sans text-xs leading-relaxed transition-colors duration-500 mb-6", t.textGray)}>
+                        A network of temperature-controlled storage warehouses for local farmers, with booking, dispatch, and energy tracking handled by Hamedia Ops.
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center border-t border-slate-100 dark:border-white/5 pt-4">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Status: Engineering</span>
+                      <span className="text-xs font-black text-[#e9595e]">16.2% Target Yield</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -718,97 +770,52 @@ export default function Home() {
               </div>
             </section>
 
-            {/* 4. Future Ventures Section */}
+            {/* 4. Industries & Portfolios Section */}
             <section id="ventures" className={cn("py-20 border-t border-b border-brand-charcoal/5 transition-colors duration-500",
               theme === "royal" ? "bg-slate-100" : theme === "oasis" ? "bg-[#161618] border-white/5" : "bg-brand-cream-revamp/10"
             )}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mb-16">
-                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Ventures Pipeline</span>
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Target Industries</span>
                   <h2 className={cn("text-2xl sm:text-3xl lg:text-4xl leading-tight transition-all duration-500", t.headingFont, t.textCharcoal)}>
-                    Investment Portfolios & Sectors
+                    Deploying Capital Across High-Impact Industries
                   </h2>
                   <p className={cn("mt-4 font-sans text-sm leading-relaxed transition-all duration-500", t.textGray)}>
-                    Hamedia Investments builds physical assets across four key sectors, leveraging Hamedia's AI-enhanced operations and remote teams to maximize yield.
+                    We build projects and deploy capital into physical assets across primary sectors. Every venture is integrated with Hamedia's specialized remote agency operators to secure operational efficiency.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {/* Vertical 1 */}
-                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
-                    <div>
-                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
-                        <Wheat className="w-6 h-6" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[
+                    { name: "Agriculture & Livestock", desc: "Verifiable RFID herd lines, automated fodder growth systems, and dairy farm telemetry.", icon: Wheat, label: "Active" },
+                    { name: "Renewable Energy", desc: "Solar micro-grid nodes, battery storage sites, and automated utility network meters.", icon: Zap, label: "Pipeline" },
+                    { name: "Food & Dairy Processing", desc: "Modern processing machinery, pasteurization equipment, and wholesale packaging logistics.", icon: UtensilsCrossed, label: "Active" },
+                    { name: "Transportation & Logistics", desc: "Depot hubs, fleet dispatch terminals, and remote routing coordinate systems.", icon: Truck, label: "Pipeline" },
+                    { name: "Real Estate & Construction", desc: "Commercial warehouses, cold-storage physical footprints, and materials depots.", icon: HomeIcon, label: "Active" },
+                    { name: "Technology & AI", desc: "Remote processing server stacks, network distribution terminals, and hardware nodes.", icon: Cpu, label: "Standard" },
+                    { name: "Security & Monitoring", desc: "Remote surveillance hardware, physical access systems, and asset safety loops.", icon: ShieldCheck, label: "Standard" },
+                    { name: "Retail & Commerce", desc: "B2B client distribution facilities, bulk stock hubs, and shipping supply systems.", icon: Store, label: "Pipeline" },
+                  ].map((ind, iIdx) => {
+                    const Icon = ind.icon;
+                    return (
+                      <div key={iIdx} className={cn("p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
+                        <div>
+                          <div className={cn("w-10 h-10 flex items-center justify-center mb-4 rounded-lg", t.iconContainer)}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className={cn("text-sm font-bold mb-2 font-serif", t.textCharcoal)}>{ind.name}</h3>
+                          <p className={cn("font-sans text-[11px] leading-relaxed mb-4", t.textGray)}>
+                            {ind.desc}
+                          </p>
+                        </div>
+                        <span className={cn("font-sans text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded self-start", 
+                          ind.label === "Active"
+                            ? (theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10")
+                            : "text-slate-400 bg-slate-100 dark:bg-white/5"
+                        )}>{ind.label}</span>
                       </div>
-                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Agri-Tech & Food Systems</h3>
-                      <p className={cn("font-sans text-xs leading-relaxed mb-4", t.textGray)}>
-                        Deploys AI-enhanced order management, real-time crop/livestock tracking, and automated inventory systems.
-                      </p>
-                      <div className="text-[10px] font-sans opacity-70 mb-6">
-                        <strong>Assets:</strong> Dairy herds, milking systems, and hydroponic fodder loops.
-                      </div>
-                    </div>
-                    <span className={cn("font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded self-start", 
-                      theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10"
-                    )}>Active Portfolio</span>
-                  </div>
-
-                  {/* Vertical 2 */}
-                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
-                    <div>
-                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
-                        <Truck className="w-6 h-6" />
-                      </div>
-                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Logistics & Infrastructure</h3>
-                      <p className={cn("font-sans text-xs leading-relaxed mb-4", t.textGray)}>
-                        Integrates AI route optimization, dispatch, and energy distribution analytics to secure cold-chains.
-                      </p>
-                      <div className="text-[10px] font-sans opacity-70 mb-6">
-                        <strong>Assets:</strong> Solar grids, battery farms, and refrigerated transport centers.
-                      </div>
-                    </div>
-                    <span className={cn("font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded self-start", 
-                      theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10"
-                    )}>Feasibility</span>
-                  </div>
-
-                  {/* Vertical 3 */}
-                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
-                    <div>
-                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
-                        <HomeIcon className="w-6 h-6" />
-                      </div>
-                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Smart Facility Management</h3>
-                      <p className={cn("font-sans text-xs leading-relaxed mb-4", t.textGray)}>
-                        Coordinates AI construction scheduling, listings databases, safety auditing, and smart surveillance.
-                      </p>
-                      <div className="text-[10px] font-sans opacity-70 mb-6">
-                        <strong>Assets:</strong> Commercial real estate, smart warehouses, and facility networks.
-                      </div>
-                    </div>
-                    <span className={cn("font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded self-start", 
-                      theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10"
-                    )}>In Development</span>
-                  </div>
-
-                  {/* Vertical 4 */}
-                  <div className={cn("p-6 flex flex-col justify-between transition-all duration-500", t.cardClass)}>
-                    <div>
-                      <div className={cn("w-12 h-12 flex items-center justify-center mb-5", t.iconContainer)}>
-                        <Cpu className="w-6 h-6" />
-                      </div>
-                      <h3 className={cn("text-lg font-bold mb-3 font-serif", t.textCharcoal)}>Digital Systems & Ops</h3>
-                      <p className={cn("font-sans text-xs leading-relaxed mb-4", t.textGray)}>
-                        Handles 24/7 technical support help desks, AI model deployment, and back-office accounting audits.
-                      </p>
-                      <div className="text-[10px] font-sans opacity-70 mb-6">
-                        <strong>Assets:</strong> Data centers, processing server hardware stacks, and cloud nodes.
-                      </div>
-                    </div>
-                    <span className={cn("font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded self-start", 
-                      theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10"
-                    )}>Planning</span>
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -843,6 +850,73 @@ export default function Home() {
                       <p className={cn("font-sans text-xs leading-relaxed px-4", t.textGray)}>{step.text}</p>
                     </div>
                   ))}
+                </div>
+              </div>
+            </section>
+
+            {/* 3. Flagship Project Section */}
+            <section id="flagship" className={cn("py-20 relative overflow-hidden transition-colors duration-500", 
+              theme === "oasis" ? "bg-[#FAF6EE] text-[#4E3E2F]" : "bg-white"
+            )}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className={cn("font-sans text-xs font-bold tracking-widest uppercase block mb-3", t.subTitleClass)}>Active Flagship Blueprint</span>
+                  <h2 className={cn("text-3xl sm:text-4xl font-black leading-tight transition-colors duration-500", 
+                    theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal", t.headingFont
+                  )}>Arghandab Dairy Farm</h2>
+                  <p className={cn("mt-4 font-sans text-sm sm:text-base leading-relaxed transition-colors duration-500",
+                    theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray"
+                  )}>
+                    Arghandab Dairy Farm in Kandahar is our active flagship venture. It serves as our operational blueprint, proving how direct physical asset tracking combined with remote back-office staffing generates stable, cash-yielding returns.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                  <div className="lg:col-span-6 flex flex-col justify-center">
+                    <div className={cn("p-6 sm:p-8 border transition-all duration-500", 
+                      theme === "royal" ? "bg-white border-slate-200 rounded-lg shadow-sm" : 
+                      theme === "oasis" ? "bg-[#FAF6EE] border-[#D4A218]/20 rounded-none shadow-sm" : 
+                      "bg-brand-cream/80 border-brand-charcoal/5 rounded-2xl glass-card"
+                    )}>
+                      <span className={cn("inline-flex px-3 py-1 rounded font-sans text-[10px] font-bold tracking-widest uppercase mb-4",
+                        theme === "royal" ? "bg-brand-blue/10 text-brand-blue" : 
+                        theme === "oasis" ? "bg-brand-oasis-gold/10 text-brand-oasis-gold" : 
+                        "bg-brand-red/10 text-brand-red"
+                      )}>Venture Return Model</span>
+                      <h3 className={cn("text-xl sm:text-2xl font-bold mb-4 font-serif transition-colors duration-500", 
+                        theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal"
+                      )}>Asset-Backed Return Structure</h3>
+                      
+                      <ul className="space-y-4">
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Productive Asset Yield</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Direct quarterly distributions from primary operational cash flows (milk sales, energy grid sales, cold-storage leases).</p>
+                          </div>
+                        </li>
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Asset Growth Appreciation</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Net value distributions from secondary growth lines, herd reproduction, and utility expansions.</p>
+                          </div>
+                        </li>
+                        <li className="flex gap-3">
+                          <CheckCircle className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
+                          <div>
+                            <h4 className={cn("font-serif text-xs sm:text-sm font-bold", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>33% Net Asset Divestment Value</h4>
+                            <p className={cn("font-sans text-[11px] sm:text-xs", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>Divestment exit values calculated based on the verified market valuation of the physical project assets funded.</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Calculator Widget */}
+                  <div className="lg:col-span-6">
+                    {renderCalculator()}
+                  </div>
                 </div>
               </div>
             </section>
@@ -951,7 +1025,7 @@ export default function Home() {
                   <a href="#slide-flagship" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
                     theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
-                    <Award className="w-3.5 h-3.5" /> 2. Arghandab Dairy Farm
+                    <Award className="w-3.5 h-3.5" /> 2. Flagship Blueprint
                   </a>
                   <a href="#slide-ops" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
                     theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
@@ -961,12 +1035,12 @@ export default function Home() {
                   <a href="#slide-calc" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
                     theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
-                    <Calculator className="w-3.5 h-3.5" /> 4. Herd Simulator Widget
+                    <Calculator className="w-3.5 h-3.5" /> 4. Venture Simulator
                   </a>
                   <a href="#slide-pipeline" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
                     theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
-                    <Layers className="w-3.5 h-3.5" /> 5. Investment Verticals
+                    <Layers className="w-3.5 h-3.5" /> 5. Venture Pipelines
                   </a>
                   <a href="#slide-inquire" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
                     theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
@@ -1015,19 +1089,19 @@ export default function Home() {
                 <div id="slide-flagship" className={cn("p-8 border transition-all duration-500", t.cardClass)}>
                   <span className={cn("font-sans text-[9px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>Slide 02 // Flagship</span>
                   <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
-                    Arghandab Dairy Farm: Kandahar
+                    Arghandab Dairy Farm Blueprint
                   </h3>
                   <div className="w-16 h-0.5 bg-brand-blue mb-4" />
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-4 transition-all duration-500", t.textGray)}>
-                    Our first project is an operating dairy farm in Kandahar, utilizing a closed-loop fodder system to secure feed supply at fixed internal pricing.
+                    Our flagship venture is an operating dairy farm in Kandahar, serving as our operational blueprint. It demonstrates how integrating remote staffing teams secures high yields and automates bookkeeping.
                   </p>
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
-                    Under the <strong>Economic Participation Certificate</strong>, investors fund herd inventory expansion and acquire a 33% interest in the milk production cash yield, offspring valuations, and livestock exit valuations.
+                    Under the <strong>Economic Participation Certificate</strong>, investors fund physical inventory (the dairy herd) and acquire a 33% interest in the milk production cash yield, offspring valuations, and net asset valuations.
                   </p>
                   <div className="space-y-2.5 font-sans text-xs text-brand-gray bg-brand-charcoal/5 p-4 rounded">
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% Net Milk Yield Distributions</div>
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% realized payout from male calves</div>
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% livestock market value exit buyout</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% Productive Asset Yield (Quarterly payouts)</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% realized growth payout from venture appreciation</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% direct net asset valuation exit buyout</div>
                   </div>
                 </div>
 
@@ -1039,21 +1113,21 @@ export default function Home() {
                   </h3>
                   <div className={cn("w-16 h-0.5 mb-6 transition-all duration-500", t.dividerClass)} />
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
-                    Every asset is optimized by Hamedia Agency's 24/7 remote staffing, reducing operating overhead by up to 60%.
+                    Every portfolio project is managed and optimized by Hamedia Agency's 24/7 remote operational teams, eliminating local management overhead.
                   </p>
                   <div className="space-y-4 font-sans text-xs">
                     <div className="flex gap-3">
                       <Bot className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>AI-Driven Efficiency</h4>
-                        <p className={cn("font-sans text-[11px] leading-relaxed transition-all duration-500", t.textGray)}>Hydroponic feed analytics and cattle tracking reduce biological waste by 40%.</p>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>AI & Telemetry Systems</h4>
+                        <p className={cn("font-sans text-[11px] leading-relaxed transition-all duration-500", t.textGray)}>Cattle RFID tracking databases, digital smart meters, and solar output logs verify asset metrics in real time.</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
                       <Users className={cn("w-5 h-5 flex-shrink-0 mt-0.5", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>24/7 Remote Teams</h4>
-                        <p className={cn("font-sans text-[10px] leading-relaxed transition-all duration-500", t.textGray)}>Handles bookkeeping, security monitoring, dispatch routing, and sales.</p>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>24/7 Remote Agency Back-Office</h4>
+                        <p className={cn("font-sans text-[10px] leading-relaxed transition-all duration-500", t.textGray)}>Our remote agency staff handles bookkeeping, real-time video surveillance, logistics dispatch, and B2B client sales.</p>
                       </div>
                     </div>
                   </div>
@@ -1068,44 +1142,35 @@ export default function Home() {
                 <div id="slide-pipeline" className={cn("p-8 border transition-all duration-500", t.cardClass)}>
                   <span className={cn("font-sans text-[9px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>Slide 05 // Ventures</span>
                   <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
-                    Investment Verticals
+                    Venture Pipelines
                   </h3>
                   <div className={cn("w-16 h-0.5 mb-6 transition-all duration-500", t.dividerClass)} />
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <div className="flex gap-4">
-                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500", t.iconContainer)}>
+                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500 rounded-lg text-[#10a5b2] bg-[#10a5b2]/10")}>
                         <Wheat className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Agri-Tech & Food Systems</h4>
-                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>AI order management, crop tracking, cattle tags, and hydroponic loops.</p>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Arghandab Dairy Farm (Flagship)</h4>
+                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>Our active closed-loop livestock expansion venture in Kandahar. Fully managed via remote back-office staffing. Status: Active (14.8% Target Yield).</p>
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500", t.iconContainer)}>
-                        <Truck className="w-5 h-5" />
+                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500 rounded-lg text-[#f2b03d] bg-[#f2b03d]/10")}>
+                        <Zap className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Logistics & Infrastructure</h4>
-                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>AI route optimization, fleet dispatch, solar grids, and cold storage hubs.</p>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Kandahar Solar Grid</h4>
+                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>Developing 5MW of clean solar utility grids to power regional food logistics nodes. Status: Development (12.5% Target Yield).</p>
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500", t.iconContainer)}>
-                        <HomeIcon className="w-5 h-5" />
+                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500 rounded-lg text-[#e9595e] bg-[#e9595e]/10")}>
+                        <Store className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Smart Facility Management</h4>
-                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>AI construction scheduling, listings data, safety audits, and surveillance.</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className={cn("w-10 h-10 flex items-center justify-center flex-shrink-0 transition-all duration-500", t.iconContainer)}>
-                        <Cpu className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Digital Systems & Operations</h4>
-                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>24/7 technical help desks, AI model deployment, and back-office accounting.</p>
+                        <h4 className={cn("font-serif text-sm font-bold mb-1 transition-colors duration-500", t.textCharcoal)}>Regional Storage Nodes</h4>
+                        <p className={cn("font-sans text-xs leading-relaxed transition-all duration-500", t.textGray)}>A temperature-controlled network of warehouses for local farmers, with energy and rentals monitored by Hamedia. Status: Engineering (16.2% Target Yield).</p>
                       </div>
                     </div>
                   </div>
@@ -1145,28 +1210,28 @@ export default function Home() {
                       <h2 className={cn("text-lg font-black tracking-widest uppercase transition-colors duration-500", t.textCharcoal)}>
                         HAMEDIA INVESTMENTS
                       </h2>
-                      <span className="font-sans text-[8px] text-brand-red font-bold uppercase tracking-widest block">AFGHANISTAN PORTFOLIO</span>
+                      <span className="font-sans text-[8px] text-brand-red font-bold uppercase tracking-widest block">EMERGING MARKET VENTURES</span>
                     </div>
                   </div>
                   <h3 className={cn("text-xl sm:text-2xl font-black mb-4 leading-tight transition-colors duration-500", t.headingFont, t.textCharcoal)}>
                     Deploying Capital Directly into Productive Real Assets
                   </h3>
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed transition-colors duration-500", t.textGray)}>
-                    Hamedia Investments structures passive economic participation across multiple development projects. We acquire and build physical assets—starting with the flagship Arghandab Dairy Farm—to deliver sustainable yields managed entirely by Hamedia Agency's operations.
+                    Hamedia Investments structures economic participation across multiple high-yield ventures. We build and scale physical infrastructure—starting with the flagship Arghandab Dairy Farm—to deliver sustainable yields managed by Hamedia Agency's operations.
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-4 border-t border-brand-charcoal/5 pt-6 mt-8 text-center font-serif text-xs">
                   <div>
-                    <span className="block font-black text-brand-blue text-sm sm:text-base">01</span>
-                    <span className="font-sans text-[8px] text-brand-gray uppercase">Active Farm</span>
+                    <span className="block font-black text-brand-blue text-sm sm:text-base">01 Flagship</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Active Venture</span>
                   </div>
                   <div>
                     <span className="block font-black text-brand-red text-sm sm:text-base">33%</span>
-                    <span className="font-sans text-[8px] text-brand-gray uppercase">Investor Share</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Contract Yield</span>
                   </div>
                   <div>
-                    <span className="block font-black text-brand-gold-dark text-sm sm:text-base">Solar</span>
-                    <span className="font-sans text-[8px] text-brand-gray uppercase">Fodder Loops</span>
+                    <span className="block font-black text-brand-gold-dark text-sm sm:text-base">Solar & Storage</span>
+                    <span className="font-sans text-[8px] text-brand-gray uppercase">Ventures</span>
                   </div>
                 </div>
               </div>
@@ -1174,20 +1239,20 @@ export default function Home() {
               {/* Block B: Flagship Details (Medium - spans 2 cols md) */}
               <div className={cn("md:col-span-2 p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
                 <div>
-                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>FLAGSHIP VENTURE</span>
+                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>FLAGSHIP BLUEPRINT</span>
                   <h3 className={cn("text-lg font-bold mb-3 font-serif transition-colors duration-500", t.textCharcoal)}>
                     Arghandab Dairy Farm
                   </h3>
                   <div className="w-10 h-0.5 bg-brand-blue mb-4" />
                   <p className={cn("font-sans text-xs leading-relaxed mb-4 transition-colors duration-500", t.textGray)}>
-                    Located in Kandahar. Built with a closed fodder supply cycle to reduce operating costs. Capital buys livestock inventory; investors bypass platform setup risk.
+                    Located in Kandahar. Built with a closed fodder supply loop to reduce operating costs. Capital funds physical herd expansion; remote teams manage operations.
                   </p>
                 </div>
                 <div className="space-y-2 bg-brand-charcoal/5 p-3.5 rounded text-[10px] font-sans text-brand-gray leading-relaxed">
-                  <span className={cn("block font-bold mb-1 uppercase tracking-wider text-[8px]", t.textCharcoal)}>Economic Certificate:</span>
-                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Milk Operations Yield</div>
-                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Male Offspring Payout</div>
-                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Herd exit value buyout</div>
+                  <span className={cn("block font-bold mb-1 uppercase tracking-wider text-[8px]", t.textCharcoal)}>Venture Yield Model:</span>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Productive Asset Yield</div>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Venture Expansion Growth</div>
+                  <div className="flex gap-2 items-center"><CheckCircle className={cn("w-3.5 h-3.5 flex-shrink-0", t.checkIcon)} /> 33% Net Asset Valuation Exit</div>
                 </div>
               </div>
 
@@ -1199,37 +1264,37 @@ export default function Home() {
               {/* Block D: Future Pipelines (Medium - spans 2 cols md) */}
               <div className={cn("md:col-span-2 p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
                 <div>
-                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>DEVELOPMENT PIPELINE</span>
+                  <span className={cn("font-sans text-[8px] font-bold tracking-widest uppercase block mb-2", t.subTitleClass)}>VENTURE PIPELINE</span>
                   <h3 className={cn("text-lg font-bold mb-4 font-serif transition-colors duration-500", t.textCharcoal)}>
-                    Investment Verticals
+                    Venture Projects
                   </h3>
                   <div className="space-y-3.5">
                     <div className="flex gap-3">
                       <Wheat className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Agri-Tech & Food Systems</h4>
-                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>AI crop tracking, cattle tags, and fodder loops.</p>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Arghandab Dairy Farm</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Flagship closed-loop dairy facility. (Active)</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      <Truck className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
+                      <Zap className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Logistics & Infrastructure</h4>
-                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Route optimization, solar grids, and cold chains.</p>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Kandahar Solar Grid</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>5MW grid nodes to power cooling depots. (Development)</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      <HomeIcon className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
+                      <Store className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Smart Facility Management</h4>
-                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>AI construction scheduling, safety audits, and camera loops.</p>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Regional Cold Storage</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Temperature-controlled depots for farm products. (Engineering)</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
                       <Cpu className={cn("w-5 h-5 flex-shrink-0", t.checkIcon)} />
                       <div>
-                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Digital Systems & Operations</h4>
-                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>24/7 technical help desks, AI models, and accounting.</p>
+                        <h4 className={cn("font-serif text-[11px] font-bold leading-tight transition-colors duration-500", t.textCharcoal)}>Remote Back-Office Ops</h4>
+                        <p className={cn("font-sans text-[9px] leading-tight transition-all duration-500", t.textGray)}>Accounting and video audit handled by Hamedia. (Standard)</p>
                       </div>
                     </div>
                   </div>
@@ -1245,7 +1310,7 @@ export default function Home() {
                     Security Framework
                   </h3>
                   <p className={cn("font-sans text-[11px] leading-relaxed transition-all duration-500", t.textGray)}>
-                    Founder backing eliminates infrastructural risk. Color-coded ear tags secure livestock tracking. Inspection rights are guaranteed inside the Economic Participation Certificate.
+                    Founder backing protects structural land equity. Asset-backed metrics (RFID cattle tags, telemetry, smart flow meters) ensure verifiable audits and transparent yield reporting.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-serif font-black text-brand-blue mt-4">
@@ -1262,7 +1327,7 @@ export default function Home() {
                     The Hamedia Edge
                   </h3>
                   <p className={cn("font-sans text-[11px] leading-relaxed transition-all duration-500", t.textGray)}>
-                    We deploy Hamedia Agency's 24/7 human staffing and GrowthPilot AI tools to manage inventory, forecast supply cycles, and audit physical accounts automatically.
+                    We deploy Hamedia Agency's 24/7 remote staffing resources (bookkeeping, live surveillance feeds, customer support, sales dispatch) directly into our ventures.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-serif font-black mt-4">
