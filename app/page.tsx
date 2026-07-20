@@ -145,41 +145,74 @@ export default function Home() {
   ];
 
   // --- THEME-SPECIFIC DESIGN TOKENS ---
-  const getThemeStyles = () => {
+  interface ThemeStyles {
+    bodyBg: string;
+    textCharcoal: string;
+    textGray: string;
+    headingFont: string;
+    sectionHeadingClass: string;
+    subTitleClass: string;
+    dividerClass: string;
+    heroLeftBg: string;
+    heroRightBg: string;
+    heroTextClass: string;
+    heroGridClass: string;
+    accentText: string;
+    primaryBtn: string;
+    secondaryBtn: string;
+    badgeClass: string;
+    cardClass: string;
+    iconContainer: string;
+    checkIcon: string;
+    calcCardBg: string;
+    sliderAccent: string;
+    calcStatBg: string;
+    formBg: string;
+    inputClass: string;
+    formBtn: string;
+    faqClass: string;
+    slideLeftPanelBg: string;
+    cardOverlay: string;
+    cardBtnText: string;
+  }
+
+  const getThemeStyles = (): ThemeStyles => {
     switch (theme) {
-      case "royal":
+      case "royal": // Teal Theme
         return {
-          bodyBg: "bg-slate-50",
-          textCharcoal: "text-slate-900",
-          textGray: "text-slate-600",
+          bodyBg: "bg-[#121214]",
+          textCharcoal: "text-white",
+          textGray: "text-slate-300",
           headingFont: "font-sans font-black tracking-tight",
           sectionHeadingClass: "font-sans font-black tracking-tight text-[#10a5b2] uppercase",
           subTitleClass: "text-[#10a5b2]",
           dividerClass: "bg-[#10a5b2]",
           // Hero specific
-          heroLeftBg: "bg-white",
-          heroRightBg: "bg-gradient-to-br from-[#10a5b2] via-[#0d8a94] to-[#0c1626]",
+          heroLeftBg: "bg-[#121214] border-r border-white/5",
+          heroRightBg: "bg-[#1a1a1c]",
           heroTextClass: "font-sans font-black tracking-tight text-white uppercase",
-          heroGridClass: "",
+          heroGridClass: "border border-white/5",
           accentText: "text-[#10a5b2]",
-          primaryBtn: "bg-[#10a5b2] hover:bg-[#0d8a94] text-white rounded-lg shadow-sm",
-          secondaryBtn: "border border-white/30 hover:border-white bg-white/5 hover:bg-white/10 text-white rounded-lg",
+          primaryBtn: "bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-lg shadow-sm border-0",
+          secondaryBtn: "border border-white/20 hover:border-white text-white bg-transparent rounded-lg",
           badgeClass: "bg-[#10a5b2]/10 text-[#10a5b2] border border-[#10a5b2]/20 rounded-md",
-          cardClass: "bg-white border border-slate-100 rounded-lg shadow-sm hover:shadow-md",
+          cardClass: "bg-[#0f172a] border border-white/10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300",
           iconContainer: "bg-[#10a5b2]/10 text-[#10a5b2] rounded-lg",
           checkIcon: "text-[#10a5b2]",
           // Calculator specific
-          calcCardBg: "bg-[#0c1626] text-white rounded-lg shadow-lg border border-slate-800",
+          calcCardBg: "bg-[#0f172a] text-white rounded-xl shadow-lg border border-white/5",
           sliderAccent: "accent-[#10a5b2]",
           calcStatBg: "bg-white/5 border border-white/10 rounded-md",
           // Form specific
-          formBg: "bg-white border border-slate-100 rounded-xl p-8 shadow-sm",
-          inputClass: "bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:ring-[#10a5b2]",
-          formBtn: "bg-[#10a5b2] hover:bg-[#0d8a94] text-white rounded-lg shadow-sm",
-          faqClass: "bg-white border border-slate-100 rounded-lg",
-          slideLeftPanelBg: "bg-white border border-slate-100 rounded-lg shadow-sm",
+          formBg: "bg-[#0f172a] border border-white/10 text-white rounded-xl p-8 shadow-sm",
+          inputClass: "bg-[#121214] border border-white/10 rounded-lg text-white focus:ring-[#10a5b2]",
+          formBtn: "bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-lg shadow-sm",
+          faqClass: "bg-[#0f172a] border border-white/10 rounded-lg text-white",
+          slideLeftPanelBg: "bg-[#0f172a] border border-white/10 rounded-lg text-white",
+          cardOverlay: "bg-gradient-to-b from-[#10a5b2]/80 via-[#0c7882]/95 to-[#072427]/98",
+          cardBtnText: "text-[#0c7882]"
         };
-      case "oasis":
+      case "oasis": // Gold Theme
         return {
           bodyBg: "bg-[#121214]",
           textCharcoal: "text-white",
@@ -189,32 +222,34 @@ export default function Home() {
           subTitleClass: "text-[#f2b03d]",
           dividerClass: "bg-[#f2b03d]",
           // Hero specific
-          heroLeftBg: "bg-[#121214] border-r border-white/5",
-          heroRightBg: "bg-[#1a1a1c]",
-          heroTextClass: "font-serif font-bold tracking-widest text-white",
-          heroGridClass: "border border-white/5",
-          accentText: "text-[#f2b03d]",
-          primaryBtn: "bg-[#f2b03d] hover:bg-[#d69624] text-black font-black border-0 rounded-lg shadow-sm",
-          secondaryBtn: "border border-white/20 hover:border-white text-white bg-transparent rounded-lg",
-          badgeClass: "bg-[#f2b03d]/10 text-[#f2b03d] border border-[#f2b03d]/20 rounded-lg",
-          cardClass: "glass-dark border border-white/10 rounded-xl hover:bg-white/5 transition-all duration-300 shadow-lg",
-          iconContainer: "glass text-[#f2b03d] rounded-lg border border-white/10",
+          heroLeftBg: "bg-[#161311] border-r border-[#d4a218]/15",
+          heroRightBg: "bg-[#181412]",
+          heroTextClass: "font-serif font-bold tracking-widest text-[#4E3E2F]",
+          heroGridClass: "border border-[#d4a218]/15",
+          accentText: "text-[#d4a218]",
+          primaryBtn: "bg-[#f2b03d] hover:bg-[#d69624] text-[#121214] font-black border-0 rounded-lg shadow-sm",
+          secondaryBtn: "border border-[#4E3E2F]/20 hover:border-[#4E3E2F] text-[#4E3E2F] bg-transparent rounded-lg",
+          badgeClass: "bg-[#f2b03d]/15 text-[#a87418] border border-[#d4a218]/30 rounded-lg",
+          cardClass: "bg-[#181412] border border-[#d4a218]/25 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300",
+          iconContainer: "bg-[#f2b03d]/10 text-[#f2b03d] rounded-lg border border-[#d4a218]/20",
           checkIcon: "text-[#f2b03d]",
           // Calculator specific
-          calcCardBg: "glass-dark border border-white/10 text-white rounded-xl shadow-2xl",
+          calcCardBg: "bg-[#181412] text-white rounded-xl shadow-xl border border-[#d4a218]/25",
           sliderAccent: "accent-[#f2b03d]",
-          calcStatBg: "glass border border-white/10 rounded-lg",
+          calcStatBg: "bg-white/5 border border-white/10 rounded-md",
           // Form specific
-          formBg: "glass-dark border border-white/10 text-white rounded-xl shadow-2xl p-8",
-          inputClass: "glass border border-white/10 rounded-lg text-white focus:ring-[#f2b03d]",
-          formBtn: "bg-[#f2b03d] hover:bg-[#d69624] text-black font-black rounded-lg border-0 shadow-sm",
-          faqClass: "glass-dark border border-white/10 rounded-lg text-white",
-          slideLeftPanelBg: "glass-dark border border-white/10 text-white rounded-xl shadow-lg",
+          formBg: "bg-[#181412] border border-[#d4a218]/25 text-white rounded-xl p-8 shadow-xl",
+          inputClass: "bg-[#1d1916] border border-[#d4a218]/20 rounded-lg text-white focus:ring-[#f2b03d]",
+          formBtn: "bg-[#f2b03d] hover:bg-[#d69624] text-[#121214] font-black rounded-lg border-0 shadow-sm",
+          faqClass: "bg-[#181412]/90 border border-[#d4a218]/20 rounded-lg text-white",
+          slideLeftPanelBg: "bg-[#181412] border border-[#d4a218]/25 rounded-lg text-white",
+          cardOverlay: "bg-gradient-to-b from-[#f2b03d]/80 via-[#d19428]/95 to-[#1c1204]/98",
+          cardBtnText: "text-[#d19428]"
         };
-      case "heritage":
+      case "heritage": // Coral Theme
       default:
         return {
-          bodyBg: "bg-gradient-to-br from-[#FAF8F5] to-[#f5e0b9]/30",
+          bodyBg: "bg-[#FAF8F5]",
           textCharcoal: "text-slate-800",
           textGray: "text-slate-600",
           headingFont: "font-serif font-black",
@@ -230,19 +265,21 @@ export default function Home() {
           primaryBtn: "bg-[#e9595e] hover:bg-[#d64c51] text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-transform border-0",
           secondaryBtn: "border border-slate-300 hover:border-[#e9595e] text-slate-700 hover:text-[#e9595e] bg-transparent rounded-lg",
           badgeClass: "bg-[#e9595e]/10 text-[#e9595e] border border-[#e9595e]/25 rounded-full",
-          cardClass: "bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-md",
+          cardClass: "bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300",
           iconContainer: "bg-[#e9595e]/10 text-[#e9595e] rounded-lg",
           checkIcon: "text-[#e9595e]",
           // Calculator specific
-          calcCardBg: "bg-slate-900 text-white rounded-2xl shadow-xl",
+          calcCardBg: "bg-[#0f172a] text-white rounded-xl shadow-lg border border-white/5",
           sliderAccent: "accent-[#e9595e]",
-          calcStatBg: "bg-white/5 border border-white/5 rounded-lg",
+          calcStatBg: "bg-white/5 border border-white/10 rounded-md",
           // Form specific
-          formBg: "bg-[#FAF8F5] border border-slate-200 p-8 rounded-2xl shadow-md",
-          inputClass: "bg-white border border-slate-200 rounded-lg text-slate-800 focus:ring-[#e9595e]",
+          formBg: "bg-white border border-slate-200 text-slate-800 rounded-xl p-8 shadow-sm",
+          inputClass: "bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:ring-[#e9595e]",
           formBtn: "bg-[#e9595e] hover:bg-[#d64c51] text-white rounded-lg shadow-md",
-          faqClass: "bg-white border border-slate-100 rounded-xl",
-          slideLeftPanelBg: "bg-[#FAF8F5] border border-slate-200 rounded-2xl shadow-sm",
+          faqClass: "bg-white border border-slate-200 rounded-lg text-slate-800",
+          slideLeftPanelBg: "bg-white border border-slate-200 rounded-lg text-slate-800",
+          cardOverlay: "bg-gradient-to-b from-[#e9595e]/80 via-[#c74448]/95 to-[#180a0c]/98",
+          cardBtnText: "text-[#c74448]"
         };
     }
   };
@@ -254,7 +291,7 @@ export default function Home() {
   const renderCalculator = () => (
     <div className={cn("p-6 sm:p-8 transition-all duration-500", t.calcCardBg)}>
       <div className="flex items-center gap-2.5 mb-6">
-        <Calculator className={cn("w-6 h-6", theme === "royal" ? "text-brand-blue" : "text-brand-gold")} />
+        <Calculator className={cn("w-6 h-6", t.accentText)} />
         <h3 className={cn("font-serif text-lg sm:text-xl font-bold", theme === "oasis" && "tracking-widest")}>
           Venture Portfolio Simulator
         </h3>
@@ -265,9 +302,7 @@ export default function Home() {
 
       {/* Profile Selector */}
       <div className="mb-6 space-y-2">
-        <label className={cn("block font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", 
-          theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold"
-        )}>
+        <label className={cn("block font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", t.accentText)}>
           Select Project Profile
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -283,7 +318,9 @@ export default function Home() {
               className={cn(
                 "px-3 py-2 text-[10px] sm:text-xs font-semibold rounded-lg border transition-all duration-300",
                 selectedProfile === prof.id
-                  ? "bg-[#10a5b2] text-white border-[#10a5b2] shadow-sm"
+                  ? (theme === "royal" ? "bg-[#10a5b2] text-white border-[#10a5b2] shadow-sm" :
+                     theme === "oasis" ? "bg-[#f2b03d] text-[#121214] border-[#f2b03d] shadow-sm" :
+                     "bg-[#e9595e] text-white border-[#e9595e] shadow-sm")
                   : "bg-white/5 border-white/10 text-white hover:bg-white/10"
               )}
             >
@@ -296,9 +333,7 @@ export default function Home() {
       {/* Slider */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
-          <label className={cn("font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", 
-            theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold"
-          )}>
+          <label className={cn("font-serif text-[10px] sm:text-xs font-bold uppercase tracking-wider", t.accentText)}>
             Investment Amount (USD)
           </label>
           <span className="font-sans text-base font-black text-white">
@@ -323,19 +358,19 @@ export default function Home() {
       {/* Outputs */}
       <div className="space-y-4 mb-6">
         <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pb-1", 
-          theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
+          theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "border-white/10", t.accentText
         )}>
           Venture Impact Metrics
         </h4>
         <div className="grid grid-cols-2 gap-3 text-center">
           <div className={t.calcStatBg}>
-            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+            <span className={cn("block font-sans text-base font-black", t.accentText)}>
               {fundedUnits}
             </span>
             <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">{profile.unitName}</span>
           </div>
           <div className={t.calcStatBg}>
-            <span className={cn("block font-sans text-base font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+            <span className={cn("block font-sans text-base font-black", t.accentText)}>
               {profile.payback} Yrs
             </span>
             <span className="font-sans text-[8px] text-brand-light-gray/50 uppercase">Est. Payback</span>
@@ -343,7 +378,7 @@ export default function Home() {
         </div>
 
         <h4 className={cn("font-serif text-[10px] font-bold uppercase tracking-wider border-b pt-2 pb-1", 
-          theme === "royal" ? "text-brand-blue border-white/10" : theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "text-brand-gold border-white/10"
+          theme === "oasis" ? "text-brand-oasis-gold border-brand-oasis-gold/20" : "border-white/10", t.accentText
         )}>
           Projected Financial Yield
         </h4>
@@ -357,10 +392,10 @@ export default function Home() {
             <span className="font-bold text-white">{profile.name}</span>
           </div>
           <div className="flex justify-between border-t border-white/10 pt-2 text-xs font-serif">
-            <span className={cn("font-bold", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+            <span className={cn("font-bold", t.accentText)}>
               Total Projected Cash-Flow:
             </span>
-            <span className={cn("font-black", theme === "royal" ? "text-brand-blue" : theme === "oasis" ? "text-brand-oasis-gold" : "text-brand-gold")}>
+            <span className={cn("font-black", t.accentText)}>
               ${totalAnnualCashFlowUsd.toLocaleString()} / Yr
             </span>
           </div>
@@ -772,7 +807,7 @@ export default function Home() {
 
             {/* 4. Industries & Portfolios Section */}
             <section id="ventures" className={cn("py-20 border-t border-b border-brand-charcoal/5 transition-colors duration-500",
-              theme === "royal" ? "bg-slate-100" : theme === "oasis" ? "bg-[#161618] border-white/5" : "bg-brand-cream-revamp/10"
+              theme === "heritage" ? "bg-[#FAF7F2]" : theme === "royal" ? "bg-[#071d22]" : "bg-[#0b1c20]"
             )}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mb-16">
@@ -787,32 +822,128 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
-                    { name: "Agriculture & Livestock", desc: "Verifiable RFID herd lines, automated fodder growth systems, and dairy farm telemetry.", icon: Wheat, label: "Active" },
-                    { name: "Renewable Energy", desc: "Solar micro-grid nodes, battery storage sites, and automated utility network meters.", icon: Zap, label: "Pipeline" },
-                    { name: "Food & Dairy Processing", desc: "Modern processing machinery, pasteurization equipment, and wholesale packaging logistics.", icon: UtensilsCrossed, label: "Active" },
-                    { name: "Transportation & Logistics", desc: "Depot hubs, fleet dispatch terminals, and remote routing coordinate systems.", icon: Truck, label: "Pipeline" },
-                    { name: "Real Estate & Construction", desc: "Commercial warehouses, cold-storage physical footprints, and materials depots.", icon: HomeIcon, label: "Active" },
-                    { name: "Technology & AI", desc: "Remote processing server stacks, network distribution terminals, and hardware nodes.", icon: Cpu, label: "Standard" },
-                    { name: "Security & Monitoring", desc: "Remote surveillance hardware, physical access systems, and asset safety loops.", icon: ShieldCheck, label: "Standard" },
-                    { name: "Retail & Commerce", desc: "B2B client distribution facilities, bulk stock hubs, and shipping supply systems.", icon: Store, label: "Pipeline" },
+                    { 
+                      name: "Agriculture & Livestock", 
+                      bullets: [
+                        "Verifiable RFID livestock tracking",
+                        "Automated closed-loop hydroponics",
+                        "Daily milk output telemetry logs"
+                      ], 
+                      icon: Wheat, 
+                      bgImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Renewable Energy", 
+                      bullets: [
+                        "5MW solar utility grid generation",
+                        "Smart energy storage node management",
+                        "Verifiable real-time grid meter audits"
+                      ], 
+                      icon: Zap, 
+                      bgImage: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Food & Dairy Processing", 
+                      bullets: [
+                        "Automated pasteurization flow meters",
+                        "Cold-chain temperature cloud ledger",
+                        "B2B client shipping dispatch terminals"
+                      ], 
+                      icon: UtensilsCrossed, 
+                      bgImage: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Transportation & Logistics", 
+                      bullets: [
+                        "AI-optimized cargo routing dispatch",
+                        "Real-time transport container tracking",
+                        "Fuel efficiency telemetry coordinates"
+                      ], 
+                      icon: Truck, 
+                      bgImage: "https://images.unsplash.com/photo-1516528387618-afa90b13e000?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Real Estate & Construction", 
+                      bullets: [
+                        "Smart warehouse physical footprints",
+                        "AI construction timeline trackers",
+                        "Surveillance loops & safety audits"
+                      ], 
+                      icon: HomeIcon, 
+                      bgImage: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Technology & AI", 
+                      bullets: [
+                        "AI model server stack deployment",
+                        "24/7 technical help desks",
+                        "Automated cloud bookkeeper ledgers"
+                      ], 
+                      icon: Cpu, 
+                      bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Security & Monitoring", 
+                      bullets: [
+                        "Live CCTV remote staffing centers",
+                        "Asset access logs & security sweeps",
+                        "Automatic intrusion warning loops"
+                      ], 
+                      icon: ShieldCheck, 
+                      bgImage: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" 
+                    },
+                    { 
+                      name: "Retail & Commerce", 
+                      bullets: [
+                        "Stock synchronization dispatch centers",
+                        "B2B client distribution facilities",
+                        "AI customer billing pipelines"
+                      ], 
+                      icon: Store, 
+                      bgImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80" 
+                    },
                   ].map((ind, iIdx) => {
                     const Icon = ind.icon;
                     return (
-                      <div key={iIdx} className={cn("p-6 border flex flex-col justify-between transition-all duration-500", t.cardClass)}>
-                        <div>
-                          <div className={cn("w-10 h-10 flex items-center justify-center mb-4 rounded-lg", t.iconContainer)}>
-                            <Icon className="w-5 h-5" />
+                      <div key={iIdx} className="relative overflow-hidden rounded-2xl group flex flex-col justify-between p-6 text-white border border-white/10 aspect-[4/5] sm:aspect-[3/4] md:aspect-square shadow-lg">
+                        {/* Background Image with zoom on hover */}
+                        <div 
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                          style={{ backgroundImage: `url(${ind.bgImage})` }}
+                        />
+                        {/* High-quality theme-colored gradient overlay */}
+                        <div className={cn("absolute inset-0 transition-all duration-300", t.cardOverlay)} />
+                        
+                        {/* Relative content */}
+                        <div className="relative z-10 flex flex-col h-full justify-between">
+                          <div>
+                            {/* Icon glass box */}
+                            <div className="w-10 h-10 flex items-center justify-center border border-white/25 bg-white/10 backdrop-blur-md rounded-xl mb-4 text-white">
+                              <Icon className="w-5 h-5" />
+                            </div>
+                            
+                            {/* Title */}
+                            <h3 className="text-sm sm:text-base font-black text-white tracking-wide">{ind.name}</h3>
+                            
+                            {/* Checklist */}
+                            <ul className="space-y-1.5 mt-3">
+                              {ind.bullets.map((bullet, bIdx) => (
+                                <li key={bIdx} className="flex gap-2 items-start text-[10px] sm:text-[11px] text-white/90 leading-tight">
+                                  <CheckCircle className="w-3.5 h-3.5 flex-shrink-0 text-white mt-0.5" />
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <h3 className={cn("text-sm font-bold mb-2 font-serif", t.textCharcoal)}>{ind.name}</h3>
-                          <p className={cn("font-sans text-[11px] leading-relaxed mb-4", t.textGray)}>
-                            {ind.desc}
-                          </p>
+
+                          {/* White bottom button */}
+                          <a 
+                            href="#inquire" 
+                            className={cn("mt-4 w-full py-2 bg-white hover:bg-white/95 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all duration-300 shadow-sm", t.cardBtnText)}
+                          >
+                            Learn More <ArrowRight className="w-3.5 h-3.5" />
+                          </a>
                         </div>
-                        <span className={cn("font-sans text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded self-start", 
-                          ind.label === "Active"
-                            ? (theme === "royal" ? "text-[#10a5b2] bg-[#10a5b2]/10" : theme === "oasis" ? "text-[#f2b03d] bg-[#f2b03d]/10" : "text-[#e9595e] bg-[#e9595e]/10")
-                            : "text-slate-400 bg-slate-100 dark:bg-white/5"
-                        )}>{ind.label}</span>
                       </div>
                     );
                   })}
@@ -1001,56 +1132,70 @@ export default function Home() {
                 <div className="flex items-center gap-2 mb-4">
                   <HamediaLogo variant="icon" iconClassName="w-10 h-10" />
                   <div>
-                    <h3 className={cn("font-serif text-sm font-black uppercase leading-none", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>Hamedia</h3>
-                    <span className={cn("font-sans text-[8px] tracking-[0.1em] font-bold", theme === "oasis" ? "text-[#D4A218]" : "text-brand-gray")}>PITCH OVERVIEW</span>
+                    <h3 className={cn("font-serif text-sm font-black uppercase leading-none", theme === "oasis" ? "text-[#f2b03d]" : theme === "royal" ? "text-[#10a5b2]" : "text-brand-charcoal")}>Hamedia</h3>
+                    <span className={cn("font-sans text-[8px] tracking-[0.1em] font-bold", theme === "oasis" ? "text-[#d4a218]/80" : theme === "royal" ? "text-[#10a5b2]/80" : "text-brand-gray")}>PITCH OVERVIEW</span>
                   </div>
                 </div>
 
-                <div className={cn("h-px my-4", theme === "oasis" ? "bg-[#D4A218]/20" : "bg-brand-charcoal/10")} />
+                <div className={cn("h-px my-4", theme === "oasis" ? "bg-[#D4A218]/20" : theme === "royal" ? "bg-[#10a5b2]/20" : "bg-brand-charcoal/10")} />
 
-                <h2 className={cn("text-base font-bold mb-3 font-serif", theme === "oasis" ? "text-[#4E3E2F]" : "text-brand-charcoal")}>
+                <h2 className={cn("text-base font-bold mb-3 font-serif", theme !== "heritage" ? "text-white" : "text-brand-charcoal")}>
                   Investment Memorandum
                 </h2>
-                <p className={cn("font-sans text-xs leading-relaxed mb-6", theme === "oasis" ? "text-[#4E3E2F]/80" : "text-brand-gray")}>
+                <p className={cn("font-sans text-xs leading-relaxed mb-6", theme !== "heritage" ? "text-slate-300" : "text-brand-gray")}>
                   Scroll through our dynamic slides on the right to examine our economic models, asset profiles, and upcoming venture roadmap.
                 </p>
 
                 {/* Slides Nav Map */}
                 <div className="space-y-2 font-sans text-xs">
                   <a href="#slide-thesis" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <BookOpen className="w-3.5 h-3.5" /> 1. The Executive Thesis
                   </a>
                   <a href="#slide-flagship" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Award className="w-3.5 h-3.5" /> 2. Flagship Blueprint
                   </a>
                   <a href="#slide-ops" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Bot className="w-3.5 h-3.5" /> 3. The Hamedia Edge
                   </a>
                   <a href="#slide-calc" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Calculator className="w-3.5 h-3.5" /> 4. Venture Simulator
                   </a>
                   <a href="#slide-pipeline" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Layers className="w-3.5 h-3.5" /> 5. Venture Pipelines
                   </a>
                   <a href="#slide-inquire" className={cn("flex items-center gap-2 py-2 px-3 rounded transition-colors font-bold",
-                    theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/20 text-[#4E3E2F] hover:text-[#D4A218]" : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
+                    theme !== "heritage" 
+                      ? (theme === "oasis" ? "bg-[#D4A218]/10 hover:bg-[#D4A218]/25 text-[#f2b03d] hover:text-white" : "bg-[#10a5b2]/10 hover:bg-[#10a5b2]/25 text-[#10a5b2] hover:text-white") 
+                      : "bg-brand-charcoal/5 hover:bg-brand-charcoal/10 text-brand-charcoal hover:text-brand-red"
                   )}>
                     <Send className="w-3.5 h-3.5" /> 6. Investor Registration
                   </a>
                 </div>
 
                 <div className={cn("mt-8 pt-4 border-t font-sans text-[10px] leading-relaxed flex flex-col gap-2",
-                  theme === "oasis" ? "border-[#D4A218]/20 text-[#4E3E2F]/60" : "border-brand-charcoal/5 text-brand-gray/60"
+                  theme !== "heritage"
+                    ? (theme === "oasis" ? "border-[#D4A218]/20 text-slate-300" : "border-[#10a5b2]/20 text-slate-300")
+                    : "border-brand-charcoal/5 text-brand-gray/60"
                 )}>
                   <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" /> +1-949-299-6263</span>
                   <span className="flex items-center gap-1.5"><Mail className="w-3 h-3" /> info@hamediainvestment.com</span>
@@ -1074,13 +1219,13 @@ export default function Home() {
                     Our founders carry the core infrastructure risk (purchasing agricultural land, constructing facilities) so that investor proceeds buy only active, income-producing assets (such as the dairy herd lines in our flagship Arghandab project).
                   </p>
                   <div className="grid grid-cols-2 gap-4 text-center mt-6">
-                    <div className="bg-brand-charcoal/5 p-4 rounded">
-                      <span className="block font-serif text-lg font-black text-brand-blue">100%</span>
-                      <span className="font-sans text-[9px] text-brand-gray uppercase">Founder Land Equity</span>
+                    <div className={cn("p-4 rounded transition-all duration-300", theme === "heritage" ? "bg-slate-100" : "bg-white/5 border border-white/10")}>
+                      <span className={cn("block font-serif text-lg font-black", t.accentText)}>100%</span>
+                      <span className={cn("font-sans text-[9px] uppercase", theme === "heritage" ? "text-slate-600" : "text-slate-400")}>Founder Land Equity</span>
                     </div>
-                    <div className="bg-brand-charcoal/5 p-4 rounded">
-                      <span className="block font-serif text-lg font-black text-brand-red">Zero</span>
-                      <span className="font-sans text-[9px] text-brand-gray uppercase">Investor Infrastructure Debt</span>
+                    <div className={cn("p-4 rounded transition-all duration-300", theme === "heritage" ? "bg-slate-100" : "bg-white/5 border border-white/10")}>
+                      <span className={cn("block font-serif text-lg font-black", t.accentText)}>Zero</span>
+                      <span className={cn("font-sans text-[9px] uppercase", theme === "heritage" ? "text-slate-600" : "text-slate-400")}>Investor Infrastructure Debt</span>
                     </div>
                   </div>
                 </div>
@@ -1091,17 +1236,17 @@ export default function Home() {
                   <h3 className={cn("text-xl sm:text-2xl font-black mb-4 transition-colors duration-500", t.headingFont, t.textCharcoal)}>
                     Arghandab Dairy Farm Blueprint
                   </h3>
-                  <div className="w-16 h-0.5 bg-brand-blue mb-4" />
+                  <div className={cn("w-16 h-0.5 mb-4 transition-all duration-500", t.dividerClass)} />
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-4 transition-all duration-500", t.textGray)}>
                     Our flagship venture is an operating dairy farm in Kandahar, serving as our operational blueprint. It demonstrates how integrating remote staffing teams secures high yields and automates bookkeeping.
                   </p>
                   <p className={cn("font-sans text-xs sm:text-sm leading-relaxed mb-6 transition-all duration-500", t.textGray)}>
                     Under the <strong>Economic Participation Certificate</strong>, investors fund physical inventory (the dairy herd) and acquire a 33% interest in the milk production cash yield, offspring valuations, and net asset valuations.
                   </p>
-                  <div className="space-y-2.5 font-sans text-xs text-brand-gray bg-brand-charcoal/5 p-4 rounded">
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% Productive Asset Yield (Quarterly payouts)</div>
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% realized growth payout from venture appreciation</div>
-                    <div className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-brand-red" /> 33% direct net asset valuation exit buyout</div>
+                  <div className={cn("space-y-2.5 font-sans text-xs p-4 rounded transition-all duration-300", theme === "heritage" ? "text-slate-700 bg-slate-100" : "text-slate-300 bg-white/5 border border-white/10")}>
+                    <div className="flex gap-2 items-center"><CheckCircle className={cn("w-4 h-4 flex-shrink-0", t.checkIcon)} /> 33% Productive Asset Yield (Quarterly payouts)</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className={cn("w-4 h-4 flex-shrink-0", t.checkIcon)} /> 33% realized growth payout from venture appreciation</div>
+                    <div className="flex gap-2 items-center"><CheckCircle className={cn("w-4 h-4 flex-shrink-0", t.checkIcon)} /> 33% direct net asset valuation exit buyout</div>
                   </div>
                 </div>
 

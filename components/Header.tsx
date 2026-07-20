@@ -175,9 +175,11 @@ export default function Header() {
   return (
     <>
       {/* Design customizer top bar */}
-      <div className="fixed top-0 left-0 right-0 h-16 bg-[#121214] text-white flex items-center justify-between px-6 z-50 border-b border-white/5 font-sans">
+      <div className="fixed top-0 left-0 right-0 h-16 bg-[#092227] text-white flex items-center justify-between px-6 z-50 border-b border-white/5 font-sans">
         <div className="flex items-center gap-2">
-          <Bot className="w-4 h-4 text-[#f2b03d] animate-pulse" />
+          <Bot className={cn("w-4 h-4 animate-pulse", 
+            theme === "heritage" ? "text-[#e9595e]" : theme === "royal" ? "text-[#10a5b2]" : "text-[#f2b03d]"
+          )} />
           <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Investment Customizer</span>
         </div>
         <div className="flex items-center gap-6">
@@ -218,7 +220,7 @@ export default function Header() {
                     : "text-gray-300 hover:text-white hover:bg-white/5"
                 )}
               >
-                3. Glass
+                3. Gold
               </button>
             </div>
           </div>
