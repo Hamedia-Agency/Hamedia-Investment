@@ -476,28 +476,49 @@ export default function Home() {
                 {/* Left Column: Hero Content */}
                 <div className="lg:col-span-7 flex flex-col justify-center">
                   <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-[11px] font-bold tracking-widest uppercase mb-6 rounded-full bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/25 w-fit">
-                    <Activity className="w-4 h-4 animate-pulse" /> Launching Projects
+                    <Zap className="w-4 h-4 animate-pulse text-[#10a5b2]" /> Asset-Backed Investment Platform
                   </span>
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] mb-6 text-white tracking-tight uppercase">
-                    Building Real Assets. <br className="hidden sm:inline" />
-                    Powered by <span className="text-[#10a5b2]">Remote Operations</span>.
+                    Build Wealth Through <span className="text-[#10a5b2]">Real Assets</span>.
                   </h1>
-                  <p className="font-sans text-base sm:text-lg leading-relaxed text-slate-300 mb-8 max-w-xl">
-                    Hamedia Investments deploys capital directly into high-yield agricultural, energy, and logistics projects across Afghanistan. By integrating Hamedia Agency's AI-enhanced remote management teams, we secure transparent and highly efficient operations from day one.
+                  <p className="font-sans text-base sm:text-lg font-bold text-slate-200 mb-4">
+                    Invest in Agriculture, Energy, and Essential Infrastructure.
                   </p>
+                  <p className="font-sans text-sm sm:text-base leading-relaxed text-slate-300 mb-8 max-w-xl">
+                    Hamedia Investments deploys capital into productive businesses across agriculture, renewable energy, logistics, and infrastructure. Every investment is backed by tangible assets, AI-enhanced operations, and transparent management—focused on creating long-term value, not speculation.
+                  </p>
+
+                  {/* Value Highlights */}
+                  <div className="grid grid-cols-2 gap-3 mb-8 max-w-lg">
+                    {[
+                      "Asset-Backed Investments",
+                      "AI-Enhanced Operations",
+                      "Quarterly Cash Distributions*",
+                      "Long-Term Asset Growth"
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-2 p-2.5 bg-white/5 border border-white/10 rounded-xl">
+                        <CheckCircle className="w-4 h-4 text-[#10a5b2] flex-shrink-0" />
+                        <span className="font-sans text-xs font-bold text-slate-200">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-sans -mt-5 mb-8 italic">
+                    *Subject to investment structure and agreement.
+                  </p>
+
                   <div className="flex flex-col sm:flex-row gap-4">
                     <a 
                       href="#ventures" 
                       className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-xl shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 hover:-translate-y-0.5 group"
                     >
-                      Explore Our Ventures
+                      Explore Investment Opportunities
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a 
                       href="#contact" 
                       className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase border border-white/20 hover:border-[#10a5b2] text-white hover:text-[#10a5b2] bg-white/5 backdrop-blur-sm rounded-xl transition-all duration-300"
                     >
-                      Inquire Now
+                      Request Investor Package
                     </a>
                   </div>
                 </div>
@@ -507,7 +528,6 @@ export default function Home() {
                   <div className="w-full max-w-sm p-6 bg-[#0b2d34]/90 border border-white/15 backdrop-blur-md rounded-3xl shadow-2xl flex flex-col items-center text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-t from-[#10a5b2]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     
-                    {/* Logo with negative bottom margin to bring stripes flush to the line */}
                     <div className="w-full flex justify-center -mb-5">
                       <HamediaLogo 
                         variant="full" 
@@ -529,64 +549,167 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 2. Executive Vision Section (LIGHT 1) */}
-          <section id="about" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
+          {/* 2. Bonus Section: Why Hamedia? (LIGHT 1) */}
+          <section className="py-20 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <div className="text-center max-w-3xl mx-auto mb-14">
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-2 text-[#10a5b2]">Why Hamedia?</span>
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 uppercase tracking-tight">
+                  Answer the Investor's First Question in Seconds
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  {
+                    title: "Real Asset Backing",
+                    text: "Capital is invested in tangible, productive infrastructure.",
+                    icon: ShieldCheck,
+                  },
+                  {
+                    title: "Operational Expertise",
+                    text: "AI-enhanced operations managed by Hamedia Agency.",
+                    icon: Bot,
+                  },
+                  {
+                    title: "Multiple Value Drivers",
+                    text: "Growth through operations, asset appreciation, and expansion.",
+                    icon: TrendingUp,
+                  },
+                  {
+                    title: "Transparency & Governance",
+                    text: "Clear reporting and measurable operational performance.",
+                    icon: Activity,
+                  },
+                ].map((card, idx) => {
+                  const Icon = card.icon;
+                  return (
+                    <div key={idx} className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:border-[#10a5b2] transition-all duration-300">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] mb-4 border border-[#10a5b2]/20">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-sans text-base font-bold text-slate-900 mb-2 uppercase">{card.title}</h3>
+                      <p className="font-sans text-xs leading-relaxed text-slate-600">{card.text}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* 3. Executive Vision Section (LIGHT 2) */}
+          <section id="about" className="py-24 bg-white text-slate-900 border-b border-slate-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
                 <div className="lg:col-span-5">
-                  <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Executive Vision</span>
+                  <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investing Beyond Financial Markets</span>
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-slate-900 uppercase tracking-tight">
-                    A Platform for Economic Self-Sufficiency. Built on Real Assets.
+                    Building Economic Infrastructure That Creates Long-Term Value.
                   </h2>
                   <div className="w-16 h-1 mt-6 bg-[#10a5b2]" />
                 </div>
                 <div className="lg:col-span-7">
-                  <p className="font-sans text-sm sm:text-base leading-relaxed mb-6 text-slate-700">
-                    Hamedia Investments is focused on investing in and developing a diverse portfolio of real-asset projects across Afghanistan. Our mission is to build local economic self-sufficiency by deploying capital directly into critical productive sectors.
+                  <p className="font-sans text-sm sm:text-base leading-relaxed text-slate-700">
+                    We invest in productive assets that generate real economic value through agriculture, renewable energy, logistics, and infrastructure. By combining strategic capital with AI-powered operations, we build scalable businesses designed for sustainable growth.
                   </p>
-                  <p className="font-sans text-sm sm:text-base leading-relaxed mb-8 text-slate-700">
-                    Under this development umbrella, we link investor capital directly to physical, revenue-generating inventory. The Arghandab Dairy Farm in Kandahar serves as our first active flagship project, establishing a proven template for our upcoming logistics, agri-tech, and energy ventures.
-                  </p>
+                </div>
+              </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="flex gap-4 p-5 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                      <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] border border-[#10a5b2]/20">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
+              <div className="max-w-3xl mb-8">
+                <h3 className="text-xl font-bold uppercase text-slate-900">Why Investors Choose Hamedia</h3>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  {
+                    title: "Real Assets",
+                    text: "Capital is invested in physical infrastructure, equipment, and productive assets.",
+                    icon: Building,
+                  },
+                  {
+                    title: "Operational Revenue",
+                    text: "Value is driven by business performance—not market speculation.",
+                    icon: TrendingUp,
+                  },
+                  {
+                    title: "Technology Driven",
+                    text: "AI, automation, and real-time analytics optimize operations.",
+                    icon: Cpu,
+                  },
+                  {
+                    title: "Professional Management",
+                    text: "Hamedia Agency provides 24/7 operational support and oversight.",
+                    icon: Users,
+                  },
+                ].map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={idx} className="p-6 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="font-sans text-sm font-bold mb-1 text-slate-900 uppercase">Asset-Backed Safety</h4>
-                        <p className="font-sans text-xs leading-relaxed text-slate-600">Capital purchases physical livestock & grid components, not abstract stock.</p>
+                        <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] mb-4 border border-[#10a5b2]/20">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-sans text-sm font-bold mb-2 text-slate-900 uppercase">{item.title}</h4>
+                        <p className="font-sans text-xs leading-relaxed text-slate-600">{item.text}</p>
                       </div>
                     </div>
-                    <div className="flex gap-4 p-5 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                      <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] border border-[#10a5b2]/20">
-                        <TrendingUp className="w-5 h-5" />
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* 4. Why Hamedia Comparison Table (DARK) */}
+          <section id="why-hamedia" className="py-24 bg-[#092227] text-white border-b border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Why Hamedia</span>
+                <h2 className="text-3xl sm:text-4xl font-black leading-tight text-white uppercase tracking-tight">
+                  We Invest in Businesses. Not Speculation.
+                </h2>
+              </div>
+
+              <div className="max-w-4xl mx-auto bg-[#0b2d34] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <div className="grid grid-cols-2 gap-4 pb-6 border-b border-white/10 font-sans text-xs sm:text-sm font-black uppercase tracking-wider">
+                  <div className="text-white">Traditional Investments</div>
+                  <div className="text-[#10a5b2]">Hamedia Investments</div>
+                </div>
+
+                <div className="divide-y divide-white/10 font-sans text-xs sm:text-sm">
+                  {[
+                    { traditional: "Market Dependent", hamedia: "Asset Backed" },
+                    { traditional: "Paper Assets", hamedia: "Physical Infrastructure" },
+                    { traditional: "Passive Holdings", hamedia: "Active Operations" },
+                    { traditional: "Limited Visibility", hamedia: "Transparent Reporting" },
+                    { traditional: "Speculative Growth", hamedia: "Long-Term Business Value" }
+                  ].map((row, idx) => (
+                    <div key={idx} className="grid grid-cols-2 gap-4 py-4 items-center">
+                      <div className="text-white flex items-center gap-2 font-medium">
+                        <span className="w-2 h-2 rounded-full bg-white/40 flex-shrink-0" />
+                        <span>{row.traditional}</span>
                       </div>
-                      <div>
-                        <h4 className="font-sans text-sm font-bold mb-1 text-slate-900 uppercase">Economic Participation</h4>
-                        <p className="font-sans text-xs leading-relaxed text-slate-600">Direct 33% contract participation in operational cash flow.</p>
+                      <div className="text-white font-bold flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-[#10a5b2] flex-shrink-0" />
+                        <span className="text-[#10a5b2]">{row.hamedia}</span>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
 
-          {/* 3. Venture Pipelines Grid (LIGHT 2) */}
-          <section id="pipelines" className="py-24 bg-white text-slate-900 border-b border-slate-200">
+          {/* 5. Venture Pipelines Grid (LIGHT 1) */}
+          <section id="pipelines" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
-                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Active & Upcoming Pipeline</span>
-                <h2 className="text-3xl sm:text-4xl font-black leading-tight text-slate-900 uppercase tracking-tight">Venture Project Pipeline</h2>
-                <p className="mt-3 font-sans text-sm sm:text-base leading-relaxed text-slate-600">
-                  We deploy capital into key sectors powered entirely by our operational agency staff. Explore our flagship and upcoming projects below.
-                </p>
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Active & Upcoming Ventures</span>
+                <h2 className="text-3xl sm:text-4xl font-black leading-tight text-slate-900 uppercase tracking-tight">Building Across Essential Industries</h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Project 1 */}
-                <div className="p-8 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
+                <div className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
                   <div>
                     <div className="w-12 h-12 flex items-center justify-center rounded-xl mb-5 text-[#10a5b2] bg-[#10a5b2]/10 border border-[#10a5b2]/20">
                       <Wheat className="w-6 h-6" />
@@ -594,17 +717,17 @@ export default function Home() {
                     <span className="text-[10px] font-bold text-[#10a5b2] tracking-widest uppercase block mb-2">AgriTech & Livestock</span>
                     <h4 className="text-xl font-bold mb-3 text-slate-900">Arghandab Dairy Farm</h4>
                     <p className="font-sans text-xs leading-relaxed text-slate-600 mb-6">
-                      Our active flagship project. A modern closed-loop dairy facility in Kandahar, fully operational with automated RFID tracking and smart milk flow meters.
+                      Integrated dairy and livestock operation focused on sustainable production and herd expansion.
                     </p>
                   </div>
                   <div className="flex justify-between items-center border-t border-slate-200 pt-4">
                     <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Status: Active</span>
-                    <span className="text-xs font-black text-[#10a5b2]">14.8% Target Yield</span>
+                    <span className="text-xs font-black text-[#10a5b2]">Flagship Venture</span>
                   </div>
                 </div>
 
                 {/* Project 2 */}
-                <div className="p-8 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
+                <div className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
                   <div>
                     <div className="w-12 h-12 flex items-center justify-center rounded-xl mb-5 text-[#10a5b2] bg-[#10a5b2]/10 border border-[#10a5b2]/20">
                       <Zap className="w-6 h-6" />
@@ -612,115 +735,196 @@ export default function Home() {
                     <span className="text-[10px] font-bold text-[#10a5b2] tracking-widest uppercase block mb-2">Renewable Energy</span>
                     <h4 className="text-xl font-bold mb-3 text-slate-900">Kandahar Solar Grid</h4>
                     <p className="font-sans text-xs leading-relaxed text-slate-600 mb-6">
-                      Developing 5MW of clean solar energy generation infrastructure to power regional storage hubs. Fully automated telemetry and remote grid monitoring.
+                      5MW solar infrastructure supporting agricultural and industrial operations.
                     </p>
                   </div>
                   <div className="flex justify-between items-center border-t border-slate-200 pt-4">
                     <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Status: Development</span>
-                    <span className="text-xs font-black text-[#10a5b2]">12.5% Target Yield</span>
+                    <span className="text-xs font-black text-[#10a5b2]">5MW Capacity</span>
                   </div>
                 </div>
 
                 {/* Project 3 */}
-                <div className="p-8 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
+                <div className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between hover:border-[#10a5b2] transition-all duration-300">
                   <div>
                     <div className="w-12 h-12 flex items-center justify-center rounded-xl mb-5 text-[#10a5b2] bg-[#10a5b2]/10 border border-[#10a5b2]/20">
                       <Store className="w-6 h-6" />
                     </div>
-                    <span className="text-[10px] font-bold text-[#10a5b2] tracking-widest uppercase block mb-2">Cold-Chain Storage</span>
-                    <h4 className="text-xl font-bold mb-3 text-slate-900">Regional Storage Nodes</h4>
+                    <span className="text-[10px] font-bold text-[#10a5b2] tracking-widest uppercase block mb-2">Storage & Logistics</span>
+                    <h4 className="text-xl font-bold mb-3 text-slate-900">Cold Chain Storage Network</h4>
                     <p className="font-sans text-xs leading-relaxed text-slate-600 mb-6">
-                      A network of temperature-controlled storage warehouses for local farmers, with booking, dispatch, and energy tracking handled by Hamedia Ops.
+                      Temperature-controlled facilities improving food preservation and regional distribution.
                     </p>
                   </div>
                   <div className="flex justify-between items-center border-t border-slate-200 pt-4">
                     <span className="text-[10px] font-bold text-cyan-600 uppercase tracking-wider">Status: Engineering</span>
-                    <span className="text-xs font-black text-[#10a5b2]">16.2% Target Yield</span>
+                    <span className="text-xs font-black text-[#10a5b2]">Regional Hubs</span>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* 4. The Hamedia Edge Section (DARK) */}
-          <section id="operations" className="py-24 bg-[#092227] text-white border-b border-white/10">
+          {/* 6. The Hamedia Operations Engine (LIGHT 2) */}
+          <section id="operations" className="py-24 bg-white text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
                 <div className="lg:col-span-6 text-left">
                   <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">The Hamedia Edge</span>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-6 text-white uppercase tracking-tight">
-                    AI-Enhanced Operations Engine
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-6 text-slate-900 uppercase tracking-tight">
+                    AI-Powered Operations. Real-World Execution.
                   </h2>
-                  <p className="font-sans text-sm sm:text-base leading-relaxed mb-8 text-slate-300">
-                    Our investments succeed because we don't just supply capital—we supply complete, remote operational infrastructure. Every asset in our portfolio is optimized by Hamedia Agency's 24/7 remote experts and proprietary GrowthPilot AI software.
+                  <p className="font-sans text-sm sm:text-base leading-relaxed text-slate-600">
+                    Hamedia Agency combines experienced professionals with AI-powered technology to manage operations, optimize performance, and deliver real-time visibility across every venture.
                   </p>
-                  <div className="space-y-4 font-sans">
-                    <div className="flex gap-4 items-start p-4 bg-[#0b2d34] border border-white/10 rounded-2xl">
-                      <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/20">
-                        <Bot className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-sans text-sm font-bold mb-1 text-white uppercase">AI-Driven Efficiencies</h4>
-                        <p className="text-xs leading-relaxed text-slate-300">Automated supply tracking, resource allocation, and predictive forecasting reduce operational waste.</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-4 items-start p-4 bg-[#0b2d34] border border-white/10 rounded-2xl">
-                      <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/20">
-                        <Users className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-sans text-sm font-bold mb-1 text-white uppercase">24/7 Human Dispatch & Support</h4>
-                        <p className="text-xs leading-relaxed text-slate-300">Remote staffing teams handle dispatch routing, security monitoring, bookkeeping, and customer support around the clock.</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-4 items-start p-4 bg-[#0b2d34] border border-white/10 rounded-2xl">
-                      <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/20">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-sans text-sm font-bold mb-1 text-white uppercase">Direct Inspection & Audit</h4>
-                        <p className="text-xs leading-relaxed text-slate-300">All animal health tags, milk scales, and transport trackers report directly to our cloud ledger, ensuring complete transparency.</p>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-                <div className="lg:col-span-6 relative">
-                  <div className="p-8 sm:p-10 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-2xl">
-                    <h3 className="text-xl font-black mb-8 text-white uppercase tracking-wider">Hamedia Active Operations</h3>
+
+                <div className="lg:col-span-6">
+                  <div className="p-8 sm:p-10 bg-[#092227] text-white border border-slate-200 rounded-3xl shadow-2xl">
+                    <h3 className="text-xl font-black mb-8 text-white uppercase tracking-wider">Performance Metrics</h3>
                     <div className="grid grid-cols-2 gap-5 text-center font-sans">
-                      <div className="p-6 bg-[#092227] rounded-2xl border border-white/10">
+                      <div className="p-6 bg-[#0b2d34] rounded-2xl border border-white/10">
                         <span className="block text-3xl font-black text-white mb-1">98%</span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Task Accuracy</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-300">Task Accuracy</span>
                       </div>
-                      <div className="p-6 bg-[#092227] rounded-2xl border border-white/10">
+                      <div className="p-6 bg-[#0b2d34] rounded-2xl border border-white/10">
                         <span className="block text-3xl font-black text-white mb-1">24/7</span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Live Support</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-300">Business Support</span>
                       </div>
-                      <div className="p-6 bg-[#092227] rounded-2xl border border-white/10">
-                        <span className="block text-3xl font-black text-white mb-1">-60%</span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Operating Costs</span>
+                      <div className="p-6 bg-[#0b2d34] rounded-2xl border border-white/10">
+                        <span className="block text-3xl font-black text-white mb-1">60%</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-300">Lower Operating Costs</span>
                       </div>
-                      <div className="p-6 bg-[#092227] rounded-2xl border border-white/10">
+                      <div className="p-6 bg-[#0b2d34] rounded-2xl border border-white/10">
                         <span className="block text-3xl font-black text-white mb-1">500+</span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Staff Deployed</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-300">Remote Professionals</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Core Capabilities */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="p-6 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] mb-4 border border-[#10a5b2]/20">
+                    <Bot className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-sans text-sm font-bold text-slate-900 uppercase mb-3">AI Intelligence</h4>
+                  <ul className="space-y-2 font-sans text-xs text-slate-600">
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Predictive Analytics</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Supply Forecasting</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Automated Reporting</li>
+                  </ul>
+                </div>
+
+                <div className="p-6 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] mb-4 border border-[#10a5b2]/20">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-sans text-sm font-bold text-slate-900 uppercase mb-3">24/7 Operations</h4>
+                  <ul className="space-y-2 font-sans text-xs text-slate-600">
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Administration</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Finance & Bookkeeping</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Logistics & Procurement</li>
+                  </ul>
+                </div>
+
+                <div className="p-6 bg-[#FAF7F2] border border-slate-200 rounded-2xl shadow-sm">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] mb-4 border border-[#10a5b2]/20">
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-sans text-sm font-bold text-slate-900 uppercase mb-3">Operational Visibility</h4>
+                  <ul className="space-y-2 font-sans text-xs text-slate-600">
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> RFID Asset Tracking</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Cloud Reporting</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-[#10a5b2]" /> Performance Dashboards</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* 5. Target Industries Grid (LIGHT 1) */}
+          {/* 7. Investment Philosophy (DARK) */}
+          <section id="philosophy" className="py-24 bg-[#092227] text-white border-b border-white/10 relative overflow-hidden">
+            {/* Ambient Background Lighting */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#10a5b2]/15 blur-[150px] rounded-full" />
+              <div className="absolute inset-0 bg-dots-white-10 opacity-10" />
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-[11px] font-bold tracking-widest uppercase mb-4 rounded-full bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/25">
+                  <Sprout className="w-4 h-4 text-[#10a5b2]" /> Our Philosophy
+                </span>
+                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.1] text-white uppercase tracking-tight mb-6">
+                  Invest in What the World Will <span className="text-[#10a5b2]">Always Need</span>.
+                </h2>
+                <p className="font-sans text-base sm:text-lg leading-relaxed text-slate-300">
+                  Food, energy, infrastructure, and logistics remain essential regardless of market cycles. Hamedia focuses on industries with enduring demand, creating resilient opportunities for long-term growth.
+                </p>
+              </div>
+
+              {/* 4 Essential Pillars Card Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  {
+                    title: "Food & Agriculture",
+                    text: "Enduring, recession-resilient demand for primary food production, dairy, and livestock.",
+                    icon: Wheat,
+                    tag: "Essential Sector"
+                  },
+                  {
+                    title: "Renewable Energy",
+                    text: "Clean, reliable power generation powering regional utilities and industrial hubs.",
+                    icon: Zap,
+                    tag: "Essential Infrastructure"
+                  },
+                  {
+                    title: "Physical Infrastructure",
+                    text: "Tangible real-world facilities with built-in operational utility and land backing.",
+                    icon: HomeIcon,
+                    tag: "Essential Capital"
+                  },
+                  {
+                    title: "Cold-Chain Logistics",
+                    text: "Temperature-controlled distribution networks preserving regional food supplies.",
+                    icon: Truck,
+                    tag: "Essential Network"
+                  }
+                ].map((pillar, pIdx) => {
+                  const Icon = pillar.icon;
+                  return (
+                    <div 
+                      key={pIdx} 
+                      className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl flex flex-col justify-between hover:border-[#10a5b2]/40 transition-all duration-300 hover:-translate-y-1 group"
+                    >
+                      <div>
+                        <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20 group-hover:scale-110 transition-transform duration-300">
+                          <Icon className="w-6 h-6" />
+                        </div>
+                        <span className="text-[10px] font-bold text-[#10a5b2] uppercase tracking-widest block mb-2">{pillar.tag}</span>
+                        <h3 className="text-lg font-black text-white uppercase mb-3">{pillar.title}</h3>
+                        <p className="font-sans text-xs leading-relaxed text-slate-300">{pillar.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* 8. Target Industries Grid (LIGHT 1) */}
           <section id="ventures" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-3xl mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Target Industries</span>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-slate-900 uppercase tracking-tight">
-                  Deploying Capital Across High-Impact Industries
+                  Diversified Across Essential Markets
                 </h2>
                 <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600">
-                  We build projects and deploy capital into physical assets across primary sectors. Every venture is integrated with Hamedia's specialized remote agency operators to secure operational efficiency.
+                  Together, these industries create a diversified ecosystem built for sustainable growth.
                 </p>
               </div>
 
@@ -731,7 +935,7 @@ export default function Home() {
                     bullets: [
                       "Verifiable RFID livestock tracking",
                       "Automated closed-loop hydroponics",
-                      "Daily milk output telemetry logs"
+                      "Daily output telemetry logs"
                     ], 
                     icon: Wheat, 
                     bgImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80" 
@@ -740,14 +944,14 @@ export default function Home() {
                     name: "Renewable Energy", 
                     bullets: [
                       "5MW solar utility grid generation",
-                      "Smart energy storage node management",
+                      "Smart energy storage management",
                       "Verifiable real-time grid meter audits"
                     ], 
                     icon: Zap, 
                     bgImage: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=600&q=80" 
                   },
                   { 
-                    name: "Food & Dairy Processing", 
+                    name: "Food Processing", 
                     bullets: [
                       "Automated pasteurization flow meters",
                       "Cold-chain temperature cloud ledger",
@@ -767,7 +971,7 @@ export default function Home() {
                     bgImage: "https://images.unsplash.com/photo-1516528387618-afa90b13e000?auto=format&fit=crop&w=600&q=80" 
                   },
                   { 
-                    name: "Real Estate & Construction", 
+                    name: "Real Estate & Infrastructure", 
                     bullets: [
                       "Smart warehouse physical footprints",
                       "AI construction timeline trackers",
@@ -797,7 +1001,7 @@ export default function Home() {
                     bgImage: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" 
                   },
                   { 
-                    name: "Retail & Commerce", 
+                    name: "Retail & Distribution", 
                     bullets: [
                       "Stock synchronization dispatch centers",
                       "B2B client distribution facilities",
@@ -810,17 +1014,14 @@ export default function Home() {
                   const Icon = ind.icon;
                   return (
                     <div key={iIdx} className="relative overflow-hidden rounded-2xl group flex flex-col justify-between p-6 text-white border border-white/20 aspect-[4/5] sm:aspect-[3/4] md:aspect-square shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#10a5b2]/50 hover:shadow-cyan-500/20">
-                      {/* Background Image with hover zoom */}
                       <div 
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                         style={{ backgroundImage: `url(${ind.bgImage})` }}
                       />
-                      {/* Glassy dark teal gradient overlay with backdrop blur */}
                       <div className="absolute inset-0 bg-gradient-to-b from-[#0c4d57]/70 via-[#092227]/85 to-[#051518]/95 backdrop-blur-[2px] transition-all duration-300 group-hover:via-[#092227]/75" />
                       
                       <div className="relative z-10 flex flex-col h-full justify-between">
                         <div>
-                          {/* Frosted glass icon badge */}
                           <div className="w-10 h-10 flex items-center justify-center border border-white/30 bg-white/10 backdrop-blur-md rounded-xl mb-4 text-white shadow-sm">
                             <Icon className="w-5 h-5" />
                           </div>
@@ -851,23 +1052,23 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 6. Roadmap Model Section (LIGHT 2) */}
+          {/* 9. Investment Allocation Model (LIGHT 2) */}
           <section id="model" className="py-24 bg-white text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
-                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Operational Roadmap</span>
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investment Framework</span>
                 <h2 className="text-3xl sm:text-4xl font-black leading-tight text-slate-900 uppercase tracking-tight">
-                  The Hamedia Allocation Model
+                  How Your Capital Creates Value
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
                 <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-0.5 bg-slate-200" />
                 {[
-                  { num: 1, title: "Platform Setup", text: "Founders construct baseline infrastructure and facilities out of pocket." },
-                  { num: 2, title: "Asset Expansion", text: "Outside investors fund active, revenue-producing inventory and assets." },
-                  { num: 3, title: "Operations", text: "Hamedia Agency runs operations: remote staffing, dispatch, and bookkeeping." },
-                  { num: 4, title: "Yield", text: "Quarterly distributions are disbursed directly to certificate holders." }
+                  { num: 1, title: "Platform Development", text: "Founders establish infrastructure, systems, and operations." },
+                  { num: 2, title: "Asset Acquisition", text: "Capital is deployed into productive, revenue-generating assets." },
+                  { num: 3, title: "Operations", text: "Hamedia Agency manages daily operations using AI and experienced teams." },
+                  { num: 4, title: "Growth", text: "Business performance drives long-term expansion and investor value." }
                 ].map((step, sIdx) => (
                   <div key={sIdx} className="flex flex-col items-center text-center relative z-10">
                     <div className="w-16 h-16 border-2 border-[#10a5b2] bg-[#FAF7F2] flex items-center justify-center font-sans text-xl font-black mb-4 shadow-md rounded-2xl text-[#10a5b2]">
@@ -881,67 +1082,120 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 7. Flagship Project Section & Calculator (DARK) */}
-          <section id="flagship" className="py-24 bg-[#092227] text-white border-b border-white/10 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* 10. Why Investors Stay With Hamedia (DARK) */}
+          <section id="value-creation" className="py-24 bg-[#092227] text-white border-b border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
-                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Active Flagship Blueprint</span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white uppercase tracking-tight">Arghandab Dairy Farm</h2>
-                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-300">
-                  Arghandab Dairy Farm in Kandahar is our active flagship venture. It serves as our operational blueprint, proving how direct physical asset tracking combined with remote back-office staffing generates stable, cash-yielding returns.
-                </p>
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Long-Term Value Creation</span>
+                <h2 className="text-3xl sm:text-4xl font-black leading-tight text-white uppercase tracking-tight">
+                  Three Drivers of Sustainable Growth
+                </h2>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                <div className="lg:col-span-6 flex flex-col justify-center">
-                  <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
-                    <span className="inline-flex px-3.5 py-1.5 rounded-full font-sans text-[10px] font-bold tracking-widest uppercase mb-4 bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/20">Venture Return Model</span>
-                    <h3 className="text-2xl font-black mb-6 text-white uppercase tracking-wide">Asset-Backed Return Structure</h3>
-                    
-                    <ul className="space-y-5">
-                      <li className="flex gap-4">
-                        <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0.5 text-[#10a5b2]" />
-                        <div>
-                          <h4 className="font-sans text-sm font-bold text-white uppercase">33% Productive Asset Yield</h4>
-                          <p className="font-sans text-xs text-slate-300 mt-1">Direct quarterly distributions from primary operational cash flows (milk sales, energy grid sales, cold-storage leases).</p>
-                        </div>
-                      </li>
-                      <li className="flex gap-4">
-                        <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0.5 text-[#10a5b2]" />
-                        <div>
-                          <h4 className="font-sans text-sm font-bold text-white uppercase">33% Asset Growth Appreciation</h4>
-                          <p className="font-sans text-xs text-slate-300 mt-1">Net value distributions from secondary growth lines, herd reproduction, and utility expansions.</p>
-                        </div>
-                      </li>
-                      <li className="flex gap-4">
-                        <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0.5 text-[#10a5b2]" />
-                        <div>
-                          <h4 className="font-sans text-sm font-bold text-white uppercase">33% Net Asset Divestment Value</h4>
-                          <p className="font-sans text-xs text-slate-300 mt-1">Divestment exit values calculated based on the verified market valuation of the physical project assets funded.</p>
-                        </div>
-                      </li>
-                    </ul>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
+                    <TrendingUp className="w-6 h-6" />
                   </div>
+                  <h3 className="text-xl font-bold mb-3 text-white uppercase">Operational Cash Flow</h3>
+                  <p className="font-sans text-xs leading-relaxed text-slate-300">
+                    Revenue generated through active business operations.
+                  </p>
                 </div>
 
-                {/* Calculator Widget */}
-                <div className="lg:col-span-6">
-                  {renderCalculator()}
+                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
+                    <Building className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white uppercase">Asset Appreciation</h3>
+                  <p className="font-sans text-xs leading-relaxed text-slate-300">
+                    Growth in productive assets and infrastructure.
+                  </p>
+                </div>
+
+                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white uppercase">Enterprise Value</h3>
+                  <p className="font-sans text-xs leading-relaxed text-slate-300">
+                    Long-term appreciation of the overall business.
+                  </p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* 8. FAQ Section (LIGHT 1) */}
-          <section id="faq" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
+          {/* 11. Transparency & Governance (LIGHT 1) */}
+          <section id="transparency" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-3xl mb-16">
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investor Transparency</span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-slate-900 uppercase tracking-tight">
+                  Confidence Through Accountability.
+                </h2>
+                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600">
+                  Investors receive structured reporting and ongoing visibility into operational performance through:
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {[
+                  "Quarterly Updates",
+                  "Financial Summaries",
+                  "Project Milestones",
+                  "Asset Growth Reports",
+                  "Performance Dashboards",
+                  "Capital Deployment Reports"
+                ].map((feature, fIdx) => (
+                  <div key={fIdx} className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm flex items-center gap-4">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#10a5b2]/10 text-[#10a5b2] flex-shrink-0 border border-[#10a5b2]/20">
+                      <CheckCircle className="w-5 h-5" />
+                    </div>
+                    <span className="font-sans text-sm font-bold text-slate-900 uppercase">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 12. Frequently Asked Questions (LIGHT 2) */}
+          <section id="faq" className="py-24 bg-white text-slate-900 border-b border-slate-200">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <HelpCircle className="w-10 h-10 text-[#10a5b2] mx-auto mb-4" />
-                <h2 className="font-sans text-3xl sm:text-4xl font-black text-slate-900 uppercase tracking-tight">Frequently Asked Questions</h2>
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investor FAQ</span>
+                <h2 className="font-sans text-3xl sm:text-4xl font-black text-slate-900 uppercase tracking-tight">
+                  Answers to Common Investor Questions
+                </h2>
               </div>
               <div className="space-y-4">
-                {faqs.map((faq, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
+                {[
+                  {
+                    question: "Why invest with Hamedia?",
+                    answer: "Hamedia deploys capital directly into productive physical assets (agricultural livestock, solar energy grids, logistics storage nodes) managed by 24/7 AI-enhanced remote agency operators, prioritizing long-term asset growth over speculative market volatility."
+                  },
+                  {
+                    question: "How is capital allocated?",
+                    answer: "100% of investor capital is allocated directly to acquiring productive, revenue-generating inventory and equipment. Founders cover all initial platform development and facilities out-of-pocket."
+                  },
+                  {
+                    question: "How are distributions structured?",
+                    answer: "Returns are structured through active operational cash flows, asset reproduction/growth appreciation, and verifiable enterprise value, distributed on a quarterly basis."
+                  },
+                  {
+                    question: "How is operational performance monitored?",
+                    answer: "Every physical asset is integrated with digital telemetry (RFID livestock tags, smart energy meters, cold-chain sensors) reporting directly to our cloud ledger, monitored 24/7 by Hamedia Agency staff."
+                  },
+                  {
+                    question: "What reporting do investors receive?",
+                    answer: "Investors receive quarterly performance updates, financial summaries, project milestones, asset growth reports, real-time performance dashboards, and capital deployment audits."
+                  },
+                  {
+                    question: "How is operational risk managed?",
+                    answer: "Risk is mitigated through physical asset backing, 24/7 remote monitoring, predictive AI analytics, and multi-industry diversification across essential sectors with enduring demand."
+                  }
+                ].map((faq, idx) => (
+                  <div key={idx} className="bg-[#FAF7F2] border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
                     <button
                       onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                       className="w-full flex items-center justify-between p-6 text-left font-sans text-sm sm:text-base font-bold text-slate-900 hover:text-[#10a5b2] transition-colors duration-200"
@@ -957,7 +1211,7 @@ export default function Home() {
                           exit={{ height: 0 }}
                           className="overflow-hidden"
                         >
-                          <div className="p-6 pt-0 border-t border-slate-100 font-sans text-xs sm:text-sm leading-relaxed text-slate-600">{faq.answer}</div>
+                          <div className="p-6 pt-0 border-t border-slate-200 font-sans text-xs sm:text-sm leading-relaxed text-slate-600">{faq.answer}</div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -967,20 +1221,44 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 9. Contact Section (LIGHT 2) */}
-          <section id="contact" className="py-24 bg-white text-slate-900">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center max-w-2xl mx-auto mb-16">
-                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Join Our Network</span>
-                <h2 className="text-3xl sm:text-4xl font-black leading-tight text-slate-900 uppercase tracking-tight">
-                  Investor Relations Inquiry
+          {/* 13. Final Call to Action & Calculator / Contact Form (DARK) */}
+          <section id="contact" className="py-24 bg-[#092227] text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investor Relations</span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white uppercase tracking-tight">
+                  Invest in Businesses That Build the Future.
                 </h2>
-                <p className="mt-4 font-sans text-xs sm:text-sm leading-relaxed text-slate-600">
-                  If you are interested in passive, asset-backed economic participation, please submit an inquiry form below.
+                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-300 max-w-2xl mx-auto">
+                  Hamedia Investments combines tangible assets, intelligent operations, and essential industries into a platform designed for sustainable, long-term growth. Partner with us to build businesses that create lasting economic value.
                 </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                  <a 
+                    href="#contact-form" 
+                    className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-xl shadow-lg transition-all duration-300"
+                  >
+                    Schedule an Investor Consultation
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </a>
+                  <a 
+                    href="#contact-form" 
+                    className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase border border-white/20 hover:border-[#10a5b2] text-white hover:text-[#10a5b2] bg-white/5 backdrop-blur-sm rounded-xl transition-all duration-300"
+                  >
+                    Download the Investor Prospectus
+                  </a>
+                </div>
               </div>
-              <div className="bg-[#FAF7F2] border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-xl">
-                {renderContactForm()}
+
+              <div id="contact-form" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-16">
+                {/* Calculator Widget */}
+                <div className="lg:col-span-6">
+                  {renderCalculator()}
+                </div>
+
+                {/* Form Container */}
+                <div className="lg:col-span-6 bg-white text-slate-900 border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-2xl">
+                  {renderContactForm()}
+                </div>
               </div>
             </div>
           </section>
