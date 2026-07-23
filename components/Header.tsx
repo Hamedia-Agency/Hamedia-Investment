@@ -11,10 +11,8 @@ import {
   ExternalLink
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDesign } from "@/components/providers/DesignContext";
 
 export default function Header() {
-  const { theme, setTheme, structure, setStructure } = useDesign();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("dark");
@@ -27,35 +25,38 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // IntersectionObserver to sense underlying section background (Light vs Dark)
+  // Detect background theme of active section under header
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            const isDark =
-              el.classList.contains("bg-[#092227]") ||
-              el.classList.contains("bg-[#0b2d34]") ||
-              el.classList.contains("bg-[#071d22]") ||
-              el.classList.contains("bg-slate-900") ||
-              el.classList.contains("bg-black") ||
-              el.className.includes("bg-[#092227]") ||
-              el.className.includes("bg-[#0b2d34]");
-            setCurrentTheme(isDark ? "dark" : "light");
-          }
-        });
-      },
-      {
-        rootMargin: "-10% 0px -80% 0px",
-        threshold: 0,
+    const handleThemeDetection = () => {
+      const headerPos = window.scrollY + 60; // 60px down from window top
+      const sections = Array.from(document.querySelectorAll("section"));
+      let activeIsDark = true; // Default to dark for top Hero section
+
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i] as HTMLElement;
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+
+        if (headerPos >= top && headerPos < top + height) {
+          const bg = section.className;
+          const isDarkSection =
+            bg.includes("bg-[#1e1e1e]") ||
+            bg.includes("bg-[#092227]") ||
+            bg.includes("bg-[#0b2d34]") ||
+            bg.includes("bg-slate-900") ||
+            bg.includes("bg-black");
+          
+          activeIsDark = isDarkSection;
+          break;
+        }
       }
-    );
 
-    const sections = document.querySelectorAll("section");
-    sections.forEach((section) => observer.observe(section));
+      setCurrentTheme(activeIsDark ? "dark" : "light");
+    };
 
-    return () => observer.disconnect();
+    window.addEventListener("scroll", handleThemeDetection, { passive: true });
+    handleThemeDetection(); // Initial check on mount
+    return () => window.removeEventListener("scroll", handleThemeDetection);
   }, []);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -77,22 +78,22 @@ export default function Header() {
 
   const isDarkTheme = currentTheme === "dark";
 
-  const navItemColorClass = isDarkTheme
-    ? "text-white hover:text-[#10a5b2]"
-    : "text-slate-900 hover:text-[#10a5b2]";
+  const navItemColorClass = isScrolled
+    ? isDarkTheme
+      ? "text-white hover:text-[#10a5b2] font-semibold transition-colors duration-200"
+      : "text-slate-900 hover:text-[#10a5b2] font-semibold transition-colors duration-200"
+    : "text-white hover:text-[#10a5b2] font-semibold transition-colors duration-200";
 
   const headerBgClass = isScrolled
     ? isDarkTheme
-      ? "bg-[#092227]/90 backdrop-blur-md border-b border-white/10 shadow-xl text-white"
-      : "bg-white/85 backdrop-blur-md border-b border-slate-200/80 shadow-md text-slate-900"
-    : isDarkTheme
-      ? "bg-transparent border-b border-transparent text-white"
-      : "bg-white/70 backdrop-blur-md border-b border-slate-200/60 shadow-sm text-slate-900";
+      ? "bg-[#1e1e1e]/95 backdrop-blur-md border-b border-white/10 shadow-2xl py-4"
+      : "bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-md py-4"
+    : "bg-transparent border-b border-transparent py-5";
 
   return (
     <>
       {/* Main Header */}
-      <header className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full h-20 flex items-center", headerBgClass)}>
+      <header className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full flex items-center", headerBgClass)}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -112,14 +113,14 @@ export default function Header() {
               <a
                 href="#"
                 onClick={(e) => handleLinkClick(e, "#")}
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans", navItemColorClass)}
               >
                 Home
               </a>
               <a
                 href="#about"
                 onClick={(e) => handleLinkClick(e, "#about")}
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans", navItemColorClass)}
               >
                 About Us
               </a>
@@ -127,29 +128,29 @@ export default function Header() {
                 href="https://arghandabdairy.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans flex items-center gap-1.5", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans flex items-center gap-1.5", navItemColorClass)}
               >
                 Flagship Farm
-                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </a>
               <a
                 href="#ventures"
                 onClick={(e) => handleLinkClick(e, "#ventures")}
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans", navItemColorClass)}
               >
                 Ventures
               </a>
               <a
                 href="#contact"
                 onClick={(e) => handleLinkClick(e, "#contact")}
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans", navItemColorClass)}
               >
                 Calculator
               </a>
               <a
                 href="#faq"
                 onClick={(e) => handleLinkClick(e, "#faq")}
-                className={cn("text-[13px] font-medium transition-colors duration-200 font-sans", navItemColorClass)}
+                className={cn("text-[13px] tracking-wide font-sans", navItemColorClass)}
               >
                 FAQ
               </a>
@@ -160,7 +161,7 @@ export default function Header() {
               <a
                 href="#contact"
                 onClick={(e) => handleLinkClick(e, "#contact")}
-                className="inline-flex items-center justify-center px-5 py-2.5 font-sans text-xs font-bold rounded-xl shadow-md transition-all duration-300 hover:-translate-y-0.5 group bg-[#10a5b2] hover:bg-[#0c8a94] text-white"
+                className="inline-flex items-center justify-center px-6 py-2.5 font-sans text-xs font-bold rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5 group bg-[#10a5b2] hover:bg-[#0c8a94] text-white"
               >
                 Apply to Invest
                 <ArrowRight className="ml-1.5 w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -172,7 +173,7 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
                 "md:hidden p-2 rounded-lg focus:outline-none transition-colors duration-200",
-                isDarkTheme ? "text-white hover:bg-white/5" : "text-slate-800 hover:bg-slate-100"
+                isScrolled && !isDarkTheme ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/10"
               )}
               aria-label="Toggle menu"
             >
@@ -192,14 +193,16 @@ export default function Header() {
             transition={{ duration: 0.2 }}
             className={cn(
               "fixed inset-0 top-[80px] z-40 md:hidden flex flex-col justify-between p-6 border-t font-sans overflow-y-auto pb-24 shadow-2xl",
-              isDarkTheme ? "bg-[#092227] border-white/10 text-white" : "bg-white border-slate-200 text-slate-900"
+              isScrolled && !isDarkTheme
+                ? "bg-white border-slate-200 text-slate-900"
+                : "bg-[#1e1e1e] border-white/10 text-white"
             )}
           >
             <div className="flex flex-col gap-4 mt-2">
               <a
                 href="#"
                 onClick={(e) => handleLinkClick(e, "#")}
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span>Home</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
@@ -207,7 +210,7 @@ export default function Header() {
               <a
                 href="#about"
                 onClick={(e) => handleLinkClick(e, "#about")}
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span>About Us</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
@@ -216,7 +219,7 @@ export default function Header() {
                 href="https://arghandabdairy.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span className="flex items-center gap-2">
                   Flagship Farm <ExternalLink className="w-3.5 h-3.5 opacity-70" />
@@ -226,7 +229,7 @@ export default function Header() {
               <a
                 href="#ventures"
                 onClick={(e) => handleLinkClick(e, "#ventures")}
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span>Ventures</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
@@ -234,7 +237,7 @@ export default function Header() {
               <a
                 href="#contact"
                 onClick={(e) => handleLinkClick(e, "#contact")}
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span>Calculator</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
@@ -242,7 +245,7 @@ export default function Header() {
               <a
                 href="#faq"
                 onClick={(e) => handleLinkClick(e, "#faq")}
-                className="py-3 border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider flex items-center justify-between"
+                className="py-3 border-b border-current opacity-90 text-xs font-bold uppercase tracking-wider flex items-center justify-between hover:text-[#10a5b2]"
               >
                 <span>FAQ</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />

@@ -114,13 +114,13 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${montserrat.variable} ${cooper.variable} bg-brand-cream text-brand-charcoal antialiased font-sans`}
+        className={`${montserrat.variable} ${cooper.variable} bg-[#1e1e1e] text-brand-charcoal antialiased font-sans`}
         suppressHydrationWarning
       >
         <Providers>
           <div className="flex flex-col min-h-screen overflow-x-clip">
             <Header />
-            <main className="flex-grow pt-[136px] md:pt-[152px]">
+            <main className="flex-grow">
               {children}
             </main>
             <Footer />

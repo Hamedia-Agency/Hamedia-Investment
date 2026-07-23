@@ -178,7 +178,7 @@ export default function Home() {
 
   const getThemeStyles = (): ThemeStyles => {
     return {
-      bodyBg: "bg-[#092227]",
+      bodyBg: "bg-[#1e1e1e]",
       textCharcoal: "text-white",
       textGray: "text-slate-300",
       headingFont: "font-sans font-black tracking-tight",
@@ -186,29 +186,29 @@ export default function Home() {
       subTitleClass: "text-[#10a5b2]",
       dividerClass: "bg-[#10a5b2]",
       // Hero specific
-      heroLeftBg: "bg-[#092227]",
-      heroRightBg: "bg-[#092227]",
+      heroLeftBg: "bg-[#1e1e1e]",
+      heroRightBg: "bg-[#1e1e1e]",
       heroTextClass: "font-sans font-black tracking-tight text-white uppercase",
       heroGridClass: "border border-white/5",
       accentText: "text-[#10a5b2]",
       primaryBtn: "bg-[#10a5b2] hover:bg-[#0c8a94] text-white font-bold rounded-xl shadow-lg hover:shadow-cyan-500/20 transition-all border-0",
       secondaryBtn: "border border-white/20 hover:border-[#10a5b2] text-white hover:text-[#10a5b2] bg-white/5 backdrop-blur-sm rounded-xl transition-all",
-      badgeClass: "bg-[#10a5b2]/10 text-[#10a5b2] border border-[#10a5b2]/20 rounded-full",
-      cardClass: "bg-[#0b2d34] border border-white/10 rounded-2xl shadow-lg hover:shadow-2xl hover:border-[#10a5b2]/30 transition-all duration-300",
+      badgeClass: "bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/25 rounded-full",
+      cardClass: "bg-[#282828] border border-white/10 rounded-2xl shadow-lg hover:shadow-2xl hover:border-[#10a5b2]/30 transition-all duration-300",
       iconContainer: "bg-[#10a5b2]/15 text-[#10a5b2] border border-[#10a5b2]/20 rounded-xl",
       checkIcon: "text-[#10a5b2]",
       // Calculator specific
-      calcCardBg: "bg-[#0b2d34] text-white rounded-2xl shadow-2xl border border-white/10",
+      calcCardBg: "bg-[#282828] text-white rounded-2xl shadow-2xl border border-white/10",
       sliderAccent: "accent-[#10a5b2]",
       calcStatBg: "bg-white/5 border border-white/10 rounded-xl",
       // Form specific
-      formBg: "bg-[#0b2d34] border border-white/10 text-white rounded-2xl p-8 shadow-2xl",
-      inputClass: "bg-[#092227] border border-white/15 rounded-xl text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#10a5b2] focus:border-[#10a5b2]",
+      formBg: "bg-[#282828] border border-white/10 text-white rounded-2xl p-8 shadow-2xl",
+      inputClass: "bg-[#1e1e1e] border border-white/15 rounded-xl text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#10a5b2] focus:border-[#10a5b2]",
       formBtn: "bg-[#10a5b2] hover:bg-[#0c8a94] text-white font-bold rounded-xl shadow-lg transition-all",
-      faqClass: "bg-[#0b2d34]/90 border border-white/10 rounded-xl text-white",
-      slideLeftPanelBg: "bg-[#0b2d34] border border-white/10 rounded-xl text-white",
-      cardOverlay: "bg-gradient-to-b from-[#0c4d57]/80 via-[#0a3a42]/90 to-[#072025]/98",
-      cardBtnText: "text-[#0a3a42]"
+      faqClass: "bg-[#282828]/90 border border-white/10 rounded-xl text-white",
+      slideLeftPanelBg: "bg-[#282828] border border-white/10 rounded-xl text-white",
+      cardOverlay: "bg-gradient-to-b from-[#1e1e1e]/70 via-[#282828]/85 to-[#1e1e1e]/95",
+      cardBtnText: "text-[#10a5b2]"
     };
   };
 
@@ -461,8 +461,8 @@ export default function Home() {
           transition={{ duration: 0.3 }}
           className="w-full"
         >
-          {/* 1. Hero Section (DARK) */}
-          <section className="relative overflow-hidden min-h-[90vh] pt-32 pb-20 flex items-center bg-[#092227] text-white border-b border-white/10">
+          {/* 1. Hero Section (DARK GREY - REVAMP) */}
+          <section className="relative overflow-hidden min-h-[90vh] pt-32 pb-20 flex items-center bg-[#1e1e1e] text-white border-b border-white/10">
             {/* Background ambient lighting and grid */}
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#10a5b2]/20 blur-[140px] rounded-full" />
@@ -496,7 +496,7 @@ export default function Home() {
                       "Quarterly Cash Distributions*",
                       "Long-Term Asset Growth"
                     ].map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-2 p-2.5 bg-white/5 border border-white/10 rounded-xl">
+                      <div key={idx} className="flex items-center gap-2 p-2.5 bg-[#282828] border border-white/10 rounded-xl">
                         <CheckCircle className="w-4 h-4 text-[#10a5b2] flex-shrink-0" />
                         <span className="font-sans text-xs font-bold text-slate-200">{item}</span>
                       </div>
@@ -525,7 +525,7 @@ export default function Home() {
 
                 {/* Right Column: Hero Brand Showcase */}
                 <div className="lg:col-span-5 flex justify-center">
-                  <div className="w-full max-w-sm p-6 bg-[#0b2d34]/90 border border-white/15 backdrop-blur-md rounded-3xl shadow-2xl flex flex-col items-center text-center relative overflow-hidden group">
+                  <div className="w-full max-w-sm p-6 bg-[#282828] border border-white/10 backdrop-blur-md rounded-3xl shadow-2xl flex flex-col items-center text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-t from-[#10a5b2]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     
                     <div className="w-full flex justify-center -mb-5">
@@ -659,8 +659,8 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 4. Why Hamedia Comparison Table (DARK) */}
-          <section id="why-hamedia" className="py-24 bg-[#092227] text-white border-b border-white/10">
+          {/* 4. Why Hamedia Comparison Table (DARK GREY - REVAMP) */}
+          <section id="why-hamedia" className="py-24 bg-[#1e1e1e] text-white border-b border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Why Hamedia</span>
@@ -669,7 +669,7 @@ export default function Home() {
                 </h2>
               </div>
 
-              <div className="max-w-4xl mx-auto bg-[#0b2d34] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
+              <div className="max-w-4xl mx-auto bg-[#282828] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
                 <div className="grid grid-cols-2 gap-4 pb-6 border-b border-white/10 font-sans text-xs sm:text-sm font-black uppercase tracking-wider">
                   <div className="text-white">Traditional Investments</div>
                   <div className="text-[#10a5b2]">Hamedia Investments</div>
@@ -845,8 +845,8 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 7. Investment Philosophy (DARK) */}
-          <section id="philosophy" className="py-24 bg-[#092227] text-white border-b border-white/10 relative overflow-hidden">
+          {/* 7. Investment Philosophy (DARK GREY - REVAMP) */}
+          <section id="philosophy" className="py-24 bg-[#1e1e1e] text-white border-b border-white/10 relative overflow-hidden">
             {/* Ambient Background Lighting */}
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#10a5b2]/15 blur-[150px] rounded-full" />
@@ -898,7 +898,7 @@ export default function Home() {
                   return (
                     <div 
                       key={pIdx} 
-                      className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl flex flex-col justify-between hover:border-[#10a5b2]/40 transition-all duration-300 hover:-translate-y-1 group"
+                      className="p-8 bg-[#282828] border border-white/10 rounded-3xl shadow-xl flex flex-col justify-between hover:border-[#10a5b2]/40 transition-all duration-300 hover:-translate-y-1 group"
                     >
                       <div>
                         <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20 group-hover:scale-110 transition-transform duration-300">
@@ -918,12 +918,12 @@ export default function Home() {
           {/* 8. Target Industries Grid (LIGHT 1) */}
           <section id="ventures" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-3xl mb-16">
+              <div className="max-w-5xl mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Target Industries</span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-slate-900 uppercase tracking-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-black leading-tight text-slate-900 uppercase tracking-tight sm:whitespace-nowrap">
                   Diversified Across Essential Markets
                 </h2>
-                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600">
+                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600 max-w-3xl">
                   Together, these industries create a diversified ecosystem built for sustainable growth.
                 </p>
               </div>
@@ -1082,8 +1082,8 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 10. Why Investors Stay With Hamedia (DARK) */}
-          <section id="value-creation" className="py-24 bg-[#092227] text-white border-b border-white/10">
+          {/* 10. Why Investors Stay With Hamedia (DARK GREY - REVAMP) */}
+          <section id="value-creation" className="py-24 bg-[#1e1e1e] text-white border-b border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Long-Term Value Creation</span>
@@ -1093,7 +1093,7 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                <div className="p-8 bg-[#282828] border border-white/10 rounded-3xl shadow-xl">
                   <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
                     <TrendingUp className="w-6 h-6" />
                   </div>
@@ -1103,7 +1103,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                <div className="p-8 bg-[#282828] border border-white/10 rounded-3xl shadow-xl">
                   <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
                     <Building className="w-6 h-6" />
                   </div>
@@ -1113,7 +1113,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="p-8 bg-[#0b2d34] border border-white/10 rounded-3xl shadow-xl">
+                <div className="p-8 bg-[#282828] border border-white/10 rounded-3xl shadow-xl">
                   <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#10a5b2]/15 text-[#10a5b2] mb-6 border border-[#10a5b2]/20">
                     <Award className="w-6 h-6" />
                   </div>
@@ -1129,12 +1129,12 @@ export default function Home() {
           {/* 11. Transparency & Governance (LIGHT 1) */}
           <section id="transparency" className="py-24 bg-[#FAF7F2] text-slate-900 border-b border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-3xl mb-16">
+              <div className="max-w-5xl mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investor Transparency</span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-slate-900 uppercase tracking-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-black leading-tight text-slate-900 uppercase tracking-tight sm:whitespace-nowrap">
                   Confidence Through Accountability.
                 </h2>
-                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600">
+                <p className="mt-4 font-sans text-sm sm:text-base leading-relaxed text-slate-600 max-w-3xl">
                   Investors receive structured reporting and ongoing visibility into operational performance through:
                 </p>
               </div>
@@ -1221,8 +1221,8 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 13. Final Call to Action & Calculator / Contact Form (DARK) */}
-          <section id="contact" className="py-24 bg-[#092227] text-white">
+          {/* 13. Final Call to Action & Calculator / Contact Form (DARK GREY - REVAMP) */}
+          <section id="contact" className="py-24 bg-[#1e1e1e] text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <span className="font-sans text-xs font-bold tracking-widest uppercase block mb-3 text-[#10a5b2]">Investor Relations</span>
@@ -1235,7 +1235,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                   <a 
                     href="#contact-form" 
-                    className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-xl shadow-lg transition-all duration-300"
+                    className="inline-flex items-center justify-center px-7 py-4 font-sans text-xs font-bold tracking-wider uppercase bg-[#10a5b2] hover:bg-[#0c8a94] text-white rounded-xl shadow-lg hover:shadow-cyan-500/20 transition-all duration-300"
                   >
                     Schedule an Investor Consultation
                     <ArrowRight className="ml-2 w-4 h-4" />
