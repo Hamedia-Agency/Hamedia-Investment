@@ -35,15 +35,10 @@ export const HamediaLogo: React.FC<HamediaLogoProps> = ({
 
   // Full variant loads the high-res transparent PNG directly
   return (
-    <div className={cn(
-      "select-none flex items-center justify-center transition-all duration-300", 
-      // Wrap in a dark glassy badge on light containers so the cream text is perfectly visible
-      !light && "glass-dark bg-black/40 backdrop-blur-md pt-[22px] pb-[10px] px-[14px] rounded-2xl border border-white/10 shadow-md",
-      className
-    )}>
+    <div className={cn("select-none flex items-center justify-center transition-all duration-300", className)}>
       <img 
         src="/logo.png" 
-        className={cn("w-auto object-contain scale-[1.3] translate-y-1 origin-center", iconClassName || "h-16")} 
+        className={cn("w-auto object-contain", iconClassName || "h-16")} 
         alt="Hamedia Investments" 
       />
     </div>
